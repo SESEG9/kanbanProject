@@ -1,0 +1,38 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094656",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "work_package",
+  "fields": [
+    {
+      "fieldName": "start",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "summary",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "WorkPackage",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "humanResource",
+      "relationshipName": "humanResource",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

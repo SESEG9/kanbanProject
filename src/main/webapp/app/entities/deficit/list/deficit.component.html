@@ -1,0 +1,113 @@
+<div>
+  <h2 id="page-heading" data-cy="DeficitHeading">
+    <span jhiTranslate="lionhotelApp.deficit.home.title">Deficits</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="lionhotelApp.deficit.home.refreshListLabel">Liste aktualisieren</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-deficit"
+        [routerLink]="['/deficit/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="lionhotelApp.deficit.home.createLabel"> Deficit erstellen </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="deficits?.length === 0">
+    <span jhiTranslate="lionhotelApp.deficit.home.notFound">Keine Deficits gefunden</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="deficits && deficits.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.deficit.description">Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="state">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.deficit.state">State</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="discount">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.deficit.discount">Discount</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="room.id">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.deficit.room">Room</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let deficit of deficits; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/deficit', deficit.id, 'view']">{{ deficit.id }}</a>
+          </td>
+          <td>{{ deficit.description }}</td>
+          <td jhiTranslate="{{ 'lionhotelApp.DeficitState.' + deficit.state }}">{{ deficit.state }}</td>
+          <td>{{ deficit.discount }}</td>
+          <td>
+            <div *ngIf="deficit.room">
+              <a [routerLink]="['/room', deficit.room.id, 'view']">{{ deficit.room.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/deficit', deficit.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Details</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/deficit', deficit.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
+              </button>
+
+              <button type="submit" (click)="delete(deficit)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

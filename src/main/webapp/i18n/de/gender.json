@@ -1,0 +1,10 @@
+{
+  "lionhotelApp": {
+    "Gender": {
+      "null": "",
+      "MALE": "MALE",
+      "FEMALE": "FEMALE",
+      "DIVERSE": "DIVERSE"
+    }
+  }
+}

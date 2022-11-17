@@ -1,0 +1,141 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-human-resource-heading"
+        data-cy="HumanResourceCreateUpdateHeading"
+        jhiTranslate="lionhotelApp.humanResource.home.createOrEditLabel"
+      >
+        Human Resource erstellen oder bearbeiten
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.type" for="field_type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'lionhotelApp.HumanResourceType.null' | translate }}</option>
+            <option *ngFor="let humanResourceType of humanResourceTypeValues" [value]="humanResourceType">
+              {{ 'lionhotelApp.HumanResourceType.' + humanResourceType | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.abbr" for="field_abbr">Abbr</label>
+          <input type="text" class="form-control" name="abbr" id="field_abbr" data-cy="abbr" formControlName="abbr" />
+          <div *ngIf="editForm.get('abbr')!.invalid && (editForm.get('abbr')!.dirty || editForm.get('abbr')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('abbr')?.errors?.required" jhiTranslate="entity.validation.required">
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.birthday" for="field_birthday">Birthday</label>
+          <div class="input-group">
+            <input
+              id="field_birthday"
+              data-cy="birthday"
+              type="text"
+              class="form-control"
+              name="birthday"
+              ngbDatepicker
+              #birthdayDp="ngbDatepicker"
+              formControlName="birthday"
+            />
+            <button type="button" class="btn btn-secondary" (click)="birthdayDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          <div *ngIf="editForm.get('birthday')!.invalid && (editForm.get('birthday')!.dirty || editForm.get('birthday')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('birthday')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.gender" for="field_gender">Gender</label>
+          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
+            <option [ngValue]="null">{{ 'lionhotelApp.Gender.null' | translate }}</option>
+            <option *ngFor="let gender of genderValues" [value]="gender">{{ 'lionhotelApp.Gender.' + gender | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('gender')!.invalid && (editForm.get('gender')!.dirty || editForm.get('gender')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('gender')?.errors?.required" jhiTranslate="entity.validation.required">
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.phone" for="field_phone">Phone</label>
+          <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone" formControlName="phone" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.email" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.ssn" for="field_ssn">Ssn</label>
+          <input type="text" class="form-control" name="ssn" id="field_ssn" data-cy="ssn" formControlName="ssn" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.bannking" for="field_bannking">Bannking</label>
+          <input type="text" class="form-control" name="bannking" id="field_bannking" data-cy="bannking" formControlName="bannking" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.humanResource.relationshipType" for="field_relationshipType"
+            >Relationship Type</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="relationshipType"
+            id="field_relationshipType"
+            data-cy="relationshipType"
+            formControlName="relationshipType"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Speichern</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

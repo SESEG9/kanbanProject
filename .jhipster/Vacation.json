@@ -1,0 +1,35 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094657",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "vacation",
+  "fields": [
+    {
+      "fieldName": "start",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "end",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "VacationState",
+      "fieldValues": "REQUESTED,ACCEPTED,DECLINED"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Vacation",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "humanResource",
+      "relationshipName": "humanResource",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

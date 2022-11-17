@@ -1,0 +1,28 @@
+{
+  "lionhotelApp": {
+    "bulkLetterTemplate": {
+      "home": {
+        "title": "Bulk Letter Templates",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Bulk Letter Template erstellen",
+        "createOrEditLabel": "Bulk Letter Template erstellen oder bearbeiten",
+        "notFound": "Keine Bulk Letter Templates gefunden"
+      },
+      "created": "Bulk Letter Template erstellt mit ID {{ param }}",
+      "updated": "Bulk Letter Template aktualisiert mit ID {{ param }}",
+      "deleted": "Bulk Letter Template gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Bulk Letter Template {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Bulk Letter Template"
+      },
+      "id": "ID",
+      "type": "Type",
+      "date": "Date",
+      "subject": "Subject",
+      "content": "Content",
+      "images": "Images"
+    }
+  }
+}

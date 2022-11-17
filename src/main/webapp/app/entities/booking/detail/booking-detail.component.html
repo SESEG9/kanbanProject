@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="booking">
+      <h2 data-cy="bookingDetailsHeading"><span jhiTranslate="lionhotelApp.booking.detail.title">Booking</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ booking.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.booking.discount">Discount</span></dt>
+        <dd>
+          <span>{{ booking.discount }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.booking.price">Price</span></dt>
+        <dd>
+          <span>{{ booking.price }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.booking.startDate">Start Date</span></dt>
+        <dd>
+          <span>{{ booking.startDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.booking.duration">Duration</span></dt>
+        <dd>
+          <span>{{ booking.duration }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.booking.cancled">Cancled</span></dt>
+        <dd>
+          <span>{{ booking.cancled }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.booking.customers">Customers</span></dt>
+        <dd>
+          <span *ngFor="let customers of booking.customers; let last = last">
+            <a [routerLink]="['/customer', customers.id, 'view']">{{ customers.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.booking.rooms">Rooms</span></dt>
+        <dd>
+          <span *ngFor="let rooms of booking.rooms; let last = last">
+            <a [routerLink]="['/room', rooms.id, 'view']">{{ rooms.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Zurück</span>
+      </button>
+
+      <button type="button" [routerLink]="['/booking', booking.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
+      </button>
+    </div>
+  </div>
+</div>

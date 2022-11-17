@@ -1,0 +1,51 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094652",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "invoice",
+  "fields": [
+    {
+      "fieldName": "hotelAddress",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "customerAddress",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "discount",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "billingDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "cancled",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Invoice",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "room",
+      "otherEntityRelationshipName": "invoice",
+      "relationshipName": "room",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

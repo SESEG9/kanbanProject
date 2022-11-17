@@ -1,0 +1,25 @@
+{
+  "lionhotelApp": {
+    "emailAttachment": {
+      "home": {
+        "title": "Email Attachments",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Email Attachment erstellen",
+        "createOrEditLabel": "Email Attachment erstellen oder bearbeiten",
+        "notFound": "Keine Email Attachments gefunden"
+      },
+      "created": "Email Attachment erstellt mit ID {{ param }}",
+      "updated": "Email Attachment aktualisiert mit ID {{ param }}",
+      "deleted": "Email Attachment gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Email Attachment {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Email Attachment"
+      },
+      "id": "ID",
+      "image": "Image",
+      "bulkLetterTemplate": "Bulk Letter Template"
+    }
+  }
+}

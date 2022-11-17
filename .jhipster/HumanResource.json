@@ -1,0 +1,62 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094655",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "human_resource",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "HumanResourceType",
+      "fieldValues": "RECEPTION,KITCHEN,SERVICE,CLEANING,OTHER"
+    },
+    {
+      "fieldName": "abbr",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique", "required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "birthday",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "gender",
+      "fieldType": "Gender",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "MALE,FEMALE,DIVERSE"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "ssn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "bannking",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "relationshipType",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "HumanResource",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

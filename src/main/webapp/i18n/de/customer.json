@@ -1,0 +1,35 @@
+{
+  "lionhotelApp": {
+    "customer": {
+      "home": {
+        "title": "Customers",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Customer erstellen",
+        "createOrEditLabel": "Customer erstellen oder bearbeiten",
+        "notFound": "Keine Customers gefunden"
+      },
+      "created": "Customer erstellt mit ID {{ param }}",
+      "updated": "Customer aktualisiert mit ID {{ param }}",
+      "deleted": "Customer gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Customer {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Customer"
+      },
+      "id": "ID",
+      "name": "Name",
+      "birthday": "Birthday",
+      "gender": "Gender",
+      "billingAddress": "Billing Address",
+      "companyName": "Company Name",
+      "note": "Note",
+      "discount": "Discount",
+      "telephone": "Telephone",
+      "email": "Email",
+      "web": "Web",
+      "fax": "Fax",
+      "bookings": "Bookings"
+    }
+  }
+}

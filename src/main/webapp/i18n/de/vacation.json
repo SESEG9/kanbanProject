@@ -1,0 +1,27 @@
+{
+  "lionhotelApp": {
+    "vacation": {
+      "home": {
+        "title": "Vacations",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Vacation erstellen",
+        "createOrEditLabel": "Vacation erstellen oder bearbeiten",
+        "notFound": "Keine Vacations gefunden"
+      },
+      "created": "Vacation erstellt mit ID {{ param }}",
+      "updated": "Vacation aktualisiert mit ID {{ param }}",
+      "deleted": "Vacation gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Vacation {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Vacation"
+      },
+      "id": "ID",
+      "start": "Start",
+      "end": "End",
+      "state": "State",
+      "humanResource": "Human Resource"
+    }
+  }
+}

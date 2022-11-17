@@ -1,0 +1,47 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094648",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "room",
+  "fields": [
+    {
+      "fieldName": "identifyer",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "maxCapacity",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "1"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Room",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "roomPrice",
+      "otherEntityRelationshipName": "room",
+      "relationshipName": "prices",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "invoice",
+      "otherEntityRelationshipName": "room",
+      "relationshipName": "invoice",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "booking",
+      "otherEntityRelationshipName": "rooms",
+      "ownerSide": false,
+      "relationshipName": "bookings",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "no"
+}

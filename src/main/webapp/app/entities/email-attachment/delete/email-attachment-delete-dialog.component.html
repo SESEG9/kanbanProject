@@ -1,0 +1,28 @@
+<form *ngIf="emailAttachment" name="deleteForm" (ngSubmit)="confirmDelete(emailAttachment.id!)">
+  <div class="modal-header">
+    <h4 class="modal-title" data-cy="emailAttachmentDeleteDialogHeading" jhiTranslate="entity.delete.title">Löschen bestätigen</h4>
+
+    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+  </div>
+
+  <div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
+    <p
+      id="jhi-delete-emailAttachment-heading"
+      jhiTranslate="lionhotelApp.emailAttachment.delete.question"
+      [translateValues]="{ id: emailAttachment.id }"
+    >
+      Soll Email Attachment {{ emailAttachment.id }} wirklich dauerhaft gelöscht werden?
+    </p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+      <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>
+    </button>
+
+    <button id="jhi-confirm-delete-emailAttachment" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+      <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Löschen</span>
+    </button>
+  </div>
+</form>

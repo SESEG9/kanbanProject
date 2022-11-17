@@ -1,0 +1,26 @@
+{
+  "lionhotelApp": {
+    "roomPrice": {
+      "home": {
+        "title": "Room Prices",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Room Price erstellen",
+        "createOrEditLabel": "Room Price erstellen oder bearbeiten",
+        "notFound": "Keine Room Prices gefunden"
+      },
+      "created": "Room Price erstellt mit ID {{ param }}",
+      "updated": "Room Price aktualisiert mit ID {{ param }}",
+      "deleted": "Room Price gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Room Price {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Room Price"
+      },
+      "id": "ID",
+      "price": "Price",
+      "capacity": "Capacity",
+      "room": "Room"
+    }
+  }
+}

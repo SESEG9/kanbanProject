@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="humanResource">
+      <h2 data-cy="humanResourceDetailsHeading"><span jhiTranslate="lionhotelApp.humanResource.detail.title">Human Resource</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ humanResource.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.type">Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'lionhotelApp.HumanResourceType.' + humanResource.type }}">{{ humanResource.type }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.abbr">Abbr</span></dt>
+        <dd>
+          <span>{{ humanResource.abbr }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.name">Name</span></dt>
+        <dd>
+          <span>{{ humanResource.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.birthday">Birthday</span></dt>
+        <dd>
+          <span>{{ humanResource.birthday | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.gender">Gender</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'lionhotelApp.Gender.' + humanResource.gender }}">{{ humanResource.gender }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.phone">Phone</span></dt>
+        <dd>
+          <span>{{ humanResource.phone }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.email">Email</span></dt>
+        <dd>
+          <span>{{ humanResource.email }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.ssn">Ssn</span></dt>
+        <dd>
+          <span>{{ humanResource.ssn }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.bannking">Bannking</span></dt>
+        <dd>
+          <span>{{ humanResource.bannking }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.humanResource.relationshipType">Relationship Type</span></dt>
+        <dd>
+          <span>{{ humanResource.relationshipType }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Zurück</span>
+      </button>
+
+      <button type="button" [routerLink]="['/human-resource', humanResource.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
+      </button>
+    </div>
+  </div>
+</div>

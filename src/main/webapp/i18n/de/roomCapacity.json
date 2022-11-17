@@ -1,0 +1,25 @@
+{
+  "lionhotelApp": {
+    "roomCapacity": {
+      "home": {
+        "title": "Room Capacities",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Room Capacity erstellen",
+        "createOrEditLabel": "Room Capacity erstellen oder bearbeiten",
+        "notFound": "Keine Room Capacities gefunden"
+      },
+      "created": "Room Capacity erstellt mit ID {{ param }}",
+      "updated": "Room Capacity aktualisiert mit ID {{ param }}",
+      "deleted": "Room Capacity gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Room Capacity {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Room Capacity"
+      },
+      "id": "ID",
+      "name": "Name",
+      "capacity": "Capacity"
+    }
+  }
+}

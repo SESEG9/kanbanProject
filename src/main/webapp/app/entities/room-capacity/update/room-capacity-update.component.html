@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-room-capacity-heading"
+        data-cy="RoomCapacityCreateUpdateHeading"
+        jhiTranslate="lionhotelApp.roomCapacity.home.createOrEditLabel"
+      >
+        Room Capacity erstellen oder bearbeiten
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.roomCapacity.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)"></div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.roomCapacity.capacity" for="field_capacity">Capacity</label>
+          <input type="number" class="form-control" name="capacity" id="field_capacity" data-cy="capacity" formControlName="capacity" />
+          <div *ngIf="editForm.get('capacity')!.invalid && (editForm.get('capacity')!.dirty || editForm.get('capacity')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('capacity')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 1 }"
+            >
+              Dieses Feld muss größer als 1 sein.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('capacity')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              Dieses Feld muss eine Zahl sein.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Speichern</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

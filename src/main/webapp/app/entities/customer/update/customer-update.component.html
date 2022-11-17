@@ -1,0 +1,164 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-customer-heading" data-cy="CustomerCreateUpdateHeading" jhiTranslate="lionhotelApp.customer.home.createOrEditLabel">
+        Customer erstellen oder bearbeiten
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.birthday" for="field_birthday">Birthday</label>
+          <div class="input-group">
+            <input
+              id="field_birthday"
+              data-cy="birthday"
+              type="text"
+              class="form-control"
+              name="birthday"
+              ngbDatepicker
+              #birthdayDp="ngbDatepicker"
+              formControlName="birthday"
+            />
+            <button type="button" class="btn btn-secondary" (click)="birthdayDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          <div *ngIf="editForm.get('birthday')!.invalid && (editForm.get('birthday')!.dirty || editForm.get('birthday')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('birthday')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.gender" for="field_gender">Gender</label>
+          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
+            <option [ngValue]="null">{{ 'lionhotelApp.Gender.null' | translate }}</option>
+            <option *ngFor="let gender of genderValues" [value]="gender">{{ 'lionhotelApp.Gender.' + gender | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('gender')!.invalid && (editForm.get('gender')!.dirty || editForm.get('gender')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('gender')?.errors?.required" jhiTranslate="entity.validation.required">
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.billingAddress" for="field_billingAddress">Billing Address</label>
+          <input
+            type="text"
+            class="form-control"
+            name="billingAddress"
+            id="field_billingAddress"
+            data-cy="billingAddress"
+            formControlName="billingAddress"
+          />
+          <div
+            *ngIf="
+              editForm.get('billingAddress')!.invalid && (editForm.get('billingAddress')!.dirty || editForm.get('billingAddress')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('billingAddress')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.companyName" for="field_companyName">Company Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="companyName"
+            id="field_companyName"
+            data-cy="companyName"
+            formControlName="companyName"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.note" for="field_note">Note</label>
+          <input type="text" class="form-control" name="note" id="field_note" data-cy="note" formControlName="note" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.discount" for="field_discount">Discount</label>
+          <input type="number" class="form-control" name="discount" id="field_discount" data-cy="discount" formControlName="discount" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.telephone" for="field_telephone">Telephone</label>
+          <input type="text" class="form-control" name="telephone" id="field_telephone" data-cy="telephone" formControlName="telephone" />
+          <div *ngIf="editForm.get('telephone')!.invalid && (editForm.get('telephone')!.dirty || editForm.get('telephone')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('telephone')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.email" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.required" jhiTranslate="entity.validation.required">
+              Dieses Feld wird benötigt.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.web" for="field_web">Web</label>
+          <input type="text" class="form-control" name="web" id="field_web" data-cy="web" formControlName="web" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.customer.fax" for="field_fax">Fax</label>
+          <input type="text" class="form-control" name="fax" id="field_fax" data-cy="fax" formControlName="fax" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Speichern</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

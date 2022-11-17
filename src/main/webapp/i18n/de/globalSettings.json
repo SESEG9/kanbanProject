@@ -1,0 +1,24 @@
+{
+  "lionhotelApp": {
+    "globalSettings": {
+      "home": {
+        "title": "Global Settings",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Global Settings erstellen",
+        "createOrEditLabel": "Global Settings erstellen oder bearbeiten",
+        "notFound": "Keine Global Settings gefunden"
+      },
+      "created": "Global Settings erstellt mit ID {{ param }}",
+      "updated": "Global Settings aktualisiert mit ID {{ param }}",
+      "deleted": "Global Settings gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Global Settings {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Global Settings"
+      },
+      "id": "ID",
+      "cancelTime": "Cancel Time"
+    }
+  }
+}

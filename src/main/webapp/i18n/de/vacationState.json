@@ -1,0 +1,10 @@
+{
+  "lionhotelApp": {
+    "VacationState": {
+      "null": "",
+      "REQUESTED": "REQUESTED",
+      "ACCEPTED": "ACCEPTED",
+      "DECLINED": "DECLINED"
+    }
+  }
+}

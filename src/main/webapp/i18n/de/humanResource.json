@@ -1,0 +1,33 @@
+{
+  "lionhotelApp": {
+    "humanResource": {
+      "home": {
+        "title": "Human Resources",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Human Resource erstellen",
+        "createOrEditLabel": "Human Resource erstellen oder bearbeiten",
+        "notFound": "Keine Human Resources gefunden"
+      },
+      "created": "Human Resource erstellt mit ID {{ param }}",
+      "updated": "Human Resource aktualisiert mit ID {{ param }}",
+      "deleted": "Human Resource gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Human Resource {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Human Resource"
+      },
+      "id": "ID",
+      "type": "Type",
+      "abbr": "Abbr",
+      "name": "Name",
+      "birthday": "Birthday",
+      "gender": "Gender",
+      "phone": "Phone",
+      "email": "Email",
+      "ssn": "Ssn",
+      "bannking": "Bannking",
+      "relationshipType": "Relationship Type"
+    }
+  }
+}

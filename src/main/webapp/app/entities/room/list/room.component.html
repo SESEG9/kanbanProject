@@ -1,0 +1,96 @@
+<div>
+  <h2 id="page-heading" data-cy="RoomHeading">
+    <span jhiTranslate="lionhotelApp.room.home.title">Rooms</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="lionhotelApp.room.home.refreshListLabel">Liste aktualisieren</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-room"
+        [routerLink]="['/room/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="lionhotelApp.room.home.createLabel"> Room erstellen </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="rooms?.length === 0">
+    <span jhiTranslate="lionhotelApp.room.home.notFound">Keine Rooms gefunden</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="rooms && rooms.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="identifyer">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.room.identifyer">Identifyer</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="maxCapacity">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.room.maxCapacity">Max Capacity</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="invoice.id">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.room.invoice">Invoice</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let room of rooms; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/room', room.id, 'view']">{{ room.id }}</a>
+          </td>
+          <td>{{ room.identifyer }}</td>
+          <td>{{ room.maxCapacity }}</td>
+          <td>
+            <div *ngIf="room.invoice">
+              <a [routerLink]="['/invoice', room.invoice.id, 'view']">{{ room.invoice.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/room', room.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Details</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/room', room.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
+              </button>
+
+              <button type="submit" (click)="delete(room)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

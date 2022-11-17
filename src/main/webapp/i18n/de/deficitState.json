@@ -1,0 +1,10 @@
+{
+  "lionhotelApp": {
+    "DeficitState": {
+      "null": "",
+      "NEW": "NEW",
+      "IN_PROCESS": "IN_PROCESS",
+      "DONE": "DONE"
+    }
+  }
+}

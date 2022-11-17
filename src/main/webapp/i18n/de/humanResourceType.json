@@ -1,0 +1,12 @@
+{
+  "lionhotelApp": {
+    "HumanResourceType": {
+      "null": "",
+      "RECEPTION": "RECEPTION",
+      "KITCHEN": "KITCHEN",
+      "SERVICE": "SERVICE",
+      "CLEANING": "CLEANING",
+      "OTHER": "OTHER"
+    }
+  }
+}

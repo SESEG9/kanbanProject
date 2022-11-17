@@ -1,0 +1,20 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094653",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "global_settings",
+  "fields": [
+    {
+      "fieldName": "cancelTime",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "GlobalSettings",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

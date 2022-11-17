@@ -1,0 +1,10 @@
+{
+  "lionhotelApp": {
+    "BulkLetterType": {
+      "null": "",
+      "BIRTHDAY": "BIRTHDAY",
+      "DATE": "DATE",
+      "REPEATING_DATE": "REPEATING_DATE"
+    }
+  }
+}

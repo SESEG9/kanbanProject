@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="roomPrice">
+      <h2 data-cy="roomPriceDetailsHeading"><span jhiTranslate="lionhotelApp.roomPrice.detail.title">Room Price</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ roomPrice.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.roomPrice.price">Price</span></dt>
+        <dd>
+          <span>{{ roomPrice.price }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.roomPrice.capacity">Capacity</span></dt>
+        <dd>
+          <div *ngIf="roomPrice.capacity">
+            <a [routerLink]="['/room-capacity', roomPrice.capacity.id, 'view']">{{ roomPrice.capacity.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.roomPrice.room">Room</span></dt>
+        <dd>
+          <div *ngIf="roomPrice.room">
+            <a [routerLink]="['/room', roomPrice.room.id, 'view']">{{ roomPrice.room.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Zurück</span>
+      </button>
+
+      <button type="button" [routerLink]="['/room-price', roomPrice.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
+      </button>
+    </div>
+  </div>
+</div>

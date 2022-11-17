@@ -1,0 +1,72 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="customer">
+      <h2 data-cy="customerDetailsHeading"><span jhiTranslate="lionhotelApp.customer.detail.title">Customer</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ customer.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.name">Name</span></dt>
+        <dd>
+          <span>{{ customer.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.birthday">Birthday</span></dt>
+        <dd>
+          <span>{{ customer.birthday | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.gender">Gender</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'lionhotelApp.Gender.' + customer.gender }}">{{ customer.gender }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.billingAddress">Billing Address</span></dt>
+        <dd>
+          <span>{{ customer.billingAddress }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.companyName">Company Name</span></dt>
+        <dd>
+          <span>{{ customer.companyName }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.note">Note</span></dt>
+        <dd>
+          <span>{{ customer.note }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.discount">Discount</span></dt>
+        <dd>
+          <span>{{ customer.discount }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.telephone">Telephone</span></dt>
+        <dd>
+          <span>{{ customer.telephone }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.email">Email</span></dt>
+        <dd>
+          <span>{{ customer.email }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.web">Web</span></dt>
+        <dd>
+          <span>{{ customer.web }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.customer.fax">Fax</span></dt>
+        <dd>
+          <span>{{ customer.fax }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Zurück</span>
+      </button>
+
+      <button type="button" [routerLink]="['/customer', customer.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
+      </button>
+    </div>
+  </div>
+</div>

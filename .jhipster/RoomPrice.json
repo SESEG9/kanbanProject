@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094650",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "room_price",
+  "fields": [
+    {
+      "fieldName": "price",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "RoomPrice",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "roomCapacity",
+      "relationshipName": "capacity",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "room",
+      "otherEntityRelationshipName": "prices",
+      "relationshipName": "room",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

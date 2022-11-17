@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="invoice">
+      <h2 data-cy="invoiceDetailsHeading"><span jhiTranslate="lionhotelApp.invoice.detail.title">Invoice</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ invoice.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.hotelAddress">Hotel Address</span></dt>
+        <dd>
+          <span>{{ invoice.hotelAddress }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.customerAddress">Customer Address</span></dt>
+        <dd>
+          <span>{{ invoice.customerAddress }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.discount">Discount</span></dt>
+        <dd>
+          <span>{{ invoice.discount }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.price">Price</span></dt>
+        <dd>
+          <span>{{ invoice.price }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.duration">Duration</span></dt>
+        <dd>
+          <span>{{ invoice.duration }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.billingDate">Billing Date</span></dt>
+        <dd>
+          <span>{{ invoice.billingDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.cancled">Cancled</span></dt>
+        <dd>
+          <span>{{ invoice.cancled }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Zurück</span>
+      </button>
+
+      <button type="button" [routerLink]="['/invoice', invoice.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
+      </button>
+    </div>
+  </div>
+</div>

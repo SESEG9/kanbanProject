@@ -1,0 +1,16 @@
+package at.ac.tuwien.sese.g09.repository;
+
+import at.ac.tuwien.sese.g09.domain.PersistentToken;
+import at.ac.tuwien.sese.g09.domain.User;
+import java.time.LocalDate;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ * Spring Data JPA repository for the {@link PersistentToken} entity.
+ */
+public interface PersistentTokenRepository extends JpaRepository<PersistentToken, String> {
+    List<PersistentToken> findByUser(User user);
+
+    List<PersistentToken> findByTokenDateBefore(LocalDate localDate);
+}

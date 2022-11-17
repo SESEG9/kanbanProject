@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="deficit">
+      <h2 data-cy="deficitDetailsHeading"><span jhiTranslate="lionhotelApp.deficit.detail.title">Deficit</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ deficit.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.deficit.description">Description</span></dt>
+        <dd>
+          <span>{{ deficit.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.deficit.state">State</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'lionhotelApp.DeficitState.' + deficit.state }}">{{ deficit.state }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.deficit.discount">Discount</span></dt>
+        <dd>
+          <span>{{ deficit.discount }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.deficit.room">Room</span></dt>
+        <dd>
+          <div *ngIf="deficit.room">
+            <a [routerLink]="['/room', deficit.room.id, 'view']">{{ deficit.room.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Zurück</span>
+      </button>
+
+      <button type="button" [routerLink]="['/deficit', deficit.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
+      </button>
+    </div>
+  </div>
+</div>

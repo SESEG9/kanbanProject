@@ -1,0 +1,110 @@
+<div>
+  <h2 id="page-heading" data-cy="EmailAttachmentHeading">
+    <span jhiTranslate="lionhotelApp.emailAttachment.home.title">Email Attachments</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="lionhotelApp.emailAttachment.home.refreshListLabel">Liste aktualisieren</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-email-attachment"
+        [routerLink]="['/email-attachment/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="lionhotelApp.emailAttachment.home.createLabel"> Email Attachment erstellen </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="emailAttachments?.length === 0">
+    <span jhiTranslate="lionhotelApp.emailAttachment.home.notFound">Keine Email Attachments gefunden</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="emailAttachments && emailAttachments.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="image">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.emailAttachment.image">Image</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="bulkLetterTemplate.id">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.emailAttachment.bulkLetterTemplate">Bulk Letter Template</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emailAttachment of emailAttachments; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/email-attachment', emailAttachment.id, 'view']">{{ emailAttachment.id }}</a>
+          </td>
+          <td>
+            <a *ngIf="emailAttachment.image" (click)="openFile(emailAttachment.image, emailAttachment.imageContentType)">
+              <img
+                [src]="'data:' + emailAttachment.imageContentType + ';base64,' + emailAttachment.image"
+                style="max-height: 30px"
+                alt="emailAttachment image"
+              />
+            </a>
+            <span *ngIf="emailAttachment.image">{{ emailAttachment.imageContentType }}, {{ byteSize(emailAttachment.image) }}</span>
+          </td>
+          <td>
+            <div *ngIf="emailAttachment.bulkLetterTemplate">
+              <a [routerLink]="['/bulk-letter-template', emailAttachment.bulkLetterTemplate.id, 'view']">{{
+                emailAttachment.bulkLetterTemplate.id
+              }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/email-attachment', emailAttachment.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Details</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/email-attachment', emailAttachment.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
+              </button>
+
+              <button type="submit" (click)="delete(emailAttachment)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

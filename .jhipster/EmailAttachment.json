@@ -1,0 +1,28 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094659",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "email_attachment",
+  "fields": [
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "EmailAttachment",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "bulkLetterTemplate",
+      "otherEntityRelationshipName": "images",
+      "relationshipName": "bulkLetterTemplate",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

@@ -1,0 +1,11 @@
+id;type;date;subject;content
+1;DATE;2022-11-16;bandwidth;../fake-data/blob/hipster.txt
+2;REPEATING_DATE;2022-11-17;Web;../fake-data/blob/hipster.txt
+3;DATE;2022-11-16;Industrial connecting Practical;../fake-data/blob/hipster.txt
+4;DATE;2022-11-16;copy functionalities deploy;../fake-data/blob/hipster.txt
+5;BIRTHDAY;2022-11-16;generating front-end payment;../fake-data/blob/hipster.txt
+6;DATE;2022-11-17;optical Chair;../fake-data/blob/hipster.txt
+7;DATE;2022-11-16;SDD invoice;../fake-data/blob/hipster.txt
+8;DATE;2022-11-16;portals Ridge;../fake-data/blob/hipster.txt
+9;BIRTHDAY;2022-11-16;Incredible Rheinland-Pfalz;../fake-data/blob/hipster.txt
+10;DATE;2022-11-16;e-markets Cotton;../fake-data/blob/hipster.txt

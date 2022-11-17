@@ -1,0 +1,35 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094654",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "deficit",
+  "fields": [
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "DeficitState",
+      "fieldValues": "NEW,IN_PROCESS,DONE"
+    },
+    {
+      "fieldName": "discount",
+      "fieldType": "Float"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Deficit",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "room",
+      "relationshipName": "room",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

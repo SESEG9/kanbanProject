@@ -1,0 +1,51 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094651",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "booking",
+  "fields": [
+    {
+      "fieldName": "discount",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "cancled",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Booking",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "customer",
+      "otherEntityRelationshipName": "bookings",
+      "ownerSide": true,
+      "relationshipName": "customers",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "room",
+      "otherEntityRelationshipName": "bookings",
+      "ownerSide": true,
+      "relationshipName": "rooms",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "no"
+}

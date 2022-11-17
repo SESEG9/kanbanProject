@@ -1,0 +1,158 @@
+<div>
+  <h2 id="page-heading" data-cy="CustomerHeading">
+    <span jhiTranslate="lionhotelApp.customer.home.title">Customers</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="lionhotelApp.customer.home.refreshListLabel">Liste aktualisieren</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-customer"
+        [routerLink]="['/customer/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="lionhotelApp.customer.home.createLabel"> Customer erstellen </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="customers?.length === 0">
+    <span jhiTranslate="lionhotelApp.customer.home.notFound">Keine Customers gefunden</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="customers && customers.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="birthday">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.birthday">Birthday</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="gender">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.gender">Gender</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="billingAddress">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.billingAddress">Billing Address</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="companyName">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.companyName">Company Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="note">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.note">Note</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="discount">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.discount">Discount</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="telephone">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.telephone">Telephone</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="email">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.email">Email</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="web">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.web">Web</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="fax">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.customer.fax">Fax</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/customer', customer.id, 'view']">{{ customer.id }}</a>
+          </td>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.birthday | formatMediumDate }}</td>
+          <td jhiTranslate="{{ 'lionhotelApp.Gender.' + customer.gender }}">{{ customer.gender }}</td>
+          <td>{{ customer.billingAddress }}</td>
+          <td>{{ customer.companyName }}</td>
+          <td>{{ customer.note }}</td>
+          <td>{{ customer.discount }}</td>
+          <td>{{ customer.telephone }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.web }}</td>
+          <td>{{ customer.fax }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/customer', customer.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Details</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/customer', customer.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
+              </button>
+
+              <button type="submit" (click)="delete(customer)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

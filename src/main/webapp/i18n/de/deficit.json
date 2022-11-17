@@ -1,0 +1,27 @@
+{
+  "lionhotelApp": {
+    "deficit": {
+      "home": {
+        "title": "Deficits",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Deficit erstellen",
+        "createOrEditLabel": "Deficit erstellen oder bearbeiten",
+        "notFound": "Keine Deficits gefunden"
+      },
+      "created": "Deficit erstellt mit ID {{ param }}",
+      "updated": "Deficit aktualisiert mit ID {{ param }}",
+      "deleted": "Deficit gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Deficit {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Deficit"
+      },
+      "id": "ID",
+      "description": "Description",
+      "state": "State",
+      "discount": "Discount",
+      "room": "Room"
+    }
+  }
+}

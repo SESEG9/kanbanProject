@@ -1,0 +1,51 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="emailAttachment">
+      <h2 data-cy="emailAttachmentDetailsHeading">
+        <span jhiTranslate="lionhotelApp.emailAttachment.detail.title">Email Attachment</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ emailAttachment.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.emailAttachment.image">Image</span></dt>
+        <dd>
+          <div *ngIf="emailAttachment.image">
+            <a (click)="openFile(emailAttachment.image, emailAttachment.imageContentType)">
+              <img
+                [src]="'data:' + emailAttachment.imageContentType + ';base64,' + emailAttachment.image"
+                style="max-width: 100%"
+                alt="emailAttachment image"
+              />
+            </a>
+            {{ emailAttachment.imageContentType }}, {{ byteSize(emailAttachment.image) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="lionhotelApp.emailAttachment.bulkLetterTemplate">Bulk Letter Template</span></dt>
+        <dd>
+          <div *ngIf="emailAttachment.bulkLetterTemplate">
+            <a [routerLink]="['/bulk-letter-template', emailAttachment.bulkLetterTemplate.id, 'view']">{{
+              emailAttachment.bulkLetterTemplate.id
+            }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Zurück</span>
+      </button>
+
+      <button type="button" [routerLink]="['/email-attachment', emailAttachment.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
+      </button>
+    </div>
+  </div>
+</div>

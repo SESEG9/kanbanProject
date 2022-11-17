@@ -1,0 +1,93 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-room-heading" data-cy="RoomCreateUpdateHeading" jhiTranslate="lionhotelApp.room.home.createOrEditLabel">
+        Room erstellen oder bearbeiten
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.room.identifyer" for="field_identifyer">Identifyer</label>
+          <input
+            type="text"
+            class="form-control"
+            name="identifyer"
+            id="field_identifyer"
+            data-cy="identifyer"
+            formControlName="identifyer"
+          />
+          <div
+            *ngIf="editForm.get('identifyer')!.invalid && (editForm.get('identifyer')!.dirty || editForm.get('identifyer')!.touched)"
+          ></div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.room.maxCapacity" for="field_maxCapacity">Max Capacity</label>
+          <input
+            type="number"
+            class="form-control"
+            name="maxCapacity"
+            id="field_maxCapacity"
+            data-cy="maxCapacity"
+            formControlName="maxCapacity"
+          />
+          <div *ngIf="editForm.get('maxCapacity')!.invalid && (editForm.get('maxCapacity')!.dirty || editForm.get('maxCapacity')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('maxCapacity')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 1 }"
+            >
+              Dieses Feld muss größer als 1 sein.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('maxCapacity')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              Dieses Feld muss eine Zahl sein.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.room.invoice" for="field_invoice">Invoice</label>
+          <select
+            class="form-control"
+            id="field_invoice"
+            data-cy="invoice"
+            name="invoice"
+            formControlName="invoice"
+            [compareWith]="compareInvoice"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="invoiceOption" *ngFor="let invoiceOption of invoicesSharedCollection">{{ invoiceOption.id }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Speichern</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

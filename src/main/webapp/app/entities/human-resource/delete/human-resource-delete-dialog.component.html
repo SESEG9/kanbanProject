@@ -1,0 +1,28 @@
+<form *ngIf="humanResource" name="deleteForm" (ngSubmit)="confirmDelete(humanResource.id!)">
+  <div class="modal-header">
+    <h4 class="modal-title" data-cy="humanResourceDeleteDialogHeading" jhiTranslate="entity.delete.title">Löschen bestätigen</h4>
+
+    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+  </div>
+
+  <div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
+    <p
+      id="jhi-delete-humanResource-heading"
+      jhiTranslate="lionhotelApp.humanResource.delete.question"
+      [translateValues]="{ id: humanResource.id }"
+    >
+      Soll Human Resource {{ humanResource.id }} wirklich dauerhaft gelöscht werden?
+    </p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+      <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>
+    </button>
+
+    <button id="jhi-confirm-delete-humanResource" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+      <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Löschen</span>
+    </button>
+  </div>
+</form>

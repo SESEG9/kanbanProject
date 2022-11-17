@@ -1,0 +1,41 @@
+{
+  "applications": "*",
+  "changelogDate": "20221117094658",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "bulk_letter_template",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "BulkLetterType",
+      "fieldValues": "BIRTHDAY,DATE,REPEATING_DATE"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "subject",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "content",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "BulkLetterTemplate",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "emailAttachment",
+      "otherEntityRelationshipName": "bulkLetterTemplate",
+      "relationshipName": "images",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

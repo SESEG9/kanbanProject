@@ -1,0 +1,28 @@
+{
+  "lionhotelApp": {
+    "workPackage": {
+      "home": {
+        "title": "Work Packages",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Work Package erstellen",
+        "createOrEditLabel": "Work Package erstellen oder bearbeiten",
+        "notFound": "Keine Work Packages gefunden"
+      },
+      "created": "Work Package erstellt mit ID {{ param }}",
+      "updated": "Work Package aktualisiert mit ID {{ param }}",
+      "deleted": "Work Package gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Work Package {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Work Package"
+      },
+      "id": "ID",
+      "start": "Start",
+      "end": "End",
+      "summary": "Summary",
+      "description": "Description",
+      "humanResource": "Human Resource"
+    }
+  }
+}

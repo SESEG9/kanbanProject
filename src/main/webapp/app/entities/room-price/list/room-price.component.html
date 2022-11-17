@@ -1,0 +1,110 @@
+<div>
+  <h2 id="page-heading" data-cy="RoomPriceHeading">
+    <span jhiTranslate="lionhotelApp.roomPrice.home.title">Room Prices</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="lionhotelApp.roomPrice.home.refreshListLabel">Liste aktualisieren</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-room-price"
+        [routerLink]="['/room-price/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="lionhotelApp.roomPrice.home.createLabel"> Room Price erstellen </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="roomPrices?.length === 0">
+    <span jhiTranslate="lionhotelApp.roomPrice.home.notFound">Keine Room Prices gefunden</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="roomPrices && roomPrices.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="price">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.roomPrice.price">Price</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="capacity.id">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.roomPrice.capacity">Capacity</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="room.id">
+            <div class="d-flex">
+              <span jhiTranslate="lionhotelApp.roomPrice.room">Room</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let roomPrice of roomPrices; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/room-price', roomPrice.id, 'view']">{{ roomPrice.id }}</a>
+          </td>
+          <td>{{ roomPrice.price }}</td>
+          <td>
+            <div *ngIf="roomPrice.capacity">
+              <a [routerLink]="['/room-capacity', roomPrice.capacity.id, 'view']">{{ roomPrice.capacity.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="roomPrice.room">
+              <a [routerLink]="['/room', roomPrice.room.id, 'view']">{{ roomPrice.room.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/room-price', roomPrice.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Details</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/room-price', roomPrice.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
+              </button>
+
+              <button type="submit" (click)="delete(roomPrice)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
