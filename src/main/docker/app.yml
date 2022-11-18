@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   lionhotel-app:
-    image: lionhotel
+    image: sese22ws09/lionhotel
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
