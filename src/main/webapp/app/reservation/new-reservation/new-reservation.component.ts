@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { rooms } from 'app/app.constants';
-import { map, Observable } from 'rxjs';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'jhi-new-reservation',
