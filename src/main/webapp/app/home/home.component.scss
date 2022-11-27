@@ -1,13 +1,19 @@
 /* ==========================================================================
 Main page styles
 ========================================================================== */
+.lionhotel {
+    background: url('../../content/images/hotel-bg.jpg') no-repeat center;
+    background-size: cover;
+}
 
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_0.svg') no-repeat center top;
-  background-size: contain;
+.home-text {
+  color: white;
+  font-family: 'Brush Script MT', cursive;
+  font-size: 64px;
+}
+.home-icon {
+  height: 150px;
+  filter: invert(100%)
 }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
