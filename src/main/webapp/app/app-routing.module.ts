@@ -40,6 +40,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: 'reservation',
           loadChildren: () => import('./reservation/reservation.module').then(m => m.ReservationModule)
         },
+        {
+          path: 'promotion',
+          loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule)
+        },
         navbarRoute,
         ...errorRoute,
       ],
