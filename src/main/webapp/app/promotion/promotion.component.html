@@ -1,21 +1,9 @@
 <div class="container" style="max-width: 50rem !important;">
-  <!-- <div class="card px-5 py-3 m-2" *ngFor="let room of rooms">
-    <h2>{{room.title}}</h2>
-    <p>{{room.description}}</p>
-    <img src="../../content/images/{{room.image}}" title="{{room.title}}" class="room-image">
-  </div> -->
-  <!-- <div class="room" >
 
-  </div> -->
   <div class="card m-2" style="width: 50rem;">
-    <img class="card-img-top" src="../../content/images/sale.jpg" alt="Aktuelle Aktionen">
+    <img class="card-img-top" src="../../content/images/sale.jpg" alt="Aktuelle Angebote">
     <div class="card-body">
-      <!-- <h5 class="card-title">Winteraktion</h5>
-      <p class="card-text">Sparen Sie Millionen cent</p>
-      <div class="d-flex w-100 justify-content-between">
-        <span style="font-weight: bold;">bis zu 25% Rabatt</span>
-        <a href="#" class="btn btn-primary" [routerLink]="'/reservation/' + 'room.id'">Jetzt du Loser</a>
-      </div> -->
+
 
     <ngb-accordion #acc="ngbAccordion" activeIds="panel-0" [closeOthers]="true">
       <ngb-panel title="Winteraktion" id="panel-0">
@@ -39,7 +27,6 @@
         </ng-template>
       </ngb-panel>
     </ngb-accordion>
-
 
   </div>
 </div>
