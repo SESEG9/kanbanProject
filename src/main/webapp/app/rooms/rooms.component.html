@@ -14,7 +14,7 @@
       <p class="card-text">{{room.description}}</p>
       <div class="d-flex w-100 justify-content-between">
         <span style="font-weight: bold;">ab {{room.price}}</span>
-        <a href="#" class="btn btn-primary" (click)="bookRoom(room)">Reservieren</a>
+        <a href="#" class="btn btn-primary" [routerLink]="'/reservation/' + room.id" >Reservieren</a>
       </div>
     </div>
   </div>
