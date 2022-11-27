@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand logo d-flex align-items-center" routerLink="/" (click)="collapseNavbar()">
       <img src="../../../content/images/lowe.png" alt="Logo" height="40px" style="filter: invert(100%)">
-      <span class="navbar-title ms-3">Zum goldenen Löwen</span>
+      <span class="navbar-title ms-3" style="font-weight: normal !important;">Zum goldenen Löwen</span>
       <!-- <span class="navbar-version">{{ version }}</span> -->
     </a>
     <a
@@ -27,7 +27,7 @@
           </a>
         </li>
         <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/promotions" (click)="collapseNavbar()">
+          <a class="nav-link" routerLink="/promotion" (click)="collapseNavbar()">
             <span>
               <span>Aktionen</span>
             </span>
