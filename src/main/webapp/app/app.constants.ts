@@ -29,20 +29,20 @@ export const rooms = [
     title: 'Doppelzimmer Meerblick',
     image: 'dz-sea.jpg',
     price: '140€',
-    description: 'Doppelzimmer mit Blick aufs Meer, wo wüst Meer?'
+    description: 'Doppelzimmer mit Blick aufs Meer!'
   },
   {
     id: 4,
     title: 'Doppelzimmer ohne Meerblick',
     image: 'dz-no-sea.jpg',
     price: '110€',
-    description: 'Doppelzimmer ohne Blick aufs Meer, sicha wüst Meer!'
+    description: 'Doppelzimmer ohne Blick aufs Meer!'
   },
   {
     id: 5,
     title: 'Einzelzimmer Meerblick',
     image: 'ez-sea.jpg',
     price: '90€',
-    description: 'Auweh nur a Einzelzimmer, findest schon noch wen brudi :*'
+    description: 'Einzelzimmer mit Flat-Screen'
   }
 ]
