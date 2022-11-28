@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule } from 'app/shared/shared.module';
 
 import { PromotionComponent } from './promotion.component';
 
@@ -8,7 +9,8 @@ describe('PromotionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PromotionComponent ]
+      declarations: [ PromotionComponent ],
+      imports: [ SharedModule, ]
     })
     .compileComponents();
 
