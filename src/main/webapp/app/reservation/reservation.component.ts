@@ -11,7 +11,8 @@ interface Reservation {
   reservationStart: string,
   reservationEnd: string,
   room: number,
-  price: string
+  price: string,
+  cancelled: boolean
 }
 
 @Component({
@@ -39,7 +40,8 @@ export class ReservationComponent {
       reservationStart: '1.12.2022',
       reservationEnd: '13.12.2022',
       room: 1,
-      price: '655€'
+      price: '655€',
+      cancelled: false
     }
   }
 
