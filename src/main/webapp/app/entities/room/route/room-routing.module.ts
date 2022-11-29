@@ -7,6 +7,7 @@ import { RoomDetailComponent } from '../detail/room-detail.component';
 import { RoomUpdateComponent } from '../update/room-update.component';
 import { RoomRoutingResolveService } from './room-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
+import { RoomCreateComponent } from '../create/room.create.component';
 
 const roomRoute: Routes = [
   {
@@ -27,7 +28,7 @@ const roomRoute: Routes = [
   },
   {
     path: 'new',
-    component: RoomUpdateComponent,
+    component: RoomCreateComponent,
     resolve: {
       room: RoomRoutingResolveService,
     },
