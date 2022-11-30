@@ -1,0 +1,178 @@
+<div class="container" style="max-width: 650px;">
+  <div class="d-flex justify-content-center">
+    <div class="alert alert-success" *ngIf="success">
+      <strong>Reservierung gespeichert!</strong> Bitte überprüfen Sie Ihre E-Mails für die Bestätigung.
+    </div>
+
+    <div class="alert alert-danger" *ngIf="error">
+      <strong>Reservierung fehlgeschlagen!</strong> Bitte versuchen Sie es später nochmal.
+    </div>
+
+    <div class="alert alert-danger" *ngIf="vacationDate">
+      <strong>Zimmer nicht verfügbar!</strong> Bitte wählen Sie einen anderen Zeitraum aus.
+    </div>
+  </div>
+  <div class="d-flex justify-content-center align-items-center mt-3 w-100">
+    <form name="form" class="w-100" role="form" (ngSubmit)="reserve()" [formGroup]="form" *ngIf="!success">
+      <h4 class="my-2">Personendetails</h4>
+      <div class="row">
+        <div class="col">
+          <label class="form-label" for="firstName">Vorname</label>
+          <input type="text" class="form-control" id="firstName" name="firstName"
+            placeholder="Vorname" formControlName="firstName" >
+          <div *ngIf="form.get('firstName')!.invalid && (form.get('firstName')!.dirty || form.get('firstName')!.touched)">
+            <small class="form-text text-danger"
+            *ngIf="form.get('firstName')?.errors?.required">
+              Ihr Vorname wird für die Reservierung benötigt.
+            </small>
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label" for="lastName">Nachname</label>
+          <input type="text" class="form-control" id="lastName" name="lastName"
+            placeholder="Nachname" formControlName="lastName" >
+          <div *ngIf="form.get('lastName')!.invalid && (form.get('lastName')!.dirty || form.get('lastName')!.touched)">
+            <small class="form-text text-danger"
+            *ngIf="form.get('lastName')?.errors?.required">
+              Ihr Nachname wird für die Reservierung benötigt.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label class="form-label" for="email">Email</label>
+          <input type="text" class="form-control" id="email" name="email"
+            placeholder="Email" formControlName="email" >
+          <div *ngIf="form.get('email')!.invalid && (form.get('email')!.dirty || form.get('email')!.touched)">
+            <small class="form-text text-danger"
+            *ngIf="form.get('email')?.errors?.required">
+              Ihre Email wird für die Reservierung benötigt.
+            </small>
+            <small class="form-text text-danger"
+            *ngIf="form.get('email')?.errors?.email">
+              Bitte geben Sie eine korrekte Email Adresse ein.
+            </small>
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label" for="tel">Phone</label>
+          <input type="text" class="form-control" id="tel" name="tel"
+            placeholder="Telefonnummer" formControlName="tel">
+            <div *ngIf="form.get('tel')!.invalid && (form.get('tel')!.dirty || form.get('tel')!.touched)">
+              <small class="form-text text-danger"
+              *ngIf="form.get('tel')?.errors?.required">
+                Ihre Telefonnummer wird für die Reservierung benötigt.
+              </small>
+              </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label class="form-label" for="birthdate">Geburtsdatum</label>
+          <input type="date" class="form-control" id="birthdate" name="birthdate"
+            placeholder="Geburtsdatum" formControlName="birthdate" >
+          <div *ngIf="form.get('birthdate')!.invalid && (form.get('birthdate')!.dirty || form.get('birthdate')!.touched)">
+            <small class="form-text text-danger"
+            *ngIf="form.get('birhtdate')?.errors?.required">
+              Ihr Geburtsdatum wird für die Reservierung benötigt.
+            </small>
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label" for="gender">Geschlecht</label>
+          <select class="form-select" id="gender" name="gender" formControlName="gender">
+            <option value="m">Männlich</option>
+            <option value="w">Weiblich</option>
+            <option value="d">Divers</option>
+          </select>
+          <div *ngIf="form.get('gender')!.invalid && (form.get('gender')!.dirty || form.get('gender')!.touched)">
+            <small class="form-text text-danger"
+            *ngIf="form.get('gender')?.errors?.required">
+              Ihr Geschlecht wird für die Reservierung benötigt.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+
+        </div>
+      </div>
+      <h4 class="mt-5 mb-2">Reservierungsdetails</h4>
+      <div class="row">
+        <div class="col">
+          <label class="form-label" for="start">Reservierungsbeginn</label>
+          <input type="date" class="form-control" id="start" name="start"
+            placeholder="Reservierungsbeginn" formControlName="vacationStart">
+          <div *ngIf="form.get('vacationStart')!.invalid && (form.get('vacationStart')!.dirty || form.get('vacationStart')!.touched)">
+            <small class="form-text text-danger"
+            *ngIf="form.get('vacationStart')?.errors?.required">
+              Der Reservierungsbeginn wird für die Reservierung benötigt.
+            </small>
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label" for="end">Reservierungsende</label>
+          <input type="date" class="form-control" id="end" name="end"
+            placeholder="Reservierungsende" formControlName="vacationEnd">
+          <div *ngIf="form.get('vacationEnd')!.invalid && (form.get('vacationStart')!.dirty || form.get('vacationEnd')!.touched)">
+            <small class="form-text text-danger"
+            *ngIf="form.get('vacationEnd')?.errors?.required">
+              Das Reservierungsende wird für die Reservierung benötigt.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label class="form-label" for="room">Zimmer</label>
+          <select class="form-select" id="room" name="room" formControlName="room">
+            <option *ngFor="let room of rooms" value="{{room.id}}">{{room.title}}</option>
+          </select>
+          <div *ngIf="form.get('room')!.invalid && (form.get('room')!.dirty || form.get('room')!.touched)">
+            <small class="form-text text-danger"
+            *ngIf="form.get('room')?.errors?.required">
+              Sie müssen ein Zimmer für die Reservierung auswählen.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 mb-2">
+        <h4>Zusammenfassung</h4>
+        <div class="d-flex w-100 justify-content-between">
+          <div>
+            Zimmerpreis
+          </div>
+          <div>
+            652€
+          </div>
+        </div>
+        <div class="d-flex w-100 justify-content-between" *ngIf="promo !== null">
+          <div>
+            <strong>-</strong> Aktionspreis
+          </div>
+          <div>
+            <strong>-</strong> 222€
+          </div>
+        </div>
+        <hr/>
+        <div class="d-flex w-100 justify-content-between">
+          <div>
+            <strong>Summe</strong>
+          </div>
+          <div>
+            <strong>{{promo === null ? '652€' : '430€'}}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex w-100 justify-content-end">
+        <button type="submit" [disabled]="form.invalid" class="btn btn-primary mt-3">
+          Reservierung abschließen
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
