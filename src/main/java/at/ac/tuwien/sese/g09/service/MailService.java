@@ -53,7 +53,7 @@ public class MailService {
     }
 
     @Async
-    public void sendEmail(String to, List<String> cc, String subject, String content, boolean isMultipart, boolean isHtml) {
+    public void sendEmailWithCCs(String to, List<String> cc, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug(
             "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
             isMultipart,

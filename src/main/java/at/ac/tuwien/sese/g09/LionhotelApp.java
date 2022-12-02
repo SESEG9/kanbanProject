@@ -2,10 +2,8 @@ package at.ac.tuwien.sese.g09;
 
 import at.ac.tuwien.sese.g09.config.ApplicationProperties;
 import at.ac.tuwien.sese.g09.config.CRLFLogConverter;
-import at.ac.tuwien.sese.g09.service.MailService;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
@@ -29,12 +27,8 @@ public class LionhotelApp {
 
     private final Environment env;
 
-    private final MailService mailService;
-
-    public LionhotelApp(Environment env, MailService mailService) {
+    public LionhotelApp(Environment env) {
         this.env = env;
-        this.mailService = mailService;
-        sendStartupEmail(env);
     }
 
     /**
@@ -75,23 +69,6 @@ public class LionhotelApp {
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);
-    }
-
-    private void sendStartupEmail(Environment env) {
-        ArrayList<String> cc = new ArrayList<>();
-        cc.add("simon.schwantler@gmx.at");
-        cc.add("e11778256@student.tuwien.ac.at");
-        cc.add("e11703514@student.tuwien.ac.at");
-        cc.add("e11777755@student.tuwien.ac.at");
-        cc.add("e11723775@student.tuwien.ac.at");
-        this.mailService.sendEmail(
-                "dominik.granig@gmail.com",
-                cc,
-                "Backend started",
-                "Weil ihr " + "eh noch nicht genug spam bekommt :)",
-                false,
-                false
-            );
     }
 
     private static void logApplicationStartup(Environment env) {
