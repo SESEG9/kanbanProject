@@ -2,6 +2,7 @@ package at.ac.tuwien.sese.g09.service;
 
 import at.ac.tuwien.sese.g09.domain.User;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Locale;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -49,6 +50,33 @@ public class MailService {
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
+    }
+
+    @Async
+    public void sendEmailWithCCs(String to, List<String> cc, String subject, String content, boolean isMultipart, boolean isHtml) {
+        log.debug(
+            "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
+            isMultipart,
+            isHtml,
+            to,
+            subject,
+            content
+        );
+
+        // Prepare message using a Spring helper
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
+            message.setTo(to);
+            message.setCc(cc.toArray(new String[0]));
+            message.setFrom(jHipsterProperties.getMail().getFrom());
+            message.setSubject(subject);
+            message.setText(content, isHtml);
+            javaMailSender.send(mimeMessage);
+            log.debug("Sent email to User '{}'", to);
+        } catch (MailException | MessagingException e) {
+            log.warn("Email could not be sent to user '{}'", to, e);
+        }
     }
 
     @Async
