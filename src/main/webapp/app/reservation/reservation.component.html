@@ -1,0 +1,80 @@
+<div class="container" style="max-width: 650px">
+  <div class="d-flex w-100 mt-3" *ngIf="!success">
+    <input type="text" class="form-control w-100" style="max-width: 400px" [(ngModel)]="reservationNumber" />
+    <button type="button" class="btn btn-primary w-auto" (click)="loadReservation()">Reservierung anzeigen</button>
+  </div>
+  <div class="mt-4" *ngIf="reservation">
+    <h4>Reservierungsdetails</h4>
+    <table class="table reservation-table mt-1 table-striped" *ngIf="reservation">
+      <tbody>
+        <tr>
+          <td>{{ reservation.firstName }}</td>
+          <td>{{ reservation.lastName }}</td>
+        </tr>
+        <tr>
+          <td>{{ reservation.email }}</td>
+          <td>{{ reservation.tel }}</td>
+        </tr>
+        <tr>
+          <td>{{ reservation.birthdate }}</td>
+          <td>{{ getGender(reservation.gender) }}</td>
+        </tr>
+        <tr>
+          <td>{{ reservation.reservationStart }}</td>
+          <td>{{ reservation.reservationEnd }}</td>
+        </tr>
+        <tr>
+          <td>{{ getRoomById(reservation.room) }}</td>
+          <td>{{ reservation.price }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- <div class="d-flex w-100 flex-column mt-5" *ngIf="reservation">
+    <div class="row m-1 p-2 border border-2 border-secondary rounded">
+      <div class="col text-center">
+        <span>{{reservation.firstName}}</span>
+      </div>
+      <div class="col text-center">
+        <span>{{reservation.lastName}}</span>
+      </div>
+    </div>
+    <div class="row m-1 p-2 border border-2 border-secondary rounded">
+      <div class="col text-center">
+        <span>{{reservation.email}}</span>
+      </div>
+      <div class="col text-center">
+        <span>{{reservation.tel}}</span>
+      </div>
+    </div>
+    <div class="row m-1 p-2 border border-2 border-secondary rounded">
+      <div class="col text-center">
+        <span>{{reservation.birthdate}}</span>
+      </div>
+      <div class="col text-center">
+        <span>{{getGender(reservation.gender)}}</span>
+      </div>
+    </div>
+    <div class="row m-1 p-2 border border-2 border-secondary rounded">
+      <div class="col text-center">
+        <span>{{reservation.reservationStart}}</span>
+      </div>
+      <div class="col text-center">
+        <span>{{reservation.reservationEnd}}</span>
+      </div>
+    </div>
+    <div class="row m-1 p-2 border border-2 border-secondary rounded">
+      <div class="col text-center">
+        <span>{{getRoomById(reservation.room)}}</span>
+      </div>
+      <div class="col text-center">
+        <span>{{reservation.price}}</span>
+      </div>
+    </div>
+    <div class="row m-1 p-2 border border-2 border-secondary rounded" *ngIf="reservation.cancelled">
+      <div class="col text-center">
+        <span>Reservierungsstatus: <strong>Storniert</strong></span>
+      </div>
+    </div>
+  </div> -->
+</div>

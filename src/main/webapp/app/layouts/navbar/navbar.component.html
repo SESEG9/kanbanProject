@@ -1,9 +1,13 @@
-<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
+<nav
+  data-cy="navbar"
+  class="navbar navbar-dark navbar-expand-md bg-dark"
+  style="padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x)"
+>
   <div class="container-fluid">
-    <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
-      <span class="logo-img"></span>
-      <span jhiTranslate="global.title" class="navbar-title">Lionhotel</span>
-      <span class="navbar-version">{{ version }}</span>
+    <a class="navbar-brand logo d-flex align-items-center" routerLink="/" (click)="collapseNavbar()">
+      <img src="../../../content/images/lowe.png" alt="Logo" height="40px" style="filter: invert(100%)" />
+      <span class="navbar-title ms-3" style="font-weight: normal !important">Zum goldenen Löwen</span>
+      <!-- <span class="navbar-version">{{ version }}</span> -->
     </a>
     <a
       class="navbar-toggler d-lg-none"
@@ -19,11 +23,25 @@
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
+        <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/rooms" (click)="collapseNavbar()">
             <span>
-              <fa-icon icon="home"></fa-icon>
-              <span jhiTranslate="global.menu.home">Startseite</span>
+              <span>Zimmer</span>
+            </span>
+          </a>
+        </li>
+        <!-- <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/promotion" (click)="collapseNavbar()">
+            <span>
+              <span>Angebote</span>
+            </span>
+          </a>
+        </li> -->
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/reservation/new" (click)="collapseNavbar()">
+            <span>
+              <button class="btn btn-secondary">Jetzt Buchen</button>
+              <!-- <span>Jetzt Buchen</span> -->
             </span>
           </a>
         </li>
@@ -309,7 +327,7 @@
         </li>
         <li
           ngbDropdown
-          class="nav-item dropdown pointer"
+          class="nav-item dropdown pointer d-flex align-items-center"
           display="dynamic"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -317,7 +335,6 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
             <span *ngIf="!account?.imageUrl">
               <fa-icon icon="user"></fa-icon>
-              <span jhiTranslate="global.menu.account.main">Zugang</span>
             </span>
             <span *ngIf="account?.imageUrl">
               <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
@@ -366,7 +383,13 @@
                 <span jhiTranslate="global.menu.account.login">Anmelden</span>
               </a>
             </li>
-            <li *ngSwitchCase="false">
+            <li>
+              <a class="dropdown-item" routerLink="/reservation" data-cy="reservation">
+                <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
+                <span>Meine Reservierungen</span>
+              </a>
+            </li>
+            <!-- <li *ngSwitchCase="false">
               <a
                 class="dropdown-item"
                 routerLink="account/register"
@@ -377,7 +400,7 @@
                 <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.account.register">Registrierung</span>
               </a>
-            </li>
+            </li> -->
           </ul>
         </li>
       </ul>

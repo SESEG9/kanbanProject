@@ -6,14 +6,9 @@ Main page styles
   background-size: cover;
 }
 
-.home-text {
-  color: white;
-  font-family: 'Brush Script MT', cursive;
-  font-size: 64px;
-}
-.home-icon {
-  height: 150px;
-  filter: invert(100%);
+.room-image {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
