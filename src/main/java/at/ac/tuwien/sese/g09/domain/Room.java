@@ -38,6 +38,9 @@ public class Room implements Serializable {
     @JsonIgnoreProperties(value = { "capacity", "room" }, allowSetters = true)
     private Set<RoomPrice> prices = new HashSet<>();
 
+    @OneToMany(mappedBy = "room")
+    private Set<RoomPicture> roomPictures;
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "rooms" }, allowSetters = true)
     private Invoice invoice;

@@ -9,5 +9,6 @@ import { BookingRoutingModule } from './route/booking-routing.module';
 @NgModule({
   imports: [SharedModule, BookingRoutingModule],
   declarations: [BookingComponent, BookingDetailComponent, BookingUpdateComponent, BookingDeleteDialogComponent],
+  exports: [BookingComponent],
 })
 export class BookingModule {}

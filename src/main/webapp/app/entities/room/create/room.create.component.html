@@ -23,15 +23,28 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>A</td>
-                <td>€</td>
+              <tr *ngFor="let price of prices">
+                <td>
+                  <select [ngModel]="price.capacity">
+                    <option *ngFor="let capacity of capacities" [value]="capacity">{{ capacity.name }}</option>
+                  </select>
+                </td>
+                <td><input type="number" [ngModel]="price.price" /></td>
               </tr>
             </tbody>
           </table>
+          <button (click)="addNewPrice()">Weiteren Preis hinzufügen</button>
         </div>
       </div>
       <div class="images"></div>
+
+      <div class="images">
+        <div class="image-card" *ngFor="let i of imageAsBase64">
+          <img alt="{{ i.description }}" src="{{ i.base64 }}" />
+          <input class="image-description" type="text" [ngModel]="i.description" />
+        </div>
+      </div>
+      <input type="file" (change)="onFileSelected($event)" accept="image/*" multiple />
     </div>
   </div>
 </div>
