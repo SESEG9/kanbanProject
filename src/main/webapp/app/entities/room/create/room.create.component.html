@@ -62,7 +62,7 @@
         <div class="images">
           <div class="image-card" *ngFor="let image of imageAsBase64; let i = index">
             <button (click)="removePicture(i)" class="x-button btn btn-danger"><fa-icon icon="xmark"></fa-icon></button>
-            <img alt="{{ image.description }}" src="{{ image.base64 }}" />
+            <img alt="{{ image.description }}" src="{{ image.picture }}" />
             <input class="image-description form-control" placeholder="Bildbeschreibung" type="text" [ngModel]="image.description" />
           </div>
           <input

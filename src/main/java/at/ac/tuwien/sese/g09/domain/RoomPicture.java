@@ -20,13 +20,13 @@ public class RoomPicture {
     private Long id;
 
     @Column(name = "image")
-    private byte[] image;
-
-    @Column(name = "image_content_type")
-    private String imageContentType;
+    private String image;
 
     @Column(name = "weight")
     private Long weight;
+
+    @Column(name = "description")
+    private String description;
 
     @ManyToOne
     private Room room;

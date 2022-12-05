@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IRoomCapacity } from '../../room-capacity/room-capacity.model';
 import { EntityArrayResponseType, RoomCapacityService } from '../../room-capacity/service/room-capacity.service';
+import { Room, RoomPicture, RoomPrice } from '../room.model';
 
 @Component({
   selector: 'jhi-create',
@@ -10,12 +11,12 @@ import { EntityArrayResponseType, RoomCapacityService } from '../../room-capacit
 export class RoomCreateComponent implements OnInit {
   constructor(private roomCapacityService: RoomCapacityService) {}
 
-  prices: { capacity: IRoomCapacity | undefined; price: number }[] = [{ capacity: undefined, price: 0 }];
+  prices: RoomPrice[] = [{ id: null, capacity: undefined, price: 0 }];
 
   capacities: IRoomCapacity[] = [];
 
   images: File[] = [];
-  imageAsBase64: { base64: string; description: string; weight: number }[] = [];
+  imageAsBase64: RoomPicture[] = [];
 
   maxWeight: number = 0;
 
@@ -31,7 +32,7 @@ export class RoomCreateComponent implements OnInit {
   }
 
   addNewPrice() {
-    this.prices.push({ capacity: undefined, price: 0 });
+    this.prices.push({ id: null, capacity: undefined, price: 0 });
   }
 
   onFileSelected(event: any) {
@@ -40,7 +41,7 @@ export class RoomCreateComponent implements OnInit {
     const reader = new FileReader();
     reader.onloadend = () => {
       if (typeof reader.result === 'string') {
-        this.imageAsBase64.push({ base64: reader.result, description: '', weight: this.maxWeight++ });
+        this.imageAsBase64.push({ picture: reader.result, description: '', weight: this.maxWeight++, id: null });
       }
     };
 
@@ -59,5 +60,15 @@ export class RoomCreateComponent implements OnInit {
     this.imageAsBase64.splice(index, 1);
   }
 
-  submitRoom() {}
+  submitRoom() {
+    const room: Room = {
+      id: null,
+      maxCapacity: this.maxCapacity,
+      identifyer: this.identifier,
+      prices: this.prices,
+      roomPictures: this.imageAsBase64,
+    };
+
+    console.log(room);
+  }
 }
