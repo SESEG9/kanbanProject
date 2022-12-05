@@ -19,6 +19,9 @@ export class RoomCreateComponent implements OnInit {
 
   maxWeight: number = 0;
 
+  maxCapacity: number | null = null;
+  identifier: string = '';
+
   ngOnInit(): void {
     this.loadRoomCapacity();
   }
@@ -47,4 +50,14 @@ export class RoomCreateComponent implements OnInit {
       .filter(f => f !== null)
       .forEach(f => this.images.push(f));
   }
+
+  removePriceItem(index: number) {
+    this.prices.splice(index, 1);
+  }
+
+  removePicture(index: number) {
+    this.imageAsBase64.splice(index, 1);
+  }
+
+  submitRoom() {}
 }

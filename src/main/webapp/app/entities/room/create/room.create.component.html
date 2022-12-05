@@ -1,50 +1,83 @@
-<div class="root">
-  <h1>Erstelle neues Zimmer</h1>
-  <div>
-    <div class="form">
-      <div class="content">
-        <div class="general">
-          <div class="option">
-            <label for="id-input">Zimmernummer:</label>
-            <input id="id-input" type="text" />
+<div class="base">
+  <div class="root">
+    <h1>Erstelle neues Zimmer</h1>
+    <div>
+      <div class="form">
+        <div class="content">
+          <div class="general">
+            <h2>Zimmerinformation</h2>
+            <div class="option">
+              <label for="id-input">Zimmernummer:</label>
+              <input
+                id="id-input"
+                [class]="{ 'form-control': true, 'is-invalid': false }"
+                minlength="1"
+                [(ngModel)]="identifier"
+                type="text"
+              />
+            </div>
+            <div class="option">
+              <label for="capacity-input">Maximalbelegung:</label>
+              <input
+                id="capacity-input"
+                [class]="{ 'form-control': true, 'is-invalid': false }"
+                [ngModel]="maxCapacity"
+                type="number"
+                min="1"
+                max="3"
+              />
+            </div>
           </div>
-          <div class="option">
-            <label for="capacity-input">Maximalbelegung:</label>
-            <input id="capacity-input" type="number" />
+
+          <div class="general">
+            <h2>Preise</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Belegung</th>
+                  <th>Preis in €</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let price of prices; let i = index">
+                  <td>
+                    <select [ngModel]="price.capacity" class="form-control">
+                      <option *ngFor="let capacity of capacities" [value]="capacity">{{ capacity.name }}</option>
+                    </select>
+                  </td>
+                  <td><input type="number" class="form-control" [ngModel]="price.price" /></td>
+                  <td>
+                    <button (click)="removePriceItem(i)" class="btn btn-danger">
+                      <fa-icon icon="trash-can" [fixedWidth]="true"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="btn btn-secondary" (click)="addNewPrice()">Weiteren Preis hinzufügen</button>
           </div>
         </div>
-
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>Belegung</th>
-                <th>Preis</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let price of prices">
-                <td>
-                  <select [ngModel]="price.capacity">
-                    <option *ngFor="let capacity of capacities" [value]="capacity">{{ capacity.name }}</option>
-                  </select>
-                </td>
-                <td><input type="number" [ngModel]="price.price" /></td>
-              </tr>
-            </tbody>
-          </table>
-          <button (click)="addNewPrice()">Weiteren Preis hinzufügen</button>
+        <div class="center"></div>
+        <div class="images">
+          <div class="image-card" *ngFor="let image of imageAsBase64; let i = index">
+            <button (click)="removePicture(i)" class="x-button btn btn-danger"><fa-icon icon="xmark"></fa-icon></button>
+            <img alt="{{ image.description }}" src="{{ image.base64 }}" />
+            <input class="image-description form-control" placeholder="Bildbeschreibung" type="text" [ngModel]="image.description" />
+          </div>
+          <input
+            type="button"
+            value="Bilder hinzufügen"
+            class="btn btn-secondary"
+            onclick="document.getElementById('selectedFile').click();"
+          />
+          <input type="file" style="display: none" id="selectedFile" (change)="onFileSelected($event)" accept="image/*" multiple />
         </div>
       </div>
-      <div class="images"></div>
-
-      <div class="images">
-        <div class="image-card" *ngFor="let i of imageAsBase64">
-          <img alt="{{ i.description }}" src="{{ i.base64 }}" />
-          <input class="image-description" type="text" [ngModel]="i.description" />
-        </div>
-      </div>
-      <input type="file" (change)="onFileSelected($event)" accept="image/*" multiple />
+    </div>
+    <div class="submit-box">
+      <hr />
+      <button class="submit-button btn btn-primary" (click)="submitRoom()">Erstelle Zimmer</button>
     </div>
   </div>
 </div>

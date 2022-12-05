@@ -1,0 +1,91 @@
+.base {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  height: fit-content;
+  min-height: 100vh;
+}
+
+.content {
+  padding-top: 2em;
+  display: flex;
+  flex-direction: column;
+  row-gap: 3em;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 2em;
+  width: min(100%, 70em);
+  background-color: #e4e5e6;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 3em 1fr;
+  grid-template-rows: 100%;
+}
+
+.general {
+  padding: 0.5em;
+  border: 0.04em solid #888888;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5em;
+  background-color: #f0f0f0;
+}
+
+.option {
+  display: flex;
+  flex-direction: row;
+}
+
+.option label {
+  width: 17em;
+}
+
+.images {
+  display: flex;
+  flex-direction: column;
+  padding-top: 2em;
+  row-gap: 2em;
+}
+
+.image-card {
+  border: 0.04em solid #888888;
+  border-radius: 1em;
+  padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 0.5em;
+  background-color: #f0f0f0;
+}
+
+img {
+  max-width: 100%;
+  max-height: 20em;
+}
+.x-button {
+  align-self: flex-end;
+  padding: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: -2em;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+.submit-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-button {
+  align-self: flex-end;
+}
