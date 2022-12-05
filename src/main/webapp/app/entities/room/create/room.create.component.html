@@ -10,7 +10,7 @@
               <label for="id-input">Zimmernummer:</label>
               <input
                 id="id-input"
-                [class]="{ 'form-control': true, 'is-invalid': false }"
+                [class]="{ 'form-control': true, 'is-invalid': !validateIdentifier(identifier) }"
                 minlength="1"
                 [(ngModel)]="identifier"
                 type="text"
@@ -20,11 +20,10 @@
               <label for="capacity-input">Maximalbelegung:</label>
               <input
                 id="capacity-input"
-                [class]="{ 'form-control': true, 'is-invalid': false }"
-                [ngModel]="maxCapacity"
+                [class]="{ 'form-control': true, 'is-invalid': !validateMaxCapacity(maxCapacity) }"
+                [(ngModel)]="maxCapacity"
                 type="number"
                 min="1"
-                max="3"
               />
             </div>
           </div>
@@ -42,11 +41,27 @@
               <tbody>
                 <tr *ngFor="let price of prices; let i = index">
                   <td>
-                    <select [ngModel]="price.capacity" class="form-control">
-                      <option *ngFor="let capacity of capacities" [value]="capacity">{{ capacity.name }}</option>
+                    <ng-template #capacityTip>{{ price.capacityError }}</ng-template>
+                    <select
+                      [(ngModel)]="price.capacity"
+                      [class]="{ 'form-control': true, 'is-invalid': !validatePriceCapacity(price) }"
+                      [ngbTooltip]="price.capacityError.length != 0 ? capacityTip : ''"
+                    >
+                      <option *ngFor="let capacity of capacities" [ngValue]="capacity">
+                        {{ capacity.name + ' (' + capacity.capacity + ')' }}
+                      </option>
                     </select>
                   </td>
-                  <td><input type="number" class="form-control" [ngModel]="price.price" /></td>
+                  <td>
+                    <ng-template #priceTip>{{ price.priceError }}</ng-template>
+                    <input
+                      type="number"
+                      [class]="{ 'form-control': true, 'is-invalid': !validatePrice(price) }"
+                      [(ngModel)]="price.price"
+                      min="0"
+                      [ngbTooltip]="price.priceError.length != 0 ? priceTip : ''"
+                    />
+                  </td>
                   <td>
                     <button (click)="removePriceItem(i)" class="btn btn-danger">
                       <fa-icon icon="trash-can" [fixedWidth]="true"></fa-icon>
