@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IRoom, NewRoom } from '../room.model';
+import { IRoom, NewRoom, Room } from '../room.model';
 
 export type PartialUpdateRoom = Partial<IRoom> & Pick<IRoom, 'id'>;
 
@@ -18,7 +18,7 @@ export class RoomService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(room: NewRoom): Observable<EntityResponseType> {
+  create(room: Room): Observable<EntityResponseType> {
     return this.http.post<IRoom>(this.resourceUrl, room, { observe: 'response' });
   }
 

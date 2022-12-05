@@ -52,7 +52,7 @@ export class RoomUpdateComponent implements OnInit {
     if (room.id !== null) {
       this.subscribeToSaveResponse(this.roomService.update(room));
     } else {
-      this.subscribeToSaveResponse(this.roomService.create(room));
+      // this.subscribeToSaveResponse(this.roomService.create(room));
     }
   }
 

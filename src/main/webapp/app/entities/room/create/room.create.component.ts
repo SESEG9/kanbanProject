@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IRoomCapacity } from '../../room-capacity/room-capacity.model';
 import { EntityArrayResponseType, RoomCapacityService } from '../../room-capacity/service/room-capacity.service';
 import { Room, RoomPicture, RoomPrice } from '../room.model';
+import { RoomService } from '../service/room.service';
 
 @Component({
   selector: 'jhi-create',
@@ -9,7 +10,7 @@ import { Room, RoomPicture, RoomPrice } from '../room.model';
   styleUrls: ['./room.create.component.scss'],
 })
 export class RoomCreateComponent implements OnInit {
-  constructor(private roomCapacityService: RoomCapacityService) {}
+  constructor(private roomCapacityService: RoomCapacityService, private roomService: RoomService) {}
 
   prices: RoomPrice[] = [{ id: null, capacity: undefined, price: 0 }];
 
@@ -70,5 +71,7 @@ export class RoomCreateComponent implements OnInit {
     };
 
     console.log(room);
+
+    this.roomService.create(room).subscribe(next => console.log(next));
   }
 }
