@@ -104,7 +104,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     if (maxCapacity == null || maxCapacity < 1) {
       this.maxCapacityError = 'Maximalbelegung muss mindestens 1 sein!';
       return false;
-    } else if (Math.trunc(maxCapacity) != maxCapacity) {
+    } else if (Math.trunc(maxCapacity) !== maxCapacity) {
       this.maxCapacityError = 'Maximalbelegung muss eine Ganzzahl sein!';
       return false;
     } else {
