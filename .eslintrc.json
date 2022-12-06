@@ -49,7 +49,7 @@
     "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/member-ordering": [
-      "error",
+      "warning",
       {
         "default": [
           "public-static-field",

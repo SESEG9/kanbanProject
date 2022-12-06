@@ -130,7 +130,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     } else if (this.maxCapacity != null && price.capacity.capacity > this.maxCapacity) {
       price.capacityError = 'Belegung zu groß für Maximalkapazität!';
       return false;
-    } else if (this.prices.filter(p => p.capacity != null).filter(p => p.capacity?.id == price.capacity?.id).length > 1) {
+    } else if (this.prices.filter(p => p.capacity != null).filter(p => p.capacity?.id === price.capacity?.id).length > 1) {
       price.capacityError = 'Belegung darf nur einmal gewählt werden!';
       return false;
     } else {
@@ -139,7 +139,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     }
   }
 
-  submitRoom() {
+  submitRoom(): void {
     if (this.isFormValid()) {
       const room: Room = {
         id: null,
@@ -173,8 +173,8 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     });
   }
 
-  checkIdentifier() {
-    if (this.identifierError.length == 0 || this.identifierChecked.error) {
+  checkIdentifier(): void {
+    if (this.identifierError.length === 0 || this.identifierChecked.error) {
       this.identifierChecked.check = false;
       this.roomService.query({ identifyer: this.identifier }).subscribe({
         next: next => this.checkIdentifierResponse(next.body),
@@ -182,8 +182,8 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     }
   }
 
-  private checkIdentifierResponse(rooms: IRoom[] | null) {
-    if (rooms != null && rooms.filter(r => r.identifyer == this.identifier).length > 0) {
+  private checkIdentifierResponse(rooms: IRoom[] | null): void {
+    if (rooms != null && rooms.filter(r => r.identifyer === this.identifier).length > 0) {
       this.identifierChecked = { error: true, check: false };
       this.identifierError = 'Zimmernummer existiert bereits!';
     } else {
