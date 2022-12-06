@@ -64,11 +64,11 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     reader.readAsDataURL(files[0]);
   }
 
-  removePriceItem(index: number) {
+  removePriceItem(index: number): void {
     this.prices.splice(index, 1);
   }
 
-  removePicture(index: number) {
+  removePicture(index: number): void {
     this.imageAsBase64.splice(index, 1);
   }
 
