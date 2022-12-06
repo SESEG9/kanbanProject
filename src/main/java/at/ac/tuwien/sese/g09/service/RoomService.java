@@ -2,7 +2,7 @@ package at.ac.tuwien.sese.g09.service;
 
 import at.ac.tuwien.sese.g09.domain.Room;
 import at.ac.tuwien.sese.g09.repository.RoomRepository;
-import at.ac.tuwien.sese.g09.web.rest.errors.BadRequestAlertException;
+import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;

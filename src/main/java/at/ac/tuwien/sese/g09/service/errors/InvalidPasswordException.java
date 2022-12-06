@@ -1,4 +1,4 @@
-package at.ac.tuwien.sese.g09.web.rest.errors;
+package at.ac.tuwien.sese.g09.service.errors;
 
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
