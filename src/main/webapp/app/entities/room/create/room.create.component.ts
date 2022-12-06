@@ -145,12 +145,16 @@ export class RoomCreateComponent implements OnInit {
         id: null,
         maxCapacity: this.maxCapacity,
         identifyer: this.identifier,
-        prices: this.prices,
+        prices: this.getAdjustedPrices(this.prices),
         roomPictures: this.imageAsBase64,
       };
       this.roomService.create(room).subscribe({
         next: next => {
-          this.alertService.addAlert({ type: 'success', message: 'Zimmer erfolgreich erstellt!', timeout: 2000 });
+          this.alertService.addAlert({
+            type: 'success',
+            message: 'Zimmer erfolgreich erstellt!',
+            timeout: 2000,
+          });
         },
         error: error => {
           this.alertService.addAlert({ type: 'danger', message: 'Ein Fehler ist aufgetreten!', timeout: 2000 });
@@ -159,6 +163,13 @@ export class RoomCreateComponent implements OnInit {
     } else {
       this.alertService.addAlert({ type: 'danger', message: 'Fehlerhafte Felder gefunden!', timeout: 2000 });
     }
+  }
+  private getAdjustedPrices(prices: RoomPrice[]): RoomPrice[] {
+    return prices.map(price => {
+      const p = { ...price };
+      p.price = Math.round(p.price * 100);
+      return price;
+    });
   }
 
   checkIdentifier() {

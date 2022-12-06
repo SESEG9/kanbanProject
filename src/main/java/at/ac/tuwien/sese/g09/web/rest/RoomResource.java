@@ -3,8 +3,10 @@ package at.ac.tuwien.sese.g09.web.rest;
 import at.ac.tuwien.sese.g09.domain.Room;
 import at.ac.tuwien.sese.g09.repository.RoomRepository;
 import at.ac.tuwien.sese.g09.web.rest.errors.BadRequestAlertException;
+import io.undertow.util.BadRequestException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -48,11 +50,39 @@ public class RoomResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/rooms")
-    public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room) throws URISyntaxException {
+    public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room) throws URISyntaxException, BadRequestException {
         log.debug("REST request to save Room : {}", room);
+        room.getPrices().stream().map(Object::toString).forEach(log::debug);
         if (room.getId() != null) {
             throw new BadRequestAlertException("A new room cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        if (room.getIdentifyer() == null || room.getIdentifyer().isEmpty()) {
+            throw new BadRequestAlertException("No identifyer provided in room!", ENTITY_NAME, "noIdentifier");
+        }
+        if (!roomRepository.findByIdentifyer(room.getIdentifyer()).isEmpty()) {
+            throw new BadRequestAlertException("There already exists a room with this identifier", ENTITY_NAME, "identifierExists");
+        }
+        if (room.getMaxCapacity() <= 0) {
+            throw new BadRequestAlertException("The capacity of a room must be >= 1", ENTITY_NAME, "capacityTooLow");
+        }
+        if (room.getPrices().stream().anyMatch(roomPrice -> roomPrice.getPrice() <= 0)) {
+            throw new BadRequestAlertException("A price is not allowed to be zero or negative", ENTITY_NAME, "priceTooLow");
+        }
+        if (room.getPrices().stream().anyMatch(roomPrice -> roomPrice.getCapacity() == null)) {
+            throw new BadRequestAlertException("A capacity must be set for all prices", ENTITY_NAME, "noCapacityForPrice");
+        }
+        if (room.getPrices().stream().anyMatch(roomPrice -> roomPrice.getCapacity().getCapacity() > room.getMaxCapacity())) {
+            throw new BadRequestAlertException(
+                "A chosen alignment succeeds max capacity of the room",
+                ENTITY_NAME,
+                "capacityExceedsMaximum"
+            );
+        }
+        if (!room.getPrices().stream().map(roomPrice -> roomPrice.getCapacity().getId()).allMatch(new HashSet<>()::add)) {
+            throw new BadRequestAlertException("An alignment was chosen multiple times", ENTITY_NAME, "duplicateCapacity");
+        }
+
         Room result = roomRepository.save(room);
         return ResponseEntity
             .created(new URI("/api/rooms/" + result.getId()))
