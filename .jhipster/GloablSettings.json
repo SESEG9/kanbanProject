@@ -1,0 +1,20 @@
+{
+  "applications": "*",
+  "changelogDate": "20221206105239",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "gloabl_settings",
+  "fields": [
+    {
+      "fieldName": "cancelTime",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "GloablSettings",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

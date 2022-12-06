@@ -42,9 +42,8 @@
   "relationships": [
     {
       "otherEntityName": "room",
-      "otherEntityRelationshipName": "invoice",
       "relationshipName": "room",
-      "relationshipType": "one-to-many"
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "no",

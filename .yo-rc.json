@@ -33,13 +33,14 @@
       "Vacation",
       "BulkLetterTemplate",
       "EmailAttachment",
-      "RoomPicture"
+      "RoomPicture",
+      "GloablSettings"
     ],
     "entitySuffix": "",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.9.3",
     "languages": ["de"],
-    "lastLiquibaseTimestamp": 1670323675000,
+    "lastLiquibaseTimestamp": 1670323959000,
     "messageBroker": false,
     "microfrontend": false,
     "microfrontends": [],
