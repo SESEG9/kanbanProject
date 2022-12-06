@@ -76,6 +76,6 @@
     "object-shorthand": ["error", "always", { "avoidExplicitReturnArrows": true }],
     "radix": "error",
     "spaced-comment": ["warn", "always"],
-    "@typescript-eslint/no-extra-non-null-assertion": "none"
+    "@typescript-eslint/no-extra-non-null-assertion": "off"
   }
 }
