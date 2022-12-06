@@ -119,7 +119,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
   }
 
   validatePriceCapacity(price: RoomPrice & { capacityError: string }): boolean {
-    if (price.capacity?.capacity == undefined) {
+    if (price.capacity?.capacity == null) {
       price.capacityError = 'Belegung wählen!';
       return false;
     } else if (this.maxCapacity != null && price.capacity.capacity > this.maxCapacity) {
