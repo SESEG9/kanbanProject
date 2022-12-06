@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { IRoomCapacity } from '../../room-capacity/room-capacity.model';
 import { EntityArrayResponseType, RoomCapacityService } from '../../room-capacity/service/room-capacity.service';
 import { IRoom, Room, RoomPicture, RoomPrice } from '../room.model';
@@ -11,7 +11,7 @@ import { AlertService } from '../../../core/util/alert.service';
   templateUrl: './room.create.component.html',
   styleUrls: ['./room.create.component.scss'],
 })
-export class RoomCreateComponent implements OnInit {
+export class RoomCreateComponent implements OnInit, AfterContentInit {
   constructor(
     private roomCapacityService: RoomCapacityService,
     private roomService: RoomService,
