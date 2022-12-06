@@ -44,7 +44,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     this.checkIdentifier();
   }
 
-  private loadRoomCapacity() {
+  private loadRoomCapacity(): void {
     this.roomCapacityService.query().subscribe((next: EntityArrayResponseType) => (this.capacities = next.body!!));
   }
 
