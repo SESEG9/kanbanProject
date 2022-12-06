@@ -1,6 +1,8 @@
 <div class="base">
   <div class="root">
     <h1>Erstelle neues Zimmer</h1>
+    <jhi-alert></jhi-alert>
+    <jhi-alert-error></jhi-alert-error>
     <div>
       <div class="form">
         <div class="content">
@@ -8,22 +10,27 @@
             <h2>Zimmerinformation</h2>
             <div class="option">
               <label for="id-input">Zimmernummer:</label>
+              <ng-template #identifierTip>{{ identifierError }}</ng-template>
               <input
                 id="id-input"
-                [class]="{ 'form-control': true, 'is-invalid': !validateIdentifier(identifier) }"
+                [class]="{ 'form-control': true, 'is-invalid': !validateIdentifier(identifier) || identifierChecked.error }"
                 minlength="1"
                 [(ngModel)]="identifier"
                 type="text"
+                [ngbTooltip]="identifierError.length > 0 ? identifierTip : ''"
+                (blur)="checkIdentifier()"
               />
             </div>
             <div class="option">
               <label for="capacity-input">Maximalbelegung:</label>
+              <ng-template #maxCapacityTip>{{ maxCapacityError }}</ng-template>
               <input
                 id="capacity-input"
                 [class]="{ 'form-control': true, 'is-invalid': !validateMaxCapacity(maxCapacity) }"
                 [(ngModel)]="maxCapacity"
                 type="number"
                 min="1"
+                [ngbTooltip]="maxCapacityError.length > 0 ? maxCapacityTip : ''"
               />
             </div>
           </div>

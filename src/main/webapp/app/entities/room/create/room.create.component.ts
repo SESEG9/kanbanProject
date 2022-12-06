@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { IRoomCapacity } from '../../room-capacity/room-capacity.model';
 import { EntityArrayResponseType, RoomCapacityService } from '../../room-capacity/service/room-capacity.service';
-import { Room, RoomPicture, RoomPrice } from '../room.model';
+import { IRoom, Room, RoomPicture, RoomPrice } from '../room.model';
 import { RoomService } from '../service/room.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AlertService } from '../../../core/util/alert.service';
 
 @Component({
   selector: 'jhi-create',
@@ -11,7 +12,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./room.create.component.scss'],
 })
 export class RoomCreateComponent implements OnInit {
-  constructor(private roomCapacityService: RoomCapacityService, private roomService: RoomService, private modalService: NgbModal) {}
+  constructor(
+    private roomCapacityService: RoomCapacityService,
+    private roomService: RoomService,
+    private modalService: NgbModal,
+    private alertService: AlertService
+  ) {}
 
   prices: (RoomPrice & { capacityError: string; priceError: string })[] = [
     { id: null, capacity: undefined, price: 0, capacityError: '', priceError: '' },
@@ -25,10 +31,17 @@ export class RoomCreateComponent implements OnInit {
   maxWeight: number = 0;
 
   maxCapacity: number | null = 1;
+  maxCapacityError: string = '';
   identifier: string = '';
+  identifierError: string = '';
+  identifierChecked: { check: boolean; error: boolean } = { check: false, error: false };
 
   ngOnInit(): void {
     this.loadRoomCapacity();
+  }
+
+  ngAfterContentInit(): void {
+    this.checkIdentifier();
   }
 
   private loadRoomCapacity() {
@@ -69,16 +82,35 @@ export class RoomCreateComponent implements OnInit {
       this.validateIdentifier(this.identifier) &&
       this.validateMaxCapacity(this.maxCapacity) &&
       this.prices.every(p => this.validatePrice(p)) &&
-      this.prices.every(p => this.validatePriceCapacity(p))
+      this.prices.every(p => this.validatePriceCapacity(p)) &&
+      !this.identifierChecked.error
     );
   }
 
   validateIdentifier(identifier: string): boolean {
-    return identifier.length > 0;
+    if (identifier.length <= 0) {
+      this.identifierError = 'Darf nicht leer sein!';
+      this.identifierChecked = { error: false, check: false };
+      return false;
+    } else {
+      if (!this.identifierChecked.error) {
+        this.identifierError = '';
+      }
+      return true;
+    }
   }
 
   validateMaxCapacity(maxCapacity: number | null): boolean {
-    return maxCapacity != null && maxCapacity >= 1 && Math.trunc(maxCapacity) == maxCapacity;
+    if (maxCapacity == null || maxCapacity < 1) {
+      this.maxCapacityError = 'Maximalbelegung muss mindestens 1 sein!';
+      return false;
+    } else if (Math.trunc(maxCapacity) != maxCapacity) {
+      this.maxCapacityError = 'Maximalbelegung muss eine Ganzzahl sein!';
+      return false;
+    } else {
+      this.maxCapacityError = '';
+      return true;
+    }
   }
 
   validatePrice(price: RoomPrice & { priceError: string }): boolean {
@@ -117,9 +149,34 @@ export class RoomCreateComponent implements OnInit {
         roomPictures: this.imageAsBase64,
       };
       this.roomService.create(room).subscribe({
-        next: next => console.log(next),
-        error: error => {},
+        next: next => {
+          this.alertService.addAlert({ type: 'success', message: 'Zimmer erfolgreich erstellt!', timeout: 2000 });
+        },
+        error: error => {
+          this.alertService.addAlert({ type: 'danger', message: 'Ein Fehler ist aufgetreten!', timeout: 2000 });
+        },
       });
+    } else {
+      this.alertService.addAlert({ type: 'danger', message: 'Fehlerhafte Felder gefunden!', timeout: 2000 });
+    }
+  }
+
+  checkIdentifier() {
+    if (this.identifierError.length == 0 || this.identifierChecked.error) {
+      this.identifierChecked.check = false;
+      this.roomService.query({ identifyer: this.identifier }).subscribe({
+        next: next => this.checkIdentifierResponse(next.body),
+      });
+    }
+  }
+
+  private checkIdentifierResponse(rooms: IRoom[] | null) {
+    if (rooms != null && rooms.filter(r => r.identifyer == this.identifier).length > 0) {
+      this.identifierChecked = { error: true, check: false };
+      this.identifierError = 'Zimmernummer existiert bereits!';
+    } else {
+      this.identifierChecked = { error: false, check: true };
+      this.identifierError = '';
     }
   }
 }
