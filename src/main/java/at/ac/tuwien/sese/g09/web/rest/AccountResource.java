@@ -12,7 +12,6 @@ import at.ac.tuwien.sese.g09.service.dto.PasswordChangeDTO;
 import at.ac.tuwien.sese.g09.service.errors.EmailAlreadyUsedException;
 import at.ac.tuwien.sese.g09.service.errors.InvalidPasswordException;
 import at.ac.tuwien.sese.g09.service.errors.LoginAlreadyUsedException;
-import at.ac.tuwien.sese.g09.web.rest.errors.*;
 import at.ac.tuwien.sese.g09.web.rest.vm.KeyAndPasswordVM;
 import at.ac.tuwien.sese.g09.web.rest.vm.ManagedUserVM;
 import java.net.URLDecoder;
