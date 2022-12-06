@@ -12,13 +12,6 @@ import { AlertService } from '../../../core/util/alert.service';
   styleUrls: ['./room.create.component.scss'],
 })
 export class RoomCreateComponent implements OnInit, AfterContentInit {
-  constructor(
-    private roomCapacityService: RoomCapacityService,
-    private roomService: RoomService,
-    private modalService: NgbModal,
-    private alertService: AlertService
-  ) {}
-
   prices: (RoomPrice & { capacityError: string; priceError: string })[] = [
     { id: null, capacity: undefined, price: 0, capacityError: '', priceError: '' },
   ];
@@ -28,13 +21,20 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
   images: File[] = [];
   imageAsBase64: RoomPicture[] = [];
 
-  maxWeight: number = 0;
+  maxWeight = 0;
 
   maxCapacity: number | null = 1;
-  maxCapacityError: string = '';
-  identifier: string = '';
-  identifierError: string = '';
+  maxCapacityError = '';
+  identifier = '';
+  identifierError = '';
   identifierChecked: { check: boolean; error: boolean } = { check: false, error: false };
+
+  constructor(
+    private roomCapacityService: RoomCapacityService,
+    private roomService: RoomService,
+    private modalService: NgbModal,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.loadRoomCapacity();
@@ -164,6 +164,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
       this.alertService.addAlert({ type: 'danger', message: 'Fehlerhafte Felder gefunden!', timeout: 2000 });
     }
   }
+
   private getAdjustedPrices(prices: RoomPrice[]): RoomPrice[] {
     return prices.map(price => {
       const p = { ...price };
