@@ -18,7 +18,6 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
 
   capacities: IRoomCapacity[] = [];
 
-  images: File[] = [];
   imageAsBase64: RoomPicture[] = [];
 
   maxWeight = 0;
@@ -48,11 +47,11 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     this.roomCapacityService.query().subscribe((next: EntityArrayResponseType) => (this.capacities = next.body!!));
   }
 
-  addNewPrice() {
+  addNewPrice(): any {
     this.prices.push({ id: null, capacity: undefined, price: 0, capacityError: '', priceError: '' });
   }
 
-  onFileSelected(event: any) {
+  onFileSelected(event: any): void {
     const files: FileList = event.target.files;
 
     const reader = new FileReader();
@@ -63,10 +62,6 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     };
 
     reader.readAsDataURL(files[0]);
-
-    Array.from(files)
-      .filter(f => f !== null)
-      .forEach(f => this.images.push(f));
   }
 
   removePriceItem(index: number) {
