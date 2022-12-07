@@ -81,11 +81,11 @@
           </div>
         </div>
         <div class="center"></div>
-        <div class="images">
-          <div class="image-card" *ngFor="let image of imageAsBase64; let i = index">
+        <div class="pictures">
+          <div class="picture-card" *ngFor="let picture of pictures; let i = index">
             <button (click)="removePicture(i)" class="x-button btn btn-danger"><fa-icon icon="xmark"></fa-icon></button>
-            <img alt="{{ image.description }}" src="{{ image.picture }}" />
-            <input class="image-description form-control" placeholder="Bildbeschreibung" type="text" [ngModel]="image.description" />
+            <img alt="{{ picture.description }}" src="{{ picture.picture }}" />
+            <input class="picture-description form-control" placeholder="Bildbeschreibung" type="text" [ngModel]="picture.description" />
           </div>
           <input
             type="button"

@@ -18,7 +18,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
 
   capacities: IRoomCapacity[] = [];
 
-  imageAsBase64: RoomPicture[] = [];
+  pictures: RoomPicture[] = [];
 
   maxWeight = 0;
 
@@ -57,7 +57,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     const reader = new FileReader();
     reader.onloadend = () => {
       if (typeof reader.result === 'string') {
-        this.imageAsBase64.push({ picture: reader.result, description: '', weight: this.maxWeight++, id: null });
+        this.pictures.push({ picture: reader.result, description: '', weight: this.maxWeight++, id: null });
       }
     };
 
@@ -69,7 +69,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
   }
 
   removePicture(index: number): void {
-    this.imageAsBase64.splice(index, 1);
+    this.pictures.splice(index, 1);
   }
 
   private isFormValid(): boolean {
@@ -141,7 +141,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
         maxCapacity: this.maxCapacity,
         identifyer: this.identifier,
         prices: this.getAdjustedPrices(this.prices),
-        roomPictures: this.imageAsBase64,
+        roomPictures: this.pictures,
       };
       this.roomService.create(room).subscribe({
         next: next => {
