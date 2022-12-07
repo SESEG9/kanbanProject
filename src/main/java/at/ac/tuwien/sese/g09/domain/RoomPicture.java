@@ -24,6 +24,7 @@ public class RoomPicture {
     private Long id;
 
     @Lob
+    @Column(columnDefinition = "text")
     private String image;
 
     @Column(name = "weight")
