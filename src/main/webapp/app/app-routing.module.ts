@@ -34,15 +34,15 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
         },
         {
           path: 'rooms',
-          loadChildren: () => import(`./rooms/rooms.module`).then(m => m.RoomsModule)
+          loadChildren: () => import(`./rooms/rooms.module`).then(m => m.RoomsModule),
         },
         {
           path: 'reservation',
-          loadChildren: () => import('./reservation/reservation.module').then(m => m.ReservationModule)
+          loadChildren: () => import('./reservation/reservation.module').then(m => m.ReservationModule),
         },
         {
           path: 'promotion',
-          loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule)
+          loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule),
         },
         navbarRoute,
         ...errorRoute,

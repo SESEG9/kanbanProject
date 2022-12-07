@@ -1,9 +1,9 @@
 {
   "applications": "*",
-  "changelogDate": "20221117094653",
+  "changelogDate": "20221206105239",
   "dto": "no",
   "embedded": false,
-  "entityTableName": "global_settings",
+  "entityTableName": "gloabl_settings",
   "fields": [
     {
       "fieldName": "cancelTime",
@@ -12,11 +12,9 @@
   ],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
-  "name": "GlobalSettings",
+  "name": "GloablSettings",
   "pagination": "no",
   "readOnly": false,
   "relationships": [],
-  "service": "no",
-  "skipClient": true,
-  "skipServer": true
+  "service": "no"
 }

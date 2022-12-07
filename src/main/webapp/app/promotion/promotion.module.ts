@@ -3,20 +3,16 @@ import { PromotionComponent } from './promotion.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 
-
-
 @NgModule({
-  declarations: [
-    PromotionComponent
-  ],
+  declarations: [PromotionComponent],
   imports: [
     SharedModule,
     RouterModule.forChild([
       {
         path: '',
-        component: PromotionComponent
-      }
-    ])
-  ]
+        component: PromotionComponent,
+      },
+    ]),
+  ],
 })
-export class PromotionModule { }
+export class PromotionModule {}

@@ -1,4 +1,4 @@
-<div class="container" style="max-width: 50rem !important;">
+<div class="container" style="max-width: 50rem !important">
   <!-- <div class="card px-5 py-3 m-2" *ngFor="let room of rooms">
     <h2>{{room.title}}</h2>
     <p>{{room.description}}</p>
@@ -7,14 +7,14 @@
   <!-- <div class="room" >
 
   </div> -->
-  <div class="card m-2" *ngFor="let room of rooms" style="width: 50rem;">
-    <img class="card-img-top" src="../../content/images/{{room.image}}" alt="{{room.title}}">
+  <div class="card m-2" *ngFor="let room of rooms" style="width: 50rem">
+    <img class="card-img-top" src="../../content/images/{{ room.image }}" alt="{{ room.title }}" />
     <div class="card-body">
-      <h5 class="card-title">{{room.title}}</h5>
-      <p class="card-text">{{room.description}}</p>
+      <h5 class="card-title">{{ room.title }}</h5>
+      <p class="card-text">{{ room.description }}</p>
       <div class="d-flex w-100 justify-content-between">
-        <span style="font-weight: bold;">ab {{room.price}}</span>
-        <a href="#" class="btn btn-primary" [routerLink]="'/reservation/' + room.id" >Reservieren</a>
+        <span style="font-weight: bold">ab {{ room.price }}</span>
+        <a href="#" class="btn btn-primary" [routerLink]="'/reservation/' + room.id">Reservieren</a>
       </div>
     </div>
   </div>

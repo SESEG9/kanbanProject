@@ -1,6 +1,6 @@
-<div class="container" style="max-width: 650px;">
+<div class="container" style="max-width: 650px">
   <div class="d-flex w-100 mt-3" *ngIf="!success">
-    <input type="text" class="form-control w-100" style="max-width: 400px;" [(ngModel)]="reservationNumber">
+    <input type="text" class="form-control w-100" style="max-width: 400px" [(ngModel)]="reservationNumber" />
     <button type="button" class="btn btn-primary w-auto" (click)="loadReservation()">Reservierung anzeigen</button>
   </div>
   <div class="mt-4" *ngIf="reservation">
@@ -8,24 +8,24 @@
     <table class="table reservation-table mt-1 table-striped" *ngIf="reservation">
       <tbody>
         <tr>
-          <td>{{reservation.firstName}}</td>
-          <td>{{reservation.lastName}}</td>
+          <td>{{ reservation.firstName }}</td>
+          <td>{{ reservation.lastName }}</td>
         </tr>
         <tr>
-          <td>{{reservation.email}}</td>
-          <td>{{reservation.tel}}</td>
+          <td>{{ reservation.email }}</td>
+          <td>{{ reservation.tel }}</td>
         </tr>
         <tr>
-          <td>{{reservation.birthdate}}</td>
-          <td>{{getGender(reservation.gender)}}</td>
+          <td>{{ reservation.birthdate }}</td>
+          <td>{{ getGender(reservation.gender) }}</td>
         </tr>
         <tr>
-          <td>{{reservation.reservationStart}}</td>
-          <td>{{reservation.reservationEnd}}</td>
+          <td>{{ reservation.reservationStart }}</td>
+          <td>{{ reservation.reservationEnd }}</td>
         </tr>
         <tr>
-          <td>{{getRoomById(reservation.room)}}</td>
-          <td>{{reservation.price}}</td>
+          <td>{{ getRoomById(reservation.room) }}</td>
+          <td>{{ reservation.price }}</td>
         </tr>
       </tbody>
     </table>

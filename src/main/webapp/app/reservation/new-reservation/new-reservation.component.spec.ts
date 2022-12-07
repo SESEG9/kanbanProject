@@ -9,10 +9,9 @@ describe('NewReservationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewReservationComponent ],
-      imports: [RouterTestingModule]
-    })
-    .compileComponents();
+      declarations: [NewReservationComponent],
+      imports: [RouterTestingModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NewReservationComponent);
     component = fixture.componentInstance;

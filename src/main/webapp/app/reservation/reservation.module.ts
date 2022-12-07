@@ -4,25 +4,20 @@ import { ReservationComponent } from './reservation.component';
 import { NewReservationComponent } from 'app/reservation/new-reservation/new-reservation.component';
 import { SharedModule } from 'app/shared/shared.module';
 
-
-
 @NgModule({
-  declarations: [
-    ReservationComponent,
-    NewReservationComponent
-  ],
+  declarations: [ReservationComponent, NewReservationComponent],
   imports: [
     SharedModule,
     RouterModule.forChild([
       {
         path: ':id',
-        component: NewReservationComponent
+        component: NewReservationComponent,
       },
       {
         path: '',
-        component: ReservationComponent
-      }
-    ])
-  ]
+        component: ReservationComponent,
+      },
+    ]),
+  ],
 })
-export class ReservationModule { }
+export class ReservationModule {}

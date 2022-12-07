@@ -2,7 +2,7 @@ package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.BulkLetterTemplate;
 import at.ac.tuwien.sese.g09.repository.BulkLetterTemplateRepository;
-import at.ac.tuwien.sese.g09.web.rest.errors.BadRequestAlertException;
+import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;

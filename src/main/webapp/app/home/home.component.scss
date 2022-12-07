@@ -2,8 +2,8 @@
 Main page styles
 ========================================================================== */
 .lionhotel {
-    background: url('../../content/images/hotel-bg.jpg') no-repeat center;
-    background-size: cover;
+  background: url('../../content/images/hotel-bg.jpg') no-repeat center;
+  background-size: cover;
 }
 
 .home-text {
@@ -13,7 +13,7 @@ Main page styles
 }
 .home-icon {
   height: 150px;
-  filter: invert(100%)
+  filter: invert(100%);
 }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
