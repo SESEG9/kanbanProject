@@ -51,8 +51,6 @@ export class RoomUpdateComponent implements OnInit {
     const room = this.roomFormService.getRoom(this.editForm);
     if (room.id !== null) {
       this.subscribeToSaveResponse(this.roomService.update(room));
-    } else {
-      // this.subscribeToSaveResponse(this.roomService.create(room));
     }
   }
 
