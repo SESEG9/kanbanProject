@@ -15,6 +15,7 @@ export type EntityArrayResponseType = HttpResponse<IRoom[]>;
 @Injectable({ providedIn: 'root' })
 export class RoomService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/rooms');
+  protected publicResourceUrl = this.applicationConfigService.getEndpointFor('api/public/rooms');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -31,12 +32,12 @@ export class RoomService {
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IRoom>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http.get<IRoom>(`${this.publicResourceUrl}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IRoom[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<IRoom[]>(this.publicResourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

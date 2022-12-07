@@ -17,8 +17,8 @@ export class RoomPriceComponent implements OnInit {
   roomPrices?: IRoomPrice[];
   isLoading = false;
 
-  predicate = 'id';
-  ascending = true;
+  predicate = 'price';
+  ascending = false;
 
   constructor(
     protected roomPriceService: RoomPriceService,

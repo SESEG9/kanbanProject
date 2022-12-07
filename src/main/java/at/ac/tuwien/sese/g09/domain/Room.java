@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * A Room.
@@ -27,19 +28,22 @@ public class Room implements Serializable {
     private Long id;
 
     @Column(name = "identifyer", unique = true)
+    @NotBlank
     private String identifyer;
 
     @Min(value = 1)
     @Column(name = "max_capacity")
+    @NotNull
     private Integer maxCapacity;
 
     @OneToMany(mappedBy = "room")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "capacity", "room" }, allowSetters = true)
+    @NotNull
     private Set<RoomPrice> prices = new HashSet<>();
 
     @OneToMany(mappedBy = "room")
-    private Set<RoomPicture> roomPictures;
+    private Set<RoomPicture> roomPictures = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "rooms" }, allowSetters = true)

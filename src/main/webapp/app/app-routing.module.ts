@@ -33,8 +33,8 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           loadChildren: () => import(`./entities/entity-routing.module`).then(m => m.EntityRoutingModule),
         },
         {
-          path: 'rooms',
-          loadChildren: () => import(`./rooms/rooms.module`).then(m => m.RoomsModule),
+          path: 'room',
+          loadChildren: () => import(`./entities/room/room.module`).then(m => m.RoomModule),
         },
         {
           path: 'reservation',

@@ -1,6 +1,7 @@
 package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Room;
+import at.ac.tuwien.sese.g09.security.AuthoritiesConstants;
 import at.ac.tuwien.sese.g09.service.RoomService;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -109,7 +111,7 @@ public class RoomResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rooms in body.
      */
-    @GetMapping("/rooms")
+    @GetMapping("/public/rooms")
     public List<Room> getAllRooms() {
         log.debug("REST request to get all Rooms");
         return roomService.getAllRooms();
@@ -121,7 +123,7 @@ public class RoomResource {
      * @param id the id of the room to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the room, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/rooms/{id}")
+    @GetMapping("/public/rooms/{id}")
     public ResponseEntity<Room> getRoom(@PathVariable Long id) {
         log.debug("REST request to get Room : {}", id);
         final var result = roomService.getRoom(id);
