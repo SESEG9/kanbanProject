@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -22,7 +23,7 @@ public class RoomPicture {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "image")
+    @Lob
     private String image;
 
     @Column(name = "weight")
