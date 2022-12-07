@@ -39,7 +39,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])" scope="col" jhiSortBy="ID">
+          <th *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])" scope="col" jhiSortBy="id">
             <div class="d-flex">
               <span jhiTranslate="global.field.id">ID</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
