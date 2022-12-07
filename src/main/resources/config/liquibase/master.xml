@@ -25,6 +25,7 @@
     <include file="config/liquibase/changelog/20221117094658_added_entity_BulkLetterTemplate.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221117094659_added_entity_EmailAttachment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221206110242_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221207163859_changelog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20221117094648_added_entity_constraints_Room.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221117094650_added_entity_constraints_RoomPrice.xml" relativeToChangelogFile="false"/>

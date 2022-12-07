@@ -57,7 +57,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     const reader = new FileReader();
     reader.onloadend = () => {
       if (typeof reader.result === 'string') {
-        this.pictures.push({ picture: reader.result, description: '', weight: this.maxWeight++, id: null });
+        this.pictures.push({ image: reader.result, description: '', weight: this.maxWeight++, id: null });
       }
     };
 

@@ -7,7 +7,7 @@
   "fields": [
     {
       "fieldName": "image",
-      "fieldType": "String"
+      "fieldType": "TextBlob"
     },
     {
       "fieldName": "description",

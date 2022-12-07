@@ -84,7 +84,7 @@
         <div class="pictures">
           <div class="picture-card" *ngFor="let picture of pictures; let i = index">
             <button (click)="removePicture(i)" class="x-button btn btn-danger"><fa-icon icon="xmark"></fa-icon></button>
-            <img alt="{{ picture.description }}" src="{{ picture.picture }}" />
+            <img alt="{{ picture.description }}" src="{{ picture.image }}" />
             <input class="picture-description form-control" placeholder="Bildbeschreibung" type="text" [ngModel]="picture.description" />
           </div>
           <input

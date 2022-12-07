@@ -20,7 +20,7 @@ export interface RoomPrice {
 
 export interface RoomPicture {
   id: number | null;
-  picture: string;
+  image: string;
   weight: number;
   description: string;
 }
