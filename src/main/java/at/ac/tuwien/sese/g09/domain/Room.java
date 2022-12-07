@@ -166,6 +166,15 @@ public class Room implements Serializable {
         return this;
     }
 
+    public Set<RoomPicture> getRoomPictures() {
+        return roomPictures;
+    }
+
+    public Room setRoomPictures(Set<RoomPicture> roomPictures) {
+        this.roomPictures = roomPictures;
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
