@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -26,17 +27,20 @@ public class BookingService {
     private final RoomRepository roomRepository;
     private final RoomPriceRepository roomPriceRepository;
     private final CustomerRepository customerRepository;
+    private final MailService mailService;
 
     public BookingService(
         BookingRepository bookingRepository,
         RoomRepository roomRepository,
         CustomerRepository customerRepository,
-        RoomPriceRepository roomPriceRepository
+        RoomPriceRepository roomPriceRepository,
+        MailService mailService
     ) {
         this.bookingRepository = bookingRepository;
         this.roomRepository = roomRepository;
         this.customerRepository = customerRepository;
         this.roomPriceRepository = roomPriceRepository;
+        this.mailService = mailService;
     }
 
     public Booking createBooking(BookingDTO bookingDTO) {
@@ -74,7 +78,6 @@ public class BookingService {
             }
         }
         // create customer
-        // optional TODO: update customer info?
         Customer billingCustomer = customerRepository.findByEmail(bookingDTO.getBillingCustomer().getEmail());
         if (billingCustomer == null) {
             billingCustomer = customerRepository.save(mapCustomer(bookingDTO.getBillingCustomer()));
@@ -100,7 +103,19 @@ public class BookingService {
         booking.setDuration(bookingDTO.getDuration());
         booking.setStartDate(bookingDTO.getStartDate());
 
-        return bookingRepository.save(booking);
+        Booking retVal = bookingRepository.save(booking);
+
+        // email
+        mailService.sendEmailWithCCs(
+            retVal.getBillingCustomer().getEmail(),
+            retVal.getCustomers().stream().map(Customer::getEmail).collect(Collectors.toList()),
+            "Conformation of your reservation",
+            "Confirmation of your reservation, cancel code is " + retVal.getBookingCode(),
+            false,
+            false
+        );
+
+        return retVal;
     }
 
     public Booking cancelBooking(Long id, String email, String bookingCode) {
@@ -110,7 +125,20 @@ public class BookingService {
             if (booking.getBillingCustomer().getEmail().equals(email) && booking.getBookingCode().equals(bookingCode)) {
                 if (Period.between(booking.getStartDate(), LocalDate.now()).get(ChronoUnit.HOURS) > 24) {
                     booking.setCancled(true);
-                    return bookingRepository.save(booking);
+
+                    Booking retVal = bookingRepository.save(booking);
+
+                    // email
+                    mailService.sendEmailWithCCs(
+                        retVal.getBillingCustomer().getEmail(),
+                        retVal.getCustomers().stream().map(Customer::getEmail).collect(Collectors.toList()),
+                        "Conformation of your canceled reservation",
+                        "Confirmation of your canceled reservation",
+                        false,
+                        false
+                    );
+
+                    return retVal;
                 } else {
                     throw new BadRequestAlertException("Booking start date too close", ENTITY_NAME, "bookingCancelError");
                 }
