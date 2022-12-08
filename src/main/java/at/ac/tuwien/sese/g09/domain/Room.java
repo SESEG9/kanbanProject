@@ -55,11 +55,6 @@ public class Room implements Serializable {
     @JsonIgnoreProperties(value = { "rooms" }, allowSetters = true)
     private Invoice invoice;
 
-    @ManyToMany(mappedBy = "rooms")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "customers", "rooms" }, allowSetters = true)
-    private Set<Booking> bookings = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -142,37 +137,6 @@ public class Room implements Serializable {
 
     public Room invoice(Invoice invoice) {
         this.setInvoice(invoice);
-        return this;
-    }
-
-    public Set<Booking> getBookings() {
-        return this.bookings;
-    }
-
-    public void setBookings(Set<Booking> bookings) {
-        if (this.bookings != null) {
-            this.bookings.forEach(i -> i.removeRooms(this));
-        }
-        if (bookings != null) {
-            bookings.forEach(i -> i.addRooms(this));
-        }
-        this.bookings = bookings;
-    }
-
-    public Room bookings(Set<Booking> bookings) {
-        this.setBookings(bookings);
-        return this;
-    }
-
-    public Room addBookings(Booking booking) {
-        this.bookings.add(booking);
-        booking.getRooms().add(this);
-        return this;
-    }
-
-    public Room removeBookings(Booking booking) {
-        this.bookings.remove(booking);
-        booking.getRooms().remove(this);
         return this;
     }
 

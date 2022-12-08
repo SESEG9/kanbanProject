@@ -68,6 +68,9 @@ public class Customer implements Serializable {
     @Column(name = "fax")
     private String fax;
 
+    @OneToMany(mappedBy = "billingCustomer")
+    private Set<Booking> billingBookings = new HashSet<>();
+
     @ManyToMany(mappedBy = "customers")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "customers", "rooms" }, allowSetters = true)
@@ -99,6 +102,14 @@ public class Customer implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Booking> getBillingBookings() {
+        return billingBookings;
+    }
+
+    public void setBillingBookings(Set<Booking> billingBookings) {
+        this.billingBookings = billingBookings;
     }
 
     public LocalDate getBirthday() {

@@ -26,6 +26,9 @@ public class Booking implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "booking_code")
+    private String bookingCode;
+
     @Column(name = "discount")
     private Float discount;
 
@@ -51,15 +54,19 @@ public class Booking implements Serializable {
     @JsonIgnoreProperties(value = { "bookings" }, allowSetters = true)
     private Set<Customer> customers = new HashSet<>();
 
+    @ManyToOne
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Customer billingCustomer;
+
     @ManyToMany
     @JoinTable(
         name = "rel_booking__rooms",
         joinColumns = @JoinColumn(name = "booking_id"),
-        inverseJoinColumns = @JoinColumn(name = "rooms_id")
+        inverseJoinColumns = @JoinColumn(name = "room_price_id")
     )
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "prices", "invoice", "bookings" }, allowSetters = true)
-    private Set<Room> rooms = new HashSet<>();
+    private Set<RoomPrice> rooms = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -70,6 +77,22 @@ public class Booking implements Serializable {
     public Booking id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public String getBookingCode() {
+        return bookingCode;
+    }
+
+    public void setBookingCode(String bookingCode) {
+        this.bookingCode = bookingCode;
+    }
+
+    public Customer getBillingCustomer() {
+        return billingCustomer;
+    }
+
+    public void setBillingCustomer(Customer billingCustomer) {
+        this.billingCustomer = billingCustomer;
     }
 
     public void setId(Long id) {
@@ -166,26 +189,26 @@ public class Booking implements Serializable {
         return this;
     }
 
-    public Set<Room> getRooms() {
+    public Set<RoomPrice> getRooms() {
         return this.rooms;
     }
 
-    public void setRooms(Set<Room> rooms) {
+    public void setRooms(Set<RoomPrice> rooms) {
         this.rooms = rooms;
     }
 
-    public Booking rooms(Set<Room> rooms) {
+    public Booking rooms(Set<RoomPrice> rooms) {
         this.setRooms(rooms);
         return this;
     }
 
-    public Booking addRooms(Room room) {
+    public Booking addRooms(RoomPrice room) {
         this.rooms.add(room);
         room.getBookings().add(this);
         return this;
     }
 
-    public Booking removeRooms(Room room) {
+    public Booking removeRooms(RoomPrice room) {
         this.rooms.remove(room);
         room.getBookings().remove(this);
         return this;
