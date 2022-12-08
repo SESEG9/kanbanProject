@@ -31,7 +31,7 @@ public class RoomPictureResource {
      * @param id the id of the roomPrice to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the roomPrice, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/room-pictures/{id}")
+    @GetMapping("/public/room-pictures/{id}")
     public ResponseEntity<RoomPicture> getRoomPrice(@PathVariable Long id) {
         log.debug("REST request to get RoomPrice : {}", id);
         final var roomPicture = roomPictureRepository.findById(id);
