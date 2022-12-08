@@ -6,6 +6,7 @@ import { IRoom } from '../room.model';
 @Component({
   selector: 'jhi-room-detail',
   templateUrl: './room-detail.component.html',
+  styleUrls: ['./../room.global.scss', './room-detail.component.scss'],
 })
 export class RoomDetailComponent implements OnInit {
   room: IRoom | null = null;
