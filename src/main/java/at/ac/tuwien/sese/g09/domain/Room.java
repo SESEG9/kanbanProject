@@ -4,8 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -39,7 +48,8 @@ public class Room implements Serializable {
     private Set<RoomPrice> prices = new HashSet<>();
 
     @OneToMany(mappedBy = "room")
-    private Set<RoomPicture> roomPictures;
+    @JsonIgnoreProperties(value = { "room" }, allowSetters = true)
+    private Set<RoomPicture> roomPictures = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "rooms" }, allowSetters = true)
@@ -163,6 +173,15 @@ public class Room implements Serializable {
     public Room removeBookings(Booking booking) {
         this.bookings.remove(booking);
         booking.getRooms().remove(this);
+        return this;
+    }
+
+    public Set<RoomPicture> getRoomPictures() {
+        return roomPictures;
+    }
+
+    public Room setRoomPictures(Set<RoomPicture> roomPictures) {
+        this.roomPictures = roomPictures;
         return this;
     }
 

@@ -1,11 +1,7 @@
 id;name;capacity
-1;Metrics primary;61488
-2;Ergonomic Baby Ranch;50295
-3;foreground Switchable bus;58549
-4;e-markets Thüringen;82524
-5;transmitting;41912
-6;Checking Buckinghamshire;17281
-7;haptic;60097
-8;action-items optical Officer;13613
-9;intangible Devolved;36514
-10;bus Multi-layered Configuration;74280
+1;Einzelzimmer;1
+2;Einzelzimmer + Kind;2
+3;Einzelziommer + 2 Kinder;3
+4;Doppelzimmer;2
+5;Doppelzimmer + Kind;3
+6;Dreifachbelegung;3
