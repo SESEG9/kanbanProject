@@ -2,6 +2,8 @@ package at.ac.tuwien.sese.g09.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -32,6 +34,11 @@ public class RoomPrice implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "prices", "invoice", "bookings" }, allowSetters = true)
     private Room room;
+
+    @ManyToMany(mappedBy = "rooms")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "customers", "rooms" }, allowSetters = true)
+    private Set<Booking> bookings = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -98,6 +105,37 @@ public class RoomPrice implements Serializable {
             return false;
         }
         return id != null && id.equals(((RoomPrice) o).id);
+    }
+
+    public Set<Booking> getBookings() {
+        return this.bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        if (this.bookings != null) {
+            this.bookings.forEach(i -> i.removeRooms(this));
+        }
+        if (bookings != null) {
+            bookings.forEach(i -> i.addRooms(this));
+        }
+        this.bookings = bookings;
+    }
+
+    public RoomPrice bookings(Set<Booking> bookings) {
+        this.setBookings(bookings);
+        return this;
+    }
+
+    public RoomPrice addBookings(Booking booking) {
+        this.bookings.add(booking);
+        booking.getRooms().add(this);
+        return this;
+    }
+
+    public RoomPrice removeBookings(Booking booking) {
+        this.bookings.remove(booking);
+        booking.getRooms().remove(this);
+        return this;
     }
 
     @Override

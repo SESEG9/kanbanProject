@@ -2,6 +2,8 @@ package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Booking;
 import at.ac.tuwien.sese.g09.repository.BookingRepository;
+import at.ac.tuwien.sese.g09.service.BookingService;
+import at.ac.tuwien.sese.g09.service.dto.BookingDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,9 +35,11 @@ public class BookingResource {
     private String applicationName;
 
     private final BookingRepository bookingRepository;
+    private final BookingService bookingService;
 
-    public BookingResource(BookingRepository bookingRepository) {
+    public BookingResource(BookingRepository bookingRepository, BookingService bookingService) {
         this.bookingRepository = bookingRepository;
+        this.bookingService = bookingService;
     }
 
     /**
@@ -46,12 +50,12 @@ public class BookingResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/bookings")
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws URISyntaxException {
+    public ResponseEntity<Booking> createBooking(@RequestBody BookingDTO booking) throws URISyntaxException {
         log.debug("REST request to save Booking : {}", booking);
-        if (booking.getId() != null) {
-            throw new BadRequestAlertException("A new booking cannot already have an ID", ENTITY_NAME, "idexists");
+        if (booking == null) {
+            throw new BadRequestAlertException("Booking can not be null", ENTITY_NAME, "cannotbenull");
         }
-        Booking result = bookingRepository.save(booking);
+        Booking result = bookingService.createBooking(booking);
         return ResponseEntity
             .created(new URI("/api/bookings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
