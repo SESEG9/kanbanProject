@@ -1,8 +1,9 @@
 package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Room;
-import at.ac.tuwien.sese.g09.security.AuthoritiesConstants;
 import at.ac.tuwien.sese.g09.service.RoomService;
+import at.ac.tuwien.sese.g09.service.dto.RoomResponseDTO;
+import at.ac.tuwien.sese.g09.service.mapper.RoomMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -11,8 +12,8 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -42,8 +44,9 @@ public class RoomResource {
     private String applicationName;
 
     private final RoomService roomService;
+    private final RoomMapper roomMapper;
 
-    public RoomResource(RoomService roomService) {
+    public RoomResource(RoomService roomService, RoomMapper roomMapper) {
         this.roomService = roomService;
     }
 
@@ -124,10 +127,13 @@ public class RoomResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the room, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/public/rooms/{id}")
-    public ResponseEntity<Room> getRoom(@PathVariable Long id) {
+    public ResponseEntity<RoomResponseDTO> getRoom(@PathVariable Long id) {
         log.debug("REST request to get Room : {}", id);
         final var result = roomService.getRoom(id);
-        return ResponseUtil.wrapOrNotFound(result);
+
+        return result
+            .map(r -> ResponseEntity.ok().body(roomMapper.roomToRoomResponseDTO(r)))
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     /**

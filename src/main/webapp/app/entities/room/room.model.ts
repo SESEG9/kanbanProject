@@ -6,10 +6,8 @@ export interface IRoom {
   id: number;
   identifyer?: string | null;
   maxCapacity?: number | null;
-  prices?: RoomPrice[] | null;
   invoice?: Pick<IInvoice, 'id'> | null;
   bookings?: Pick<IBooking, 'id'>[] | null;
-  picture?: RoomPicture | null;
 }
 
 export type NewRoom = Omit<IRoom, 'id'> & { id: null };
@@ -22,7 +20,7 @@ export interface RoomPrice {
 
 export interface RoomPicture {
   id: number | null;
-  picture: string;
+  image: string;
   weight: number;
   description: string;
 }
@@ -33,4 +31,12 @@ export interface Room {
   maxCapacity?: number | null;
   prices: RoomPrice[];
   roomPictures: RoomPicture[];
+}
+
+export interface RoomResponse {
+  id: number | null;
+  identifyer?: string | null;
+  maxCapacity?: number | null;
+  prices: RoomPrice[];
+  pictureIDs: number[];
 }

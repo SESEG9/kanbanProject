@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -22,7 +23,8 @@ public class RoomPicture {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "image")
+    @Lob
+    @Column(columnDefinition = "text")
     private String image;
 
     @Column(name = "weight")
@@ -33,4 +35,49 @@ public class RoomPicture {
 
     @ManyToOne
     private Room room;
+
+    public Long getId() {
+        return id;
+    }
+
+    public RoomPicture setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public RoomPicture setImage(String image) {
+        this.image = image;
+        return this;
+    }
+
+    public Long getWeight() {
+        return weight;
+    }
+
+    public RoomPicture setWeight(Long weight) {
+        this.weight = weight;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public RoomPicture setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public RoomPicture setRoom(Room room) {
+        this.room = room;
+        return this;
+    }
 }

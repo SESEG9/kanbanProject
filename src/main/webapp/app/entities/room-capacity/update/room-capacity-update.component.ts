@@ -4,13 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { RoomCapacityFormService, RoomCapacityFormGroup } from './room-capacity-form.service';
+import { RoomCapacityFormGroup, RoomCapacityFormService } from './room-capacity-form.service';
 import { IRoomCapacity } from '../room-capacity.model';
 import { RoomCapacityService } from '../service/room-capacity.service';
 
 @Component({
   selector: 'jhi-room-capacity-update',
   templateUrl: './room-capacity-update.component.html',
+  styleUrls: ['../room-capacity.global.scss'],
 })
 export class RoomCapacityUpdateComponent implements OnInit {
   isSaving = false;

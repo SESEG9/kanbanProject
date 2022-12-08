@@ -1,6 +1,8 @@
 package at.ac.tuwien.sese.g09.service;
 
 import at.ac.tuwien.sese.g09.domain.Room;
+import at.ac.tuwien.sese.g09.repository.RoomPictureRepository;
+import at.ac.tuwien.sese.g09.repository.RoomPriceRepository;
 import at.ac.tuwien.sese.g09.repository.RoomRepository;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.util.HashSet;
@@ -17,9 +19,17 @@ public class RoomService {
     private static final String ENTITY_NAME = "room";
 
     private final RoomRepository roomRepository;
+    private final RoomPictureRepository roomPictureRepository;
+    private final RoomPriceRepository roomPriceRepository;
 
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(
+        RoomRepository roomRepository,
+        RoomPictureRepository roomPictureRepository,
+        RoomPriceRepository roomPriceRepository
+    ) {
         this.roomRepository = roomRepository;
+        this.roomPictureRepository = roomPictureRepository;
+        this.roomPriceRepository = roomPriceRepository;
     }
 
     /**
@@ -32,6 +42,13 @@ public class RoomService {
      */
     public Room createRoom(final Room room) {
         validateRoomForCreation(room);
+
+        room.getPrices().forEach(roomPrice -> roomPrice.setRoom(room));
+        room.getRoomPictures().forEach(roomPicture -> roomPicture.setRoom(room));
+
+        roomPictureRepository.saveAll(room.getRoomPictures());
+        roomPriceRepository.saveAll(room.getPrices());
+
         return roomRepository.save(room);
     }
 
