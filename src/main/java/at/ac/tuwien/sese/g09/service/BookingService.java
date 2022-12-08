@@ -90,6 +90,19 @@ public class BookingService {
             customers.add(foundCustomer);
         }
 
+        LocalDate startDate = bookingDTO.getStartDate();
+        Integer duration = bookingDTO.getDuration();
+        LocalDate endDate = startDate.plusDays(duration);
+        // check if room is free
+        for (Room r : rooms) {
+            List<Booking> roomBookings = bookingRepository.findByRoomsRoomAndCancled(r, false);
+            for (Booking b : roomBookings) {
+                if ((!b.getStartDate().isAfter(endDate)) && (!b.getStartDate().plusDays(b.getDuration()).isBefore(startDate))) {
+                    throw new BadRequestAlertException("Room with ID is occupied for the given duration", ENTITY_NAME, "roomOccupied");
+                }
+            }
+        }
+
         // create booking
         Booking booking = new Booking();
         Float totalPrice = calculatePrice(roomPrices, bookingDTO.getDiscountCode());
@@ -100,8 +113,8 @@ public class BookingService {
         booking.setCustomers(customers);
         booking.setDiscount(0.9f);
         booking.setCancled(false);
-        booking.setDuration(bookingDTO.getDuration());
-        booking.setStartDate(bookingDTO.getStartDate());
+        booking.setDuration(duration);
+        booking.setStartDate(startDate);
 
         Booking retVal = bookingRepository.save(booking);
 
@@ -123,7 +136,7 @@ public class BookingService {
         if (optionalBooking.isPresent()) {
             Booking booking = optionalBooking.get();
             if (booking.getBillingCustomer().getEmail().equals(email) && booking.getBookingCode().equals(bookingCode)) {
-                if (Period.between(booking.getStartDate(), LocalDate.now()).get(ChronoUnit.HOURS) > 24) {
+                if (Period.between(LocalDate.now(), booking.getStartDate()).getDays() > 1) {
                     booking.setCancled(true);
 
                     Booking retVal = bookingRepository.save(booking);

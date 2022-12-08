@@ -1,6 +1,8 @@
 package at.ac.tuwien.sese.g09.repository;
 
 import at.ac.tuwien.sese.g09.domain.Booking;
+import at.ac.tuwien.sese.g09.domain.Customer;
+import at.ac.tuwien.sese.g09.domain.Room;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -28,4 +30,6 @@ public interface BookingRepository extends BookingRepositoryWithBagRelationships
     default Page<Booking> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    List<Booking> findByRoomsRoomAndCancled(Room room, boolean canceled);
 }
