@@ -9,11 +9,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import at.ac.tuwien.sese.g09.IntegrationTest;
 import at.ac.tuwien.sese.g09.domain.Booking;
+import at.ac.tuwien.sese.g09.domain.Room;
+import at.ac.tuwien.sese.g09.domain.RoomPrice;
+import at.ac.tuwien.sese.g09.domain.enumeration.Gender;
 import at.ac.tuwien.sese.g09.repository.BookingRepository;
+import at.ac.tuwien.sese.g09.repository.RoomPriceRepository;
+import at.ac.tuwien.sese.g09.repository.RoomRepository;
+import at.ac.tuwien.sese.g09.service.dto.BookingDTO;
+import at.ac.tuwien.sese.g09.service.dto.CustomerDTO;
+import at.ac.tuwien.sese.g09.service.dto.RoomBookingDTO;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
@@ -56,6 +65,8 @@ class BookingResourceIT {
     private static final Boolean DEFAULT_CANCLED = false;
     private static final Boolean UPDATED_CANCLED = true;
 
+    private static final String DEFAULT_DISCOUNT_CODE = "123polizei";
+
     private static final String ENTITY_API_URL = "/api/bookings";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -64,6 +75,12 @@ class BookingResourceIT {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Mock
+    private RoomRepository roomRepository;
+
+    @Mock
+    private RoomPriceRepository roomPriceRepository;
 
     @Mock
     private BookingRepository bookingRepositoryMock;
@@ -115,27 +132,36 @@ class BookingResourceIT {
 
     @Test
     @Transactional
-    void createBooking() throws Exception {
+    void createBookingWithNoRoomInDatabase() throws Exception {
+        BookingDTO newBooking = new BookingDTO();
+        CustomerDTO newCustomer = new CustomerDTO();
+        newCustomer.setBirthday(DEFAULT_START_DATE);
+        newCustomer.setName("myname");
+        newCustomer.setEmail("name@example.at");
+        newCustomer.setGender(Gender.DIVERSE);
+        newCustomer.setTelephone("21334");
+        newCustomer.setBillingAddress("Ezy Street 1");
+
+        RoomBookingDTO newRoom = new RoomBookingDTO(1L, 1L);
+        Room mockedRoom = new Room();
+
+        newBooking.setStartDate(DEFAULT_START_DATE);
+        newBooking.setDiscountCode(DEFAULT_DISCOUNT_CODE);
+        newBooking.setBillingCustomer(newCustomer);
+        newBooking.setRooms(List.of(newRoom));
+        newBooking.setDuration(2);
+
         int databaseSizeBeforeCreate = bookingRepository.findAll().size();
         // Create the Booking
+
         restBookingMockMvc
             .perform(
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(booking))
+                    .content(TestUtil.convertObjectToJsonBytes(newBooking))
             )
-            .andExpect(status().isCreated());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeCreate + 1);
-        Booking testBooking = bookingList.get(bookingList.size() - 1);
-        assertThat(testBooking.getDiscount()).isEqualTo(DEFAULT_DISCOUNT);
-        assertThat(testBooking.getPrice()).isEqualTo(DEFAULT_PRICE);
-        assertThat(testBooking.getStartDate()).isEqualTo(DEFAULT_START_DATE);
-        assertThat(testBooking.getDuration()).isEqualTo(DEFAULT_DURATION);
-        assertThat(testBooking.getCancled()).isEqualTo(DEFAULT_CANCLED);
+            .andExpect(status().isBadRequest());
     }
 
     @Test
