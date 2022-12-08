@@ -1,0 +1,18 @@
+.root {
+  padding: 1em 2em;
+  width: min(100%, 70em);
+  background-color: #e4e5e6;
+}
+.base {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  height: fit-content;
+  min-height: 100vh;
+}
+
+.content {
+  margin: 3rem 0;
+}
