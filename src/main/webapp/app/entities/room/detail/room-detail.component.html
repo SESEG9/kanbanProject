@@ -5,7 +5,7 @@
     <jhi-alert-error></jhi-alert-error>
     <div class="content">
       <div class="images box">
-        <ngb-carousel *ngIf="roomPictures.length > 0">
+        <ngb-carousel *ngIf="roomPictures.length > 0" #carousel>
           <ng-template ngbSlide *ngFor="let picture of roomPictures">
             <div class="picsum-img-wrapper">
               <img [src]="picture.image" [alt]="picture.description" />
