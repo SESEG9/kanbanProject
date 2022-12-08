@@ -16,14 +16,21 @@ h2 {
   flex-direction: column;
   justify-content: space-between;
   padding: 1rem;
+  min-height: 25rem;
 }
 
 .images {
   flex-grow: 1;
+  height: 100%;
+  max-height: 100%;
 }
 
 img {
-  width: 100%;
+  max-width: 100%;
+
+  min-height: 100%;
+  max-height: 100%;
+  border-radius: 0.5rem;
 }
 
 .check-column {

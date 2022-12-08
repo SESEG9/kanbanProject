@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { RoomPicture, RoomPrice, RoomResponse } from '../room.model';
+import { RoomPicture, RoomResponse } from '../room.model';
 import { RoomPictureService } from '../../room-picture/service/room-picture.service';
 
 @Component({
@@ -11,7 +11,6 @@ import { RoomPictureService } from '../../room-picture/service/room-picture.serv
 })
 export class RoomDetailComponent implements OnInit {
   room: RoomResponse | null = null;
-  selectedPrice: RoomPrice | null = null;
   roomPictures: RoomPicture[] = [];
 
   constructor(protected activatedRoute: ActivatedRoute, private roomPictureService: RoomPictureService) {}
@@ -35,5 +34,9 @@ export class RoomDetailComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  reserve(): void {
+    // TODO implement reserve room
   }
 }
