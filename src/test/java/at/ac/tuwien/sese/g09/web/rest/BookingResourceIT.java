@@ -2,15 +2,19 @@ package at.ac.tuwien.sese.g09.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import at.ac.tuwien.sese.g09.IntegrationTest;
 import at.ac.tuwien.sese.g09.domain.Booking;
-import at.ac.tuwien.sese.g09.domain.Room;
-import at.ac.tuwien.sese.g09.domain.RoomPrice;
 import at.ac.tuwien.sese.g09.domain.enumeration.Gender;
 import at.ac.tuwien.sese.g09.repository.BookingRepository;
 import at.ac.tuwien.sese.g09.repository.RoomPriceRepository;
@@ -22,7 +26,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
@@ -34,7 +37,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -143,7 +145,6 @@ class BookingResourceIT {
         newCustomer.setBillingAddress("Ezy Street 1");
 
         RoomBookingDTO newRoom = new RoomBookingDTO(1L, 1L);
-        Room mockedRoom = new Room();
 
         newBooking.setStartDate(DEFAULT_START_DATE);
         newBooking.setDiscountCode(DEFAULT_DISCOUNT_CODE);
@@ -151,9 +152,7 @@ class BookingResourceIT {
         newBooking.setRooms(List.of(newRoom));
         newBooking.setDuration(2);
 
-        int databaseSizeBeforeCreate = bookingRepository.findAll().size();
         // Create the Booking
-
         restBookingMockMvc
             .perform(
                 post(ENTITY_API_URL)
@@ -247,258 +246,5 @@ class BookingResourceIT {
     void getNonExistingBooking() throws Exception {
         // Get the booking
         restBookingMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
-    }
-
-    @Test
-    @Transactional
-    void putExistingBooking() throws Exception {
-        // Initialize the database
-        bookingRepository.saveAndFlush(booking);
-
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-
-        // Update the booking
-        Booking updatedBooking = bookingRepository.findById(booking.getId()).get();
-        // Disconnect from session so that the updates on updatedBooking are not directly saved in db
-        em.detach(updatedBooking);
-        updatedBooking
-            .discount(UPDATED_DISCOUNT)
-            .price(UPDATED_PRICE)
-            .startDate(UPDATED_START_DATE)
-            .duration(UPDATED_DURATION)
-            .cancled(UPDATED_CANCLED);
-
-        restBookingMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, updatedBooking.getId())
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedBooking))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-        Booking testBooking = bookingList.get(bookingList.size() - 1);
-        assertThat(testBooking.getDiscount()).isEqualTo(UPDATED_DISCOUNT);
-        assertThat(testBooking.getPrice()).isEqualTo(UPDATED_PRICE);
-        assertThat(testBooking.getStartDate()).isEqualTo(UPDATED_START_DATE);
-        assertThat(testBooking.getDuration()).isEqualTo(UPDATED_DURATION);
-        assertThat(testBooking.getCancled()).isEqualTo(UPDATED_CANCLED);
-    }
-
-    @Test
-    @Transactional
-    void putNonExistingBooking() throws Exception {
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-        booking.setId(count.incrementAndGet());
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restBookingMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, booking.getId())
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(booking))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void putWithIdMismatchBooking() throws Exception {
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-        booking.setId(count.incrementAndGet());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restBookingMockMvc
-            .perform(
-                put(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(booking))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void putWithMissingIdPathParamBooking() throws Exception {
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-        booking.setId(count.incrementAndGet());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restBookingMockMvc
-            .perform(
-                put(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(booking))
-            )
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void partialUpdateBookingWithPatch() throws Exception {
-        // Initialize the database
-        bookingRepository.saveAndFlush(booking);
-
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-
-        // Update the booking using partial update
-        Booking partialUpdatedBooking = new Booking();
-        partialUpdatedBooking.setId(booking.getId());
-
-        partialUpdatedBooking.price(UPDATED_PRICE).cancled(UPDATED_CANCLED);
-
-        restBookingMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedBooking.getId())
-                    .with(csrf())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedBooking))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-        Booking testBooking = bookingList.get(bookingList.size() - 1);
-        assertThat(testBooking.getDiscount()).isEqualTo(DEFAULT_DISCOUNT);
-        assertThat(testBooking.getPrice()).isEqualTo(UPDATED_PRICE);
-        assertThat(testBooking.getStartDate()).isEqualTo(DEFAULT_START_DATE);
-        assertThat(testBooking.getDuration()).isEqualTo(DEFAULT_DURATION);
-        assertThat(testBooking.getCancled()).isEqualTo(UPDATED_CANCLED);
-    }
-
-    @Test
-    @Transactional
-    void fullUpdateBookingWithPatch() throws Exception {
-        // Initialize the database
-        bookingRepository.saveAndFlush(booking);
-
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-
-        // Update the booking using partial update
-        Booking partialUpdatedBooking = new Booking();
-        partialUpdatedBooking.setId(booking.getId());
-
-        partialUpdatedBooking
-            .discount(UPDATED_DISCOUNT)
-            .price(UPDATED_PRICE)
-            .startDate(UPDATED_START_DATE)
-            .duration(UPDATED_DURATION)
-            .cancled(UPDATED_CANCLED);
-
-        restBookingMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedBooking.getId())
-                    .with(csrf())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedBooking))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-        Booking testBooking = bookingList.get(bookingList.size() - 1);
-        assertThat(testBooking.getDiscount()).isEqualTo(UPDATED_DISCOUNT);
-        assertThat(testBooking.getPrice()).isEqualTo(UPDATED_PRICE);
-        assertThat(testBooking.getStartDate()).isEqualTo(UPDATED_START_DATE);
-        assertThat(testBooking.getDuration()).isEqualTo(UPDATED_DURATION);
-        assertThat(testBooking.getCancled()).isEqualTo(UPDATED_CANCLED);
-    }
-
-    @Test
-    @Transactional
-    void patchNonExistingBooking() throws Exception {
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-        booking.setId(count.incrementAndGet());
-
-        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restBookingMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, booking.getId())
-                    .with(csrf())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(booking))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void patchWithIdMismatchBooking() throws Exception {
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-        booking.setId(count.incrementAndGet());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restBookingMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, count.incrementAndGet())
-                    .with(csrf())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(booking))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void patchWithMissingIdPathParamBooking() throws Exception {
-        int databaseSizeBeforeUpdate = bookingRepository.findAll().size();
-        booking.setId(count.incrementAndGet());
-
-        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restBookingMockMvc
-            .perform(
-                patch(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(booking))
-            )
-            .andExpect(status().isMethodNotAllowed());
-
-        // Validate the Booking in the database
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeUpdate);
-    }
-
-    @Test
-    @Transactional
-    void deleteBooking() throws Exception {
-        // Initialize the database
-        bookingRepository.saveAndFlush(booking);
-
-        int databaseSizeBeforeDelete = bookingRepository.findAll().size();
-
-        // Delete the booking
-        restBookingMockMvc
-            .perform(delete(ENTITY_API_URL_ID, booking.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
-
-        // Validate the database contains one less item
-        List<Booking> bookingList = bookingRepository.findAll();
-        assertThat(bookingList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }
