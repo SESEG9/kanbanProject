@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { IRoom } from '../room.model';
+import { RoomResponse } from '../room.model';
 
 @Component({
   selector: 'jhi-room-detail',
@@ -9,7 +9,7 @@ import { IRoom } from '../room.model';
   styleUrls: ['./../room.global.scss', './room-detail.component.scss'],
 })
 export class RoomDetailComponent implements OnInit {
-  room: IRoom | null = null;
+  room: RoomResponse | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 

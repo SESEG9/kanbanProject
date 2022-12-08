@@ -6,10 +6,24 @@
     <div class="content">
       <div class="images box">TODO image</div>
       <div class="information box">
-        <h2>Bitte Belegung wählen</h2>
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Belegung</th>
+              <th>Preis</th>
+            </tr>
+          </thead>
 
-        <table></table>
-        <div class="submit-box"></div>
+          <tbody>
+            <tr *ngFor="let price of room?.prices ?? []">
+              <td>X</td>
+              <td>{{ price.capacity?.name ?? '' }} ({{ price.capacity?.capacity ?? '' }})</td>
+              <td>€ {{ price.price }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="submit-box"><button class="btn btn-secondary">Reservieren</button></div>
       </div>
       <div class="admin-buttons"></div>
     </div>
