@@ -9,7 +9,11 @@ import at.ac.tuwien.sese.g09.service.dto.BookingDTO;
 import at.ac.tuwien.sese.g09.service.dto.CustomerDTO;
 import at.ac.tuwien.sese.g09.service.dto.RoomBookingDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +27,20 @@ public class BookingService {
     private final RoomRepository roomRepository;
     private final RoomPriceRepository roomPriceRepository;
     private final CustomerRepository customerRepository;
+    private final MailService mailService;
 
     public BookingService(
         BookingRepository bookingRepository,
         RoomRepository roomRepository,
         CustomerRepository customerRepository,
-        RoomPriceRepository roomPriceRepository
+        RoomPriceRepository roomPriceRepository,
+        MailService mailService
     ) {
         this.bookingRepository = bookingRepository;
         this.roomRepository = roomRepository;
         this.customerRepository = customerRepository;
         this.roomPriceRepository = roomPriceRepository;
+        this.mailService = mailService;
     }
 
     public Booking createBooking(BookingDTO bookingDTO) {
@@ -71,7 +78,6 @@ public class BookingService {
             }
         }
         // create customer
-        // optional TODO: update customer info?
         Customer billingCustomer = customerRepository.findByEmail(bookingDTO.getBillingCustomer().getEmail());
         if (billingCustomer == null) {
             billingCustomer = customerRepository.save(mapCustomer(bookingDTO.getBillingCustomer()));
@@ -84,6 +90,19 @@ public class BookingService {
             customers.add(foundCustomer);
         }
 
+        LocalDate startDate = bookingDTO.getStartDate();
+        Integer duration = bookingDTO.getDuration();
+        LocalDate endDate = startDate.plusDays(duration);
+        // check if room is free
+        for (Room r : rooms) {
+            List<Booking> roomBookings = bookingRepository.findByRoomsRoomAndCancled(r, false);
+            for (Booking b : roomBookings) {
+                if ((!b.getStartDate().isAfter(endDate)) && (!b.getStartDate().plusDays(b.getDuration()).isBefore(startDate))) {
+                    throw new BadRequestAlertException("Room with ID is occupied for the given duration", ENTITY_NAME, "roomOccupied");
+                }
+            }
+        }
+
         // create booking
         Booking booking = new Booking();
         Float totalPrice = calculatePrice(roomPrices, bookingDTO.getDiscountCode());
@@ -94,10 +113,54 @@ public class BookingService {
         booking.setCustomers(customers);
         booking.setDiscount(0.9f);
         booking.setCancled(false);
-        booking.setDuration(bookingDTO.getDuration());
-        booking.setStartDate(bookingDTO.getStartDate());
+        booking.setDuration(duration);
+        booking.setStartDate(startDate);
 
-        return bookingRepository.save(booking);
+        Booking retVal = bookingRepository.save(booking);
+
+        // email
+        mailService.sendEmailWithCCs(
+            retVal.getBillingCustomer().getEmail(),
+            retVal.getCustomers().stream().map(Customer::getEmail).collect(Collectors.toList()),
+            "Conformation of your reservation",
+            "Confirmation of your reservation, cancel code is " + retVal.getBookingCode(),
+            false,
+            false
+        );
+
+        return retVal;
+    }
+
+    public Booking cancelBooking(Long id, String email, String bookingCode) {
+        Optional<Booking> optionalBooking = bookingRepository.findById(id);
+        if (optionalBooking.isPresent()) {
+            Booking booking = optionalBooking.get();
+            if (booking.getBillingCustomer().getEmail().equals(email) && booking.getBookingCode().equals(bookingCode)) {
+                if (Period.between(LocalDate.now(), booking.getStartDate()).getDays() > 1) {
+                    booking.setCancled(true);
+
+                    Booking retVal = bookingRepository.save(booking);
+
+                    // email
+                    mailService.sendEmailWithCCs(
+                        retVal.getBillingCustomer().getEmail(),
+                        retVal.getCustomers().stream().map(Customer::getEmail).collect(Collectors.toList()),
+                        "Conformation of your canceled reservation",
+                        "Confirmation of your canceled reservation",
+                        false,
+                        false
+                    );
+
+                    return retVal;
+                } else {
+                    throw new BadRequestAlertException("Booking start date too close", ENTITY_NAME, "bookingCancelError");
+                }
+            } else {
+                throw new BadRequestAlertException("Booking email or booking code wrong", ENTITY_NAME, "bookingCancelError");
+            }
+        } else {
+            throw new BadRequestAlertException("Booking with id " + id + " not found", ENTITY_NAME, "bookingNotFound");
+        }
     }
 
     private String generateRandomBookingCode() {

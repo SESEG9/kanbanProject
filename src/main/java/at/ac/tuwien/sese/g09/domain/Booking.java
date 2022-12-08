@@ -26,7 +26,7 @@ public class Booking implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "booking_code")
+    @Column(name = "booking_code", unique = true)
     private String bookingCode;
 
     @Column(name = "discount")
