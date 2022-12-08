@@ -38,5 +38,5 @@ export interface RoomResponse {
   identifyer?: string | null;
   maxCapacity?: number | null;
   prices: RoomPrice[];
-  roomPictures: number[];
+  pictureIDs: number[];
 }

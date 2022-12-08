@@ -164,7 +164,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     return prices.map(price => {
       const p = { ...price };
       p.price = Math.round(p.price * 100);
-      return price;
+      return p;
     });
   }
 

@@ -4,12 +4,17 @@
     <jhi-alert></jhi-alert>
     <jhi-alert-error></jhi-alert-error>
     <div class="content">
-      <div class="images box">TODO image</div>
+      <div class="images box">
+        <img *ngIf="roomPictures.length > 0" [src]="roomPictures[0].image" [alt]="roomPictures[0].description" />
+      </div>
       <div class="information box">
         <table>
+          <colgroup>
+            <col class="capacity-column" />
+            <col class="price-column" />
+          </colgroup>
           <thead>
             <tr>
-              <th></th>
               <th>Belegung</th>
               <th>Preis</th>
             </tr>
@@ -17,12 +22,12 @@
 
           <tbody>
             <tr *ngFor="let price of room?.prices ?? []">
-              <td>X</td>
               <td>{{ price.capacity?.name ?? '' }} ({{ price.capacity?.capacity ?? '' }})</td>
-              <td>€ {{ price.price }}</td>
+              <td class="price-cell">€ {{ price.price / 100 | number: '1.2-2' }}</td>
             </tr>
           </tbody>
         </table>
+        <div class="space"></div>
         <div class="submit-box"><button class="btn btn-secondary">Reservieren</button></div>
       </div>
       <div class="admin-buttons"></div>
