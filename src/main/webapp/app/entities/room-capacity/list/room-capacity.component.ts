@@ -12,7 +12,7 @@ import { SortService } from 'app/shared/sort/sort.service';
 @Component({
   selector: 'jhi-room-capacity',
   templateUrl: './room-capacity.component.html',
-  styleUrls: ['./room-capacity.component.scss'],
+  styleUrls: ['../room-capacity.global.scss'],
 })
 export class RoomCapacityComponent implements OnInit {
   roomCapacities?: IRoomCapacity[];

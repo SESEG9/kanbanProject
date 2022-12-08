@@ -5,7 +5,7 @@
         "title": "Belegungen",
         "refreshListLabel": "Liste aktualisieren",
         "createLabel": "Neue Belegungsmöglichkeit erstellen",
-        "createOrEditLabel": "Room Capacity erstellen oder bearbeiten",
+        "createOrEditLabel": "Belegung bearbeiten",
         "notFound": "Keine Room Capacities gefunden"
       },
       "created": "Room Capacity erstellt mit ID {{ param }}",
