@@ -9,6 +9,9 @@ import at.ac.tuwien.sese.g09.service.dto.BookingDTO;
 import at.ac.tuwien.sese.g09.service.dto.CustomerDTO;
 import at.ac.tuwien.sese.g09.service.dto.RoomBookingDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -98,6 +101,25 @@ public class BookingService {
         booking.setStartDate(bookingDTO.getStartDate());
 
         return bookingRepository.save(booking);
+    }
+
+    public Booking cancelBooking(Long id, String email, String bookingCode) {
+        Optional<Booking> optionalBooking = bookingRepository.findById(id);
+        if (optionalBooking.isPresent()) {
+            Booking booking = optionalBooking.get();
+            if (booking.getBillingCustomer().getEmail().equals(email) && booking.getBookingCode().equals(bookingCode)) {
+                if (Period.between(booking.getStartDate(), LocalDate.now()).get(ChronoUnit.HOURS) > 24) {
+                    booking.setCancled(true);
+                    return bookingRepository.save(booking);
+                } else {
+                    throw new BadRequestAlertException("Booking start date too close", ENTITY_NAME, "bookingCancelError");
+                }
+            } else {
+                throw new BadRequestAlertException("Booking email or booking code wrong", ENTITY_NAME, "bookingCancelError");
+            }
+        } else {
+            throw new BadRequestAlertException("Booking with id " + id + " not found", ENTITY_NAME, "bookingNotFound");
+        }
     }
 
     private String generateRandomBookingCode() {

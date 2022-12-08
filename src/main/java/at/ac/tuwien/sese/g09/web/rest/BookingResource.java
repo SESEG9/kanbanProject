@@ -75,23 +75,7 @@ public class BookingResource {
     @PutMapping("/bookings/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable(value = "id", required = false) final Long id, @RequestBody Booking booking)
         throws URISyntaxException {
-        log.debug("REST request to update Booking : {}, {}", id, booking);
-        if (booking.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, booking.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!bookingRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Booking result = bookingRepository.save(booking);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, booking.getId().toString()))
-            .body(result);
+        throw new BadRequestAlertException("PUT Not implemented", ENTITY_NAME, "notimplemented");
     }
 
     /**
@@ -187,12 +171,11 @@ public class BookingResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/bookings/{id}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-        log.debug("REST request to delete Booking : {}", id);
-        bookingRepository.deleteById(id);
+    public ResponseEntity<Booking> deleteBooking(@PathVariable Long id, @RequestParam String email, @RequestParam String bookingCode) {
+        Booking booking = bookingService.cancelBooking(id, email, bookingCode);
         return ResponseEntity
-            .noContent()
+            .ok()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+            .body(booking);
     }
 }
