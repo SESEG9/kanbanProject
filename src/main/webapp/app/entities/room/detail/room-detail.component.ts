@@ -25,7 +25,7 @@ export class RoomDetailComponent implements OnInit {
     });
   }
 
-  private onPictureFetched(picture: RoomPicture | null) {
+  private onPictureFetched(picture: RoomPicture | null): void {
     if (picture) {
       this.roomPictures.push(picture);
       this.roomPictures.sort((p1, p2) => p1.weight - p2.weight);
