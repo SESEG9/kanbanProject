@@ -74,9 +74,6 @@
       *ngIf="(room.maxCapacity && room.maxCapacity > 0) || hasAnyAuthority([Authority.USER, Authority.ADMIN])"
     >
       <div class="buttons">
-        <button type="submit" [routerLink]="['/room', room.id, 'view']" class="x-button btn btn-light border-dark">
-          <fa-icon icon="eye"></fa-icon>
-        </button>
         <button
           type="submit"
           *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])"
@@ -89,6 +86,7 @@
           <fa-icon icon="xmark"></fa-icon>
         </button>
       </div>
+      <!-- click anywhere on card to get to details page -->
       <div [routerLink]="['/room', room.id, 'view']">
         <img *ngIf="room.picture" class="room-image card-img-top" src="{{ room.picture.picture }}" alt="{{ room.identifyer }}" />
         <div class="card-body">
@@ -103,13 +101,13 @@
             <ng-template #noCapacity>Keine maximale Anzahl an Personen festgelegt.</ng-template>
           </div>
         </div>
-      </div>
-      <div class="card-body d-flex w-100 justify-content-between">
-        <span *ngIf="room.prices; else noprice" style="font-weight: bold">ab {{ minPrice(room.prices) / 100 }}€</span>
-        <ng-template #noprice>
-          <span style="font-weight: bold">Kein Preis festgelegt</span>
-        </ng-template>
-        <a href="#" class="btn btn-primary" [routerLink]="'/reservation/' + room.id">Reservieren</a>
+        <div class="card-body d-flex w-100 justify-content-between">
+          <span *ngIf="room.prices; else noprice" style="font-weight: bold">ab {{ minPrice(room.prices) / 100 }}€</span>
+          <ng-template #noprice>
+            <span style="font-weight: bold">Kein Preis festgelegt</span>
+          </ng-template>
+          <a href="#" class="btn btn-primary">Reservieren</a>
+        </div>
       </div>
     </div>
 
