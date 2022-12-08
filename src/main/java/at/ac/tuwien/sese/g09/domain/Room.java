@@ -4,8 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -40,7 +49,7 @@ public class Room implements Serializable {
 
     @OneToMany(mappedBy = "room")
     @JsonIgnoreProperties(value = { "room" }, allowSetters = true)
-    private Set<RoomPicture> roomPictures;
+    private Set<RoomPicture> roomPictures = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "rooms" }, allowSetters = true)
