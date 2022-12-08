@@ -28,7 +28,7 @@ export class RoomDetailComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  ngAfterContentChecked() {
+  ngAfterContentChecked(): void {
     this.carousel?.pause();
   }
 
