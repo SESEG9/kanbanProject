@@ -1,0 +1,24 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 2em;
+  width: min(100%, 70em);
+  background-color: #e4e5e6;
+}
+
+.base {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  height: fit-content;
+  min-height: 100vh;
+}
+
+.box {
+  background-color: #f0f0f0;
+  padding: 0.5em;
+  border: 0.04em solid #888888;
+  border-radius: 1em;
+}

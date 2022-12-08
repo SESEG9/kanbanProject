@@ -32,3 +32,11 @@ export interface Room {
   prices: RoomPrice[];
   roomPictures: RoomPicture[];
 }
+
+export interface RoomResponse {
+  id: number | null;
+  identifyer?: string | null;
+  maxCapacity?: number | null;
+  prices: RoomPrice[];
+  pictureIDs: number[];
+}

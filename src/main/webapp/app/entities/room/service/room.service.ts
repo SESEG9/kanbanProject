@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IRoom, NewRoom, Room } from '../room.model';
+import { IRoom, Room, RoomResponse } from '../room.model';
 
 export type PartialUpdateRoom = Partial<IRoom> & Pick<IRoom, 'id'>;
 
@@ -30,8 +30,8 @@ export class RoomService {
     return this.http.patch<IRoom>(`${this.resourceUrl}/${this.getRoomIdentifier(room)}`, room, { observe: 'response' });
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IRoom>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  find(id: number): Observable<HttpResponse<RoomResponse>> {
+    return this.http.get<RoomResponse>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
