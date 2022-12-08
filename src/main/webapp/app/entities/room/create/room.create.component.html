@@ -6,7 +6,7 @@
     <div>
       <div class="form">
         <div class="content">
-          <div class="general">
+          <div class="general box">
             <h2>Zimmerinformation</h2>
             <div class="option">
               <label for="id-input">Zimmernummer:</label>
@@ -35,7 +35,7 @@
             </div>
           </div>
 
-          <div class="general">
+          <div class="general box">
             <h2>Preise</h2>
             <table>
               <thead>
@@ -82,10 +82,12 @@
         </div>
         <div class="center"></div>
         <div class="pictures">
-          <div class="picture-card" *ngFor="let picture of pictures; let i = index">
-            <button (click)="removePicture(i)" class="x-button btn btn-danger"><fa-icon icon="xmark"></fa-icon></button>
+          <div class="picture-card box" *ngFor="let picture of pictures; let i = index">
+            <button (click)="removePicture(i)" class="x-button btn btn-danger">
+              <fa-icon icon="xmark"></fa-icon>
+            </button>
             <img alt="{{ picture.description }}" src="{{ picture.image }}" />
-            <input class="picture-description form-control" placeholder="Bildbeschreibung" type="text" [ngModel]="picture.description" />
+            <input class="picture-description form-control" placeholder="Bildbeschreibung" type="text" [(ngModel)]="picture.description" />
           </div>
           <input
             type="button"

@@ -9,7 +9,7 @@ import { AlertService } from '../../../core/util/alert.service';
 @Component({
   selector: 'jhi-create',
   templateUrl: './room.create.component.html',
-  styleUrls: ['./room.create.component.scss'],
+  styleUrls: ['./../room.global.scss', './room.create.component.scss'],
 })
 export class RoomCreateComponent implements OnInit, AfterContentInit {
   prices: (RoomPrice & { capacityError: string; priceError: string })[] = [
@@ -164,7 +164,7 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     return prices.map(price => {
       const p = { ...price };
       p.price = Math.round(p.price * 100);
-      return price;
+      return p;
     });
   }
 
