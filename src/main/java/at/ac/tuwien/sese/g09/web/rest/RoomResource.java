@@ -7,6 +7,7 @@ import at.ac.tuwien.sese.g09.service.mapper.RoomMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -48,6 +49,7 @@ public class RoomResource {
 
     public RoomResource(RoomService roomService, RoomMapper roomMapper) {
         this.roomService = roomService;
+        this.roomMapper = roomMapper;
     }
 
     /**
@@ -115,9 +117,9 @@ public class RoomResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rooms in body.
      */
     @GetMapping("/public/rooms")
-    public List<Room> getAllRooms() {
+    public List<RoomResponseDTO> getAllRooms() {
         log.debug("REST request to get all Rooms");
-        return roomService.getAllRooms();
+        return roomService.getAllRooms().stream().map(roomMapper::roomToRoomResponseDTO).collect(Collectors.toList());
     }
 
     /**

@@ -8,6 +8,8 @@ export interface IRoom {
   maxCapacity?: number | null;
   invoice?: Pick<IInvoice, 'id'> | null;
   bookings?: Pick<IBooking, 'id'>[] | null;
+  prices?: RoomPrice[] | null;
+  pictureIDs?: number[] | null;
 }
 
 export type NewRoom = Omit<IRoom, 'id'> & { id: null };

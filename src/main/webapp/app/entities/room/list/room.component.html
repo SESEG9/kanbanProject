@@ -57,7 +57,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="prices">
+          <th scope="col" jhiSortBy="minPrice">
             <div class="d-flex">
               <span jhiTranslate="lionhotelApp.room.price">Preis</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -88,7 +88,7 @@
       </div>
       <!-- click anywhere on card to get to details page -->
       <div [routerLink]="['/room', room.id, 'view']">
-        <img *ngIf="room.picture" class="room-image card-img-top" src="{{ room.picture.picture }}" alt="{{ room.identifyer }}" />
+        <img *ngIf="room.picture" class="room-image card-img-top" [src]="room.picture.image" [alt]="room.picture.description" />
         <div class="card-body">
           <h5 class="card-title">
             {{ room.identifyer }}<span *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])"> (ID: {{ room.id }})</span>
@@ -102,7 +102,7 @@
           </div>
         </div>
         <div class="card-body d-flex w-100 justify-content-between">
-          <span *ngIf="room.prices; else noprice" style="font-weight: bold">ab {{ minPrice(room.prices) / 100 }}€</span>
+          <span *ngIf="room.minPrice; else noprice" style="font-weight: bold">ab {{ room.minPrice | number: '1.2-2' }}€</span>
           <ng-template #noprice>
             <span style="font-weight: bold">Kein Preis festgelegt</span>
           </ng-template>
