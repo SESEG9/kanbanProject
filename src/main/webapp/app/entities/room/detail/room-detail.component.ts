@@ -44,7 +44,6 @@ export class RoomDetailComponent implements OnInit, AfterContentChecked {
   }
 
   reserve(): void {
-    console.log('');
     // TODO implement reserve room
   }
 }
