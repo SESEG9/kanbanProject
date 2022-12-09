@@ -37,7 +37,7 @@
           </tbody>
         </table>
         <div class="space"></div>
-        <div class="submit-box"><button class="btn btn-secondary" (click)="reserve()">Reservieren</button></div>
+        <a routerLink="/reservation/new" [state]="{ roomID: room?.id }" class="btn btn-primary">Reservieren</a>
       </div>
       <div class="admin-buttons"></div>
     </div>
