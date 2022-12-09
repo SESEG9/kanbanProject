@@ -10,29 +10,57 @@
           <table class="table reservation-table mt-1 table-striped" *ngIf="reservation">
             <tbody>
               <tr>
+                <td>Name</td>
                 <td>{{ reservation.billingCustomer.name }}</td>
+              </tr>
+              <tr>
+                <td>Email</td>
                 <td>{{ reservation.billingCustomer.email }}</td>
               </tr>
               <tr>
+                <td>Buchungscode</td>
                 <td>{{ reservation.bookingCode }}</td>
-                <td>{{ reservation.billingCustomer.billingAddress }}</td>
-              </tr>
-              <tr *ngFor="let customer of reservation.customers">
-                <td>{{ customer.name }}</td>
-                <td>{{ customer.email }}</td>
               </tr>
               <tr>
+                <td>Adresse</td>
+                <td>{{ reservation.billingCustomer.billingAddress }}</td>
+              </tr>
+              <ng-container *ngFor="let customer of reservation.customers">
+                <tr>
+                  <td>Name</td>
+                  <td>{{ customer.name }}</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>{{ customer.email }}</td>
+                </tr>
+              </ng-container>
+              <tr>
+                <td>Startdatum</td>
                 <td>{{ reservation.startDate }}</td>
+              </tr>
+              <tr>
+                <td>Enddatum</td>
                 <td>{{ getEndDate(reservation.startDate, reservation.duration) }}</td>
               </tr>
               <tr>
+                <td>Preis</td>
                 <td>{{ reservation.price + '€' }}</td>
+              </tr>
+              <tr>
+                <td>Rabatt</td>
                 <td>{{ ((1 - reservation.discount) * 100).toFixed(2) + '%' }}</td>
               </tr>
-              <tr *ngFor="let room of reservation.rooms">
-                <td>{{ room.room.identifyer }}</td>
-                <td>{{ room.capacity.name }}</td>
-              </tr>
+              <ng-container *ngFor="let room of reservation.rooms">
+                <tr>
+                  <td>Zimmer</td>
+                  <td>{{ room.room.identifyer }}</td>
+                </tr>
+                <tr>
+                  <td>Belegung</td>
+                  <td>{{ room.capacity.name }}</td>
+                </tr>
+              </ng-container>
             </tbody>
           </table>
         </div>
@@ -59,54 +87,54 @@
           <div class="col">
             <label class="form-label" for="firstName">Vorname</label>
             <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Vorname" formControlName="firstName" />
-            <!-- <div *ngIf="form.get('firstName')!.invalid && (form.get('firstName')!.dirty || form.get('firstName')!.touched)">
-              <small class="form-text text-danger" *ngIf="form.get('firstName')?.errors?.required">
+            <div *ngIf="form.controls['billingCustomer'].get('firstName')!.invalid && (form.controls['billingCustomer'].get('firstName')!.dirty || form.controls['billingCustomer'].get('firstName')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('firstName')?.errors?.required">
                 Ihr Vorname wird für die Reservierung benötigt.
               </small>
-            </div> -->
+            </div>
           </div>
           <div class="col">
             <label class="form-label" for="lastName">Nachname</label>
             <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Nachname" formControlName="lastName" />
-            <!-- <div *ngIf="form.get('lastName')!.invalid && (form.get('lastName')!.dirty || form.get('lastName')!.touched)">
-              <small class="form-text text-danger" *ngIf="form.get('lastName')?.errors?.required">
+            <div *ngIf="form.controls['billingCustomer'].get('lastName')!.invalid && (form.controls['billingCustomer'].get('lastName')!.dirty || form.controls['billingCustomer'].get('lastName')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('lastName')?.errors?.required">
                 Ihr Nachname wird für die Reservierung benötigt.
               </small>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <label class="form-label" for="email">Email</label>
             <input type="text" class="form-control" id="email" name="email" placeholder="Email" formControlName="email" />
-            <!-- <div *ngIf="form.get('email')!.invalid && (form.get('email')!.dirty || form.get('email')!.touched)">
-              <small class="form-text text-danger" *ngIf="form.get('email')?.errors?.required">
+            <div *ngIf="form.controls['billingCustomer'].get('email')!.invalid && (form.controls['billingCustomer'].get('email')!.dirty || form.controls['billingCustomer'].get('email')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('email')?.errors?.required">
                 Ihre Email wird für die Reservierung benötigt.
               </small>
-              <small class="form-text text-danger" *ngIf="form.get('email')?.errors?.email">
+              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('email')?.errors?.email">
                 Bitte geben Sie eine korrekte Email Adresse ein.
               </small>
-            </div> -->
+            </div>
           </div>
           <div class="col">
             <label class="form-label" for="telephone">Phone</label>
             <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telefonnummer" formControlName="telephone" />
-            <!-- <div *ngIf="form.get('tel')!.invalid && (form.get('tel')!.dirty || form.get('tel')!.touched)">
-              <small class="form-text text-danger" *ngIf="form.get('tel')?.errors?.required">
+            <div *ngIf="form.controls['billingCustomer'].get('telephone')!.invalid && (form.controls['billingCustomer'].get('telephone')!.dirty || form.controls['billingCustomer'].get('telephone')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('telephone')?.errors?.required">
                 Ihre Telefonnummer wird für die Reservierung benötigt.
               </small>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <label class="form-label" for="birthday">Geburtsdatum</label>
             <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Geburtsdatum" formControlName="birthday" />
-            <!-- <div *ngIf="form.get('birthdate')!.invalid && (form.get('birthdate')!.dirty || form.get('birthdate')!.touched)">
-              <small class="form-text text-danger" *ngIf="form.get('birhtdate')?.errors?.required">
+            <div *ngIf="form.controls['billingCustomer'].get('birthday')!.invalid && (form.controls['billingCustomer'].get('birthday')!.dirty || form.controls['billingCustomer'].get('birthday')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('birhtday')?.errors?.required">
                 Ihr Geburtsdatum wird für die Reservierung benötigt.
               </small>
-            </div> -->
+            </div>
           </div>
           <div class="col">
             <label class="form-label" for="gender">Geschlecht</label>
@@ -115,22 +143,22 @@
               <option value="FEMALE">Weiblich</option>
               <option value="DIVERSE">Divers</option>
             </select>
-            <!-- <div *ngIf="form.get('gender')!.invalid && (form.get('gender')!.dirty || form.get('gender')!.touched)">
-              <small class="form-text text-danger" *ngIf="form.get('gender')?.errors?.required">
+            <div *ngIf="form.controls['billingCustomer'].get('gender')!.invalid && (form.controls['billingCustomer'].get('gender')!.dirty || form.controls['billingCustomer'].get('gender')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('gender')?.errors?.required">
                 Ihr Geschlecht wird für die Reservierung benötigt.
               </small>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <label class="form-label" for="billingAddress">Adresse</label>
             <input class="form-control" id="billingAddress" name="billingAddress" placeholder="Adresse" formControlName="billingAddress" />
-            <!-- <div *ngIf="form.controls['billingCustomer'].get('birthdate')!.invalid && (form.controls['billingCustomer'].get('birthdate')!.dirty || form.controls['billingCustomer'].get('address')!.touched)">
-              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('birhtdate')?.errors?.required">
-                Ihr Geburtsdatum wird für die Reservierung benötigt.
+            <div *ngIf="form.controls['billingCustomer'].get('billingAddress')!.invalid && (form.controls['billingCustomer'].get('billingAddress')!.dirty || form.controls['billingCustomer'].get('billingAddress')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('billingAddress')?.errors?.required">
+                Ihre Adresse wird für die Reservierung benötigt.
               </small>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -140,61 +168,61 @@
         Customers
 
       -->
-      <ng-container formArrayName="rooms">
+      <ng-container formArrayName="customers">
         <ng-container *ngFor="let customerForm of customerFormControl.controls; let index = index">
           <div [formGroupName]="index">
             <div class="row">
               <div class="col">
                 <label class="form-label" for="firstName">Vorname</label>
                 <input type="text" class="form-control" name="firstName" placeholder="Vorname" formControlName="firstName" />
-                <!-- <div *ngIf="form.get('firstName')!.invalid && (form.get('firstName')!.dirty || form.get('firstName')!.touched)">
-                  <small class="form-text text-danger" *ngIf="form.get('firstName')?.errors?.required">
+                <div *ngIf="customerFormControl.at(index).get('firstName')!.invalid && (customerFormControl.at(index).get('firstName')!.dirty || customerFormControl.at(index).get('firstName')!.touched)">
+                  <small class="form-text text-danger" *ngIf="customerFormControl.at(index).get('firstName')?.errors?.required">
                     Ihr Vorname wird für die Reservierung benötigt.
                   </small>
-                </div> -->
+                </div>
               </div>
               <div class="col">
                 <label class="form-label" for="lastName">Nachname</label>
                 <input type="text" class="form-control" name="lastName" placeholder="Nachname" formControlName="lastName" />
-                <!-- <div *ngIf="form.get('lastName')!.invalid && (form.get('lastName')!.dirty || form.get('lastName')!.touched)">
-                  <small class="form-text text-danger" *ngIf="form.get('lastName')?.errors?.required">
+                <div *ngIf="customerFormControl.at(index).get('lastName')!.invalid && (customerFormControl.at(index).get('lastName')!.dirty || customerFormControl.at(index).get('lastName')!.touched)">
+                  <small class="form-text text-danger" *ngIf="customerFormControl.at(index).get('lastName')?.errors?.required">
                     Ihr Nachname wird für die Reservierung benötigt.
                   </small>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <label class="form-label" for="email">Email</label>
                 <input type="text" class="form-control" name="email" placeholder="Email" formControlName="email" />
-                <!-- <div *ngIf="form.get('email')!.invalid && (form.get('email')!.dirty || form.get('email')!.touched)">
-                  <small class="form-text text-danger" *ngIf="form.get('email')?.errors?.required">
+                <div *ngIf="customerFormControl.at(index).get('email')!.invalid && (customerFormControl.at(index).get('email')!.dirty || customerFormControl.at(index).get('email')!.touched)">
+                  <small class="form-text text-danger" *ngIf="customerFormControl.at(index).get('email')?.errors?.required">
                     Ihre Email wird für die Reservierung benötigt.
                   </small>
-                  <small class="form-text text-danger" *ngIf="form.get('email')?.errors?.email">
+                  <small class="form-text text-danger" *ngIf="customerFormControl.at(index).get('email')?.errors?.email">
                     Bitte geben Sie eine korrekte Email Adresse ein.
                   </small>
-                </div> -->
+                </div>
               </div>
               <div class="col">
                 <label class="form-label" for="telephone">Phone</label>
                 <input type="text" class="form-control" name="telephone" placeholder="Telefonnummer" formControlName="telephone" />
-                <!-- <div *ngIf="form.get('tel')!.invalid && (form.get('tel')!.dirty || form.get('tel')!.touched)">
-                  <small class="form-text text-danger" *ngIf="form.get('tel')?.errors?.required">
+                <div *ngIf="customerFormControl.at(index).get('telephone')!.invalid && (customerFormControl.at(index).get('telephone')!.dirty || customerFormControl.at(index).get('telephone')!.touched)">
+                  <small class="form-text text-danger" *ngIf="customerFormControl.at(index).get('telephone')?.errors?.required">
                     Ihre Telefonnummer wird für die Reservierung benötigt.
                   </small>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <label class="form-label" for="birthday">Geburtsdatum</label>
                 <input type="date" class="form-control" name="birthday" placeholder="Geburtsdatum" formControlName="birthday" />
-                <!-- <div *ngIf="form.get('birthdate')!.invalid && (form.get('birthdate')!.dirty || form.get('birthdate')!.touched)">
-                  <small class="form-text text-danger" *ngIf="form.get('birhtdate')?.errors?.required">
+                <div *ngIf="customerFormControl.at(index).get('birthday')!.invalid && (customerFormControl.at(index).get('birthday')!.dirty || customerFormControl.at(index).get('birthday')!.touched)">
+                  <small class="form-text text-danger" *ngIf="customerFormControl.at(index).get('birhtday')?.errors?.required">
                     Ihr Geburtsdatum wird für die Reservierung benötigt.
                   </small>
-                </div> -->
+                </div>
               </div>
               <div class="col">
                 <label class="form-label" for="gender">Geschlecht</label>
@@ -203,22 +231,22 @@
                   <option value="FEMALE">Weiblich</option>
                   <option value="DIVERSE">Divers</option>
                 </select>
-                <!-- <div *ngIf="form.get('gender')!.invalid && (form.get('gender')!.dirty || form.get('gender')!.touched)">
-                  <small class="form-text text-danger" *ngIf="form.get('gender')?.errors?.required">
+                <div *ngIf="customerFormControl.at(index).get('gender')!.invalid && (customerFormControl.at(index).get('gender')!.dirty || customerFormControl.at(index).get('gender')!.touched)">
+                  <small class="form-text text-danger" *ngIf="customerFormControl.at(index).get('gender')?.errors?.required">
                     Ihr Geschlecht wird für die Reservierung benötigt.
                   </small>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="col">
                 <label class="form-label" for="billingAddress">Adresse</label>
                 <input class="form-control" name="billingAddress" placeholder="Adresse" formControlName="billingAddress" />
-                <!-- <div *ngIf="form.controls['billingCustomer'].get('birthdate')!.invalid && (form.controls['billingCustomer'].get('birthdate')!.dirty || form.controls['billingCustomer'].get('address')!.touched)">
-                  <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('birhtdate')?.errors?.required">
+                <div *ngIf="customerFormControl.at(index).get('billingAddress')!.invalid && (customerFormControl.at(index).get('billingAddress')!.dirty || customerFormControl.at(index).get('billingAddress')!.touched)">
+                  <small class="form-text text-danger" *ngIf="customerFormControl.at(index).get('billingAddress')?.errors?.required">
                     Ihr Geburtsdatum wird für die Reservierung benötigt.
                   </small>
-                </div> -->
+                </div>
               </div>
             </div>
           </div>
@@ -257,6 +285,13 @@
           </div>
         </div>
       </div>
+
+      <!--
+
+        Rooms
+
+      -->
+
       <ng-container formArrayName="rooms">
         <ng-container *ngFor="let roomForm of roomsFormControl.controls; let index = index">
           <div [formGroupName]="index">
@@ -266,17 +301,22 @@
                 <select class="form-select" id="room" name="room" formControlName="roomID">
                   <option *ngFor="let room of rooms" value="{{ room.id }}">{{ room.identifyer }}</option>
                 </select>
-                <!-- <div *ngIf="form.get('room')!.invalid && (form.get('room')!.dirty || form.get('room')!.touched)">
-                  <small class="form-text text-danger" *ngIf="form.get('room')?.errors?.required">
+                <div *ngIf="roomsFormControl.at(index).get('roomID')!.invalid && (roomsFormControl.at(index).get('roomID')!.dirty || roomsFormControl.at(index).get('roomID')!.touched)">
+                  <small class="form-text text-danger" *ngIf="roomsFormControl.at(index).get('roomID')?.errors?.required">
                     Sie müssen ein Zimmer für die Reservierung auswählen.
                   </small>
-                </div> -->
+                </div>
               </div>
               <div class="col">
                 <label class="form-label" for="room">Belegung</label>
                 <select class="form-select" id="room" name="room" formControlName="capacityID">
                   <option *ngFor="let price of getRoomById(roomsFormControl.at(index).get('roomID')?.value).prices" value="{{ price.capacity?.id }}">{{ price.capacity?.name }}</option>
                 </select>
+                <div *ngIf="roomsFormControl.at(index).get('capacityID')!.invalid && (roomsFormControl.at(index).get('capacityID')!.dirty || roomsFormControl.at(index).get('capacityID')!.touched)">
+                  <small class="form-text text-danger" *ngIf="roomsFormControl.at(index).get('capacityID')?.errors?.required">
+                    Sie müssen ein Belegung für die Reservierung auswählen.
+                  </small>
+                </div>
               </div>
             </div>
           </div>

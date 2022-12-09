@@ -112,9 +112,9 @@ export class NewReservationComponent implements OnInit {
       delete reservation.billingCustomer.lastName
       for (let i = 0; i < reservation.customers.length; i++) {
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-        reservation.customer[i].name = reservation.customer[i].firstName + " " + reservation.customer[i].lastName
-        delete reservation.customer[i].firstName
-        delete reservation.customer[i].lastName
+        reservation.customers[i].name = reservation.customers[i].firstName + " " + reservation.customers[i].lastName
+        delete reservation.customers[i].firstName
+        delete reservation.customers[i].lastName
       }
       delete reservation.vacationStart
       delete reservation.vacationEnd
@@ -145,8 +145,8 @@ export class NewReservationComponent implements OnInit {
   addRoomRow(): void {
     this.roomsFormControl.push(
       new FormGroup({
-      room: new FormControl('', [Validators.required]),
-      countPersons: new FormControl('', [Validators.required])
+      roomID: new FormControl('', [Validators.required]),
+      capacityID: new FormControl('', [Validators.required])
     }))
   }
   addPersonRow(): void {
