@@ -37,7 +37,12 @@ class RoomResourceIT {
     private static final Integer UPDATED_MAX_CAPACITY = 2;
 
     private static final String ENTITY_API_URL = "/api/rooms";
+
+    private static final String PUBLIC_ENTITY_API_URL = "/api/public/rooms";
+
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static final String PUBLIC_ENTITY_API_URL_ID = PUBLIC_ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
     private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
@@ -127,7 +132,7 @@ class RoomResourceIT {
 
         // Get all the roomList
         restRoomMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(PUBLIC_ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(room.getId().intValue())))
@@ -143,7 +148,7 @@ class RoomResourceIT {
 
         // Get the room
         restRoomMockMvc
-            .perform(get(ENTITY_API_URL_ID, room.getId()))
+            .perform(get(PUBLIC_ENTITY_API_URL_ID, room.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(room.getId().intValue()))
@@ -155,7 +160,7 @@ class RoomResourceIT {
     @Transactional
     void getNonExistingRoom() throws Exception {
         // Get the room
-        restRoomMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
+        restRoomMockMvc.perform(get(PUBLIC_ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test

@@ -1,8 +1,13 @@
 <div>
   <h2 id="page-heading" data-cy="RoomHeading">
-    <span jhiTranslate="lionhotelApp.room.home.title">Rooms</span>
+    <!--
+    <span class="m-auto" *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN]); else loggedOut" jhiTranslate="lionhotelApp.room.home.title_user">Zimmerverwaltung</span>
+    <ng-template #loggedOut>
+      <span class="m-auto" jhiTranslate="lionhotelApp.room.home.title">Zimmer</span>
+    </ng-template>
+    -->
 
-    <div class="d-flex justify-content-end">
+    <div class="mt-2 mr-2 d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="lionhotelApp.room.home.refreshListLabel">Liste aktualisieren</span>
@@ -13,9 +18,12 @@
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-room"
         [routerLink]="['/room/new']"
+        *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="lionhotelApp.room.home.createLabel"> Room erstellen </span>
+        <span *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])" jhiTranslate="lionhotelApp.room.home.createLabel"
+          >Zimmer erstellen</span
+        >
       </button>
     </div>
   </h2>
@@ -25,14 +33,13 @@
   <jhi-alert></jhi-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="rooms?.length === 0">
-    <span jhiTranslate="lionhotelApp.room.home.notFound">Keine Rooms gefunden</span>
+    <span jhiTranslate="lionhotelApp.room.home.notFound">Keine Zimmer gefunden</span>
   </div>
-
-  <div class="table-responsive table-entities" id="entities" *ngIf="rooms && rooms.length > 0">
+  <div class="table-responsive table-entities w-50 m-auto" id="entities" *ngIf="rooms && rooms.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
+          <th *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])" scope="col" jhiSortBy="id">
             <div class="d-flex">
               <span jhiTranslate="global.field.id">ID</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -40,24 +47,101 @@
           </th>
           <th scope="col" jhiSortBy="identifyer">
             <div class="d-flex">
-              <span jhiTranslate="lionhotelApp.room.identifyer">Identifyer</span>
+              <span jhiTranslate="lionhotelApp.room.identifyer">Raumname</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="maxCapacity">
             <div class="d-flex">
-              <span jhiTranslate="lionhotelApp.room.maxCapacity">Max Capacity</span>
+              <span jhiTranslate="lionhotelApp.room.maxCapacity">Maximale Zimmergröße</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="invoice.id">
+          <th scope="col" jhiSortBy="minPrice">
             <div class="d-flex">
-              <span jhiTranslate="lionhotelApp.room.invoice">Invoice</span>
+              <span jhiTranslate="lionhotelApp.room.price">Preis</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col"></th>
         </tr>
+      </thead>
+    </table>
+  </div>
+  <div *ngFor="let room of rooms; trackBy: trackId">
+    <div
+      class="card m-auto mt-5 mb-5 w-50"
+      *ngIf="(room.maxCapacity && room.maxCapacity > 0) || hasAnyAuthority([Authority.USER, Authority.ADMIN])"
+    >
+      <div class="buttons">
+        <button
+          type="submit"
+          *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])"
+          [routerLink]="['/room', room.id, 'edit']"
+          class="x-button btn btn-secondary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>
+        </button>
+        <button type="submit" *ngIf="hasAnyAuthority(Authority.ADMIN)" (click)="delete(room)" class="x-button btn btn-danger">
+          <fa-icon icon="xmark"></fa-icon>
+        </button>
+      </div>
+      <!-- click anywhere on card to get to details page -->
+      <div [routerLink]="['/room', room.id, 'view']">
+        <img *ngIf="room.picture" class="room-image card-img-top" [src]="room.picture.image" [alt]="room.picture.description" />
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ room.identifyer }}<span *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])"> (ID: {{ room.id }})</span>
+          </h5>
+          <div class="card-text mb-2">
+            <div *ngIf="room.picture">{{ room.picture.description }}<br /><br /></div>
+            <div *ngIf="room.maxCapacity; else noCapacity">
+              Eines unserer tollen Hotelzimmer für bis zu {{ room.maxCapacity }} Person(en).
+            </div>
+            <ng-template #noCapacity>Keine maximale Anzahl an Personen festgelegt.</ng-template>
+          </div>
+        </div>
+        <div class="card-body d-flex w-100 justify-content-between">
+          <span *ngIf="room.minPrice; else noprice" style="font-weight: bold">ab {{ room.minPrice | number: '1.2-2' }}€</span>
+          <ng-template #noprice>
+            <span style="font-weight: bold">Kein Preis festgelegt</span>
+          </ng-template>
+          <a href="#" class="btn btn-primary">Reservieren</a>
+        </div>
+      </div>
+    </div>
+
+    <!--
+    <div class="table-responsive table-entities" id="entities" *ngIf="rooms && rooms.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+        <th scope="col" jhiSortBy="id">
+          <div class="d-flex">
+            <span jhiTranslate="global.field.id">ID</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="identifyer">
+          <div class="d-flex">
+            <span jhiTranslate="lionhotelApp.room.identifyer">Identifyer</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="maxCapacity">
+          <div class="d-flex">
+            <span jhiTranslate="lionhotelApp.room.maxCapacity">Maximale Zimmergröße</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="invoice.id">
+          <div class="d-flex">
+            <span jhiTranslate="lionhotelApp.room.invoice">Rechnung</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col"></th>
+      </tr>
       </thead>
       <tbody>
         <tr *ngFor="let room of rooms; trackBy: trackId" data-cy="entityTable">
@@ -78,12 +162,12 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Details</span>
               </button>
 
-              <button type="submit" [routerLink]="['/room', room.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button type="submit"  *ngIf="hasAnyAuthority([Authority.USER, Authority.ADMIN])" [routerLink]="['/room', room.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
               </button>
 
-              <button type="submit" (click)="delete(room)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button type="submit" *ngIf="hasAnyAuthority(Authority.ADMIN)" (click)="delete(room)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
               </button>
@@ -92,5 +176,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
+    -->
   </div>
 </div>

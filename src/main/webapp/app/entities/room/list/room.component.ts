@@ -3,29 +3,42 @@ import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IRoom } from '../room.model';
+import { IRoom, RoomPrice, RoomResponse, RoomPicture } from '../room.model';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, RoomService } from '../service/room.service';
 import { RoomDeleteDialogComponent } from '../delete/room-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
+import { AccountService } from '../../../core/auth/account.service';
+import { Authority } from '../../../config/authority.constants';
+import { RoomPictureService } from '../../room-picture/service/room-picture.service';
+
+interface IRoomWithMinPrice extends IRoom {
+  minPrice?: number | null;
+  picture?: RoomPicture | null;
+}
 
 @Component({
   selector: 'jhi-room',
   templateUrl: './room.component.html',
+  styleUrls: ['./room.component.scss'],
 })
 export class RoomComponent implements OnInit {
-  rooms?: IRoom[];
+  rooms?: IRoomWithMinPrice[];
+
   isLoading = false;
 
   predicate = 'id';
   ascending = true;
+  Authority = Authority;
 
   constructor(
     protected roomService: RoomService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected accountService: AccountService,
+    private roomPictureService: RoomPictureService
   ) {}
 
   trackId = (_index: number, item: IRoom): number => this.roomService.getRoomIdentifier(item);
@@ -34,7 +47,21 @@ export class RoomComponent implements OnInit {
     this.load();
   }
 
+  hasAnyAuthority(authorities: string[] | string): boolean {
+    return this.accountService.hasAnyAuthority(authorities);
+  }
+
+  getMinPrice(prices: RoomPrice[] | null | undefined): number | null {
+    if (!prices || prices.length < 1) {
+      return null;
+    }
+    return Math.min(...prices.map(p => p.price)) / 100;
+  }
+
   delete(room: IRoom): void {
+    if (!this.hasAnyAuthority(Authority.ADMIN)) {
+      return;
+    }
     const modalRef = this.modalService.open(RoomDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.room = room;
     // unsubscribe not needed because closed completes on modal close
@@ -84,8 +111,15 @@ export class RoomComponent implements OnInit {
     return data.sort(this.sortService.startSort(this.predicate, this.ascending ? 1 : -1));
   }
 
-  protected fillComponentAttributesFromResponseBody(data: IRoom[] | null): IRoom[] {
-    return data ?? [];
+  protected fillComponentAttributesFromResponseBody(data: IRoomWithMinPrice[] | null): IRoomWithMinPrice[] {
+    const responseRooms = data ?? [];
+    responseRooms.forEach(r => {
+      r.minPrice = this.getMinPrice(r.prices);
+      if (r.pictureIDs && r.pictureIDs.length > 0) {
+        this.roomPictureService.find(r.pictureIDs[0]).subscribe({ next: next => (r.picture = next.body) });
+      }
+    });
+    return responseRooms;
   }
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {

@@ -16,7 +16,6 @@ const roomRoute: Routes = [
     data: {
       defaultSort: 'id,' + ASC,
     },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
@@ -24,7 +23,6 @@ const roomRoute: Routes = [
     resolve: {
       room: RoomRoutingResolveService,
     },
-    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',

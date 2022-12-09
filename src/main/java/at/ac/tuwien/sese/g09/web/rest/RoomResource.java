@@ -7,6 +7,7 @@ import at.ac.tuwien.sese.g09.service.mapper.RoomMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -115,10 +116,10 @@ public class RoomResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rooms in body.
      */
-    @GetMapping("/rooms")
-    public List<Room> getAllRooms() {
+    @GetMapping("/public/rooms")
+    public List<RoomResponseDTO> getAllRooms() {
         log.debug("REST request to get all Rooms");
-        return roomService.getAllRooms();
+        return roomService.getAllRooms().stream().map(roomMapper::roomToRoomResponseDTO).collect(Collectors.toList());
     }
 
     /**
@@ -127,7 +128,7 @@ public class RoomResource {
      * @param id the id of the room to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the room, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/rooms/{id}")
+    @GetMapping("/public/rooms/{id}")
     public ResponseEntity<RoomResponseDTO> getRoom(@PathVariable Long id) {
         log.debug("REST request to get Room : {}", id);
         final var result = roomService.getRoom(id);

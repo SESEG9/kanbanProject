@@ -2,27 +2,29 @@
   "lionhotelApp": {
     "room": {
       "home": {
-        "title": "Rooms",
+        "title": "Zimmer",
+        "title_user": "Zimmerverwaltung",
         "refreshListLabel": "Liste aktualisieren",
-        "createLabel": "Room erstellen",
-        "createOrEditLabel": "Room erstellen oder bearbeiten",
-        "notFound": "Keine Rooms gefunden"
+        "createLabel": "Zimmer erstellen",
+        "createOrEditLabel": "Zimmer erstellen oder bearbeiten",
+        "notFound": "Keine Zimmer gefunden"
       },
-      "created": "Room erstellt mit ID {{ param }}",
-      "updated": "Room aktualisiert mit ID {{ param }}",
-      "deleted": "Room gelöscht mit ID {{ param }}",
+      "created": "Zimmer erstellt mit ID {{ param }}",
+      "updated": "Zimmer aktualisiert mit ID {{ param }}",
+      "deleted": "Zimmer gelöscht mit ID {{ param }}",
       "delete": {
-        "question": "Soll Room {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Zimmer {{ id }} wirklich dauerhaft gelöscht werden?"
       },
       "detail": {
-        "title": "Room"
+        "title": "Zimmer"
       },
       "id": "ID",
-      "identifyer": "Identifyer",
-      "maxCapacity": "Max Capacity",
-      "prices": "Prices",
-      "invoice": "Invoice",
-      "bookings": "Bookings"
+      "identifyer": "Raumname",
+      "maxCapacity": "Maximale Gästeanzahl",
+      "prices": "Preise",
+      "price": "Preis",
+      "invoice": "Rechnung",
+      "bookings": "Buchungen"
     }
   }
 }
