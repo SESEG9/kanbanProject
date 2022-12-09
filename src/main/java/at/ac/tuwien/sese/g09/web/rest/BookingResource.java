@@ -170,7 +170,7 @@ public class BookingResource {
      * @param id the id of the booking to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/public/bookings/{id}")
+    @DeleteMapping("/bookings/{id}")
     public ResponseEntity<Booking> deleteBooking(@PathVariable Long id, @RequestParam String email, @RequestParam String bookingCode) {
         Booking booking = bookingService.cancelBooking(id, email, bookingCode);
         return ResponseEntity
