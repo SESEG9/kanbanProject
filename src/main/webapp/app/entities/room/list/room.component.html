@@ -106,7 +106,7 @@
           <ng-template #noprice>
             <span style="font-weight: bold">Kein Preis festgelegt</span>
           </ng-template>
-          <a href="#" class="btn btn-primary">Reservieren</a>
+          <a routerLink="/reservation/new" [state]="{ roomID: room.id }" class="btn btn-primary">Reservieren</a>
         </div>
       </div>
     </div>

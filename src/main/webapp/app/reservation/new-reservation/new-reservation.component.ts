@@ -31,7 +31,6 @@ export class NewReservationComponent implements OnInit {
   error = false;
   errorMessage = ''
   success = false;
-  vacationDate = false;
 
   promo: string | null = null;
 
@@ -70,18 +69,10 @@ export class NewReservationComponent implements OnInit {
     this.$roomService.query().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        this.route.paramMap.pipe(map(() => window.history.state.roomID)).subscribe(data => (this.roomsFormControl.at(0).get('roomID')?.setValue(data === undefined ? null : data)));
       },
     })
-
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    this.route.paramMap.pipe(map(() => window.history.state.promo)).subscribe(data => (this.promo = data === undefined ? null : data));
-    const id = this.route.snapshot.params['id'];
-    // eslint-disable-next-line eqeqeq
-    // this.room = this.rooms.filter((_room: any) => _room.id == id)[0];
-    // if (this.room) {
-    //   this.form.get('room')?.setValue(this.room.id);
-    // }
   }
 
   dateDiffInDays(a: Date, b: Date): number {
@@ -102,37 +93,38 @@ export class NewReservationComponent implements OnInit {
   createReservation(): void {
     this.form.markAllAsTouched()
     if (this.form.valid) {
-      console.log(this.form.value)
       const reservation: any = this.form.value
       reservation.duration = this.dateDiffInDays(new Date(reservation.vacationStart), new Date(reservation.vacationEnd))
-      reservation.startDate = reservation.vacationStart
-      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-      reservation.billingCustomer.name = reservation.billingCustomer.firstName + " " + reservation.billingCustomer.lastName
-      delete reservation.billingCustomer.firstName
-      delete reservation.billingCustomer.lastName
-      for (let i = 0; i < reservation.customers.length; i++) {
+      if (reservation.duration >= 1) {
+        reservation.duration = this.dateDiffInDays(new Date(reservation.vacationStart), new Date(reservation.vacationEnd))
+        reservation.startDate = reservation.vacationStart
         // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-        reservation.customers[i].name = reservation.customers[i].firstName + " " + reservation.customers[i].lastName
-        delete reservation.customers[i].firstName
-        delete reservation.customers[i].lastName
-      }
-      delete reservation.vacationStart
-      delete reservation.vacationEnd
-      this.$reservationService.create(reservation as Reservation).subscribe({
-        next: (value) => {
-          this.reservation = value
-        },
-        error: (error) => {
-          this.error = true
-          this.errorMessage = error.message
+        reservation.billingCustomer.name = reservation.billingCustomer.firstName + " " + reservation.billingCustomer.lastName
+        delete reservation.billingCustomer.firstName
+        delete reservation.billingCustomer.lastName
+        for (let i = 0; i < reservation.customers.length; i++) {
+          // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+          reservation.customers[i].name = reservation.customers[i].firstName + " " + reservation.customers[i].lastName
+          delete reservation.customers[i].firstName
+          delete reservation.customers[i].lastName
         }
-      })
+        delete reservation.vacationStart
+        delete reservation.vacationEnd
+        this.$reservationService.create(reservation as Reservation).subscribe({
+          next: (value) => {
+            this.reservation = value
+            this.success = true
+          },
+          error: (error) => {
+            this.error = true
+            this.errorMessage = error.message
+          }
+        })
+      } else {
+        this.error = true
+        this.errorMessage = 'Enddatum muss nach dem Startdatum liegen.'
+      }
     }
-    this.error = false;
-    this.vacationDate = false;
-    this.success = false;
-
-    this.success = true;
   }
 
   get roomsFormControl(): FormArray {
@@ -149,6 +141,9 @@ export class NewReservationComponent implements OnInit {
       capacityID: new FormControl('', [Validators.required])
     }))
   }
+  removeRoomRow(index: number) : void {
+    this.roomsFormControl.removeAt(index)
+  }
   addPersonRow(): void {
     this.customerFormControl.push(
       new FormGroup({
@@ -161,6 +156,9 @@ export class NewReservationComponent implements OnInit {
         billingAddress: new FormControl('', [Validators.required])
       })
     )
+  }
+  removePersonRow(index: number) : void {
+    this.customerFormControl.removeAt(index)
   }
 
 
@@ -192,4 +190,21 @@ export class NewReservationComponent implements OnInit {
     // eslint-disable-next-line eqeqeq
     return this.rooms?.filter((room: IRoom) => room.id == roomId)[0] ?? {} as IRoom
   }
+  getPriceByCapacityID(room: IRoom, capacityID: number) : number {
+    // eslint-disable-next-line eqeqeq
+    const price = room.prices?.find((roomPrice: RoomPrice) => roomPrice.capacity?.id == capacityID)?.price ?? 0
+    return price / 100
+  }
+  getCountDays(): number {
+    return this.dateDiffInDays(new Date(this.form.controls['vacationStart'].value!), new Date(this.form.controls['vacationEnd'].value!))
+  }
+  getSum(rooms: [{roomID: number, capacityID: number}]) : number {
+    let sum = 0;
+    rooms.forEach((room) => {
+      sum += this.getCountDays() * this.getPriceByCapacityID(this.getRoomById(room.roomID), room.capacityID)
+    })
+    return sum
+  }
+
+
 }
