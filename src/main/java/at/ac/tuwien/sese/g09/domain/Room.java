@@ -44,6 +44,7 @@ public class Room implements Serializable {
 
     @OneToMany(mappedBy = "room")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "capacity", "room" }, allowSetters = true)
     private Set<RoomPrice> prices = new HashSet<>();
 
     @OneToMany(mappedBy = "room")
@@ -141,6 +142,11 @@ public class Room implements Serializable {
 
     public Set<RoomPicture> getRoomPictures() {
         return roomPictures;
+    }
+
+    public Room setRoomPictures(Set<RoomPicture> roomPictures) {
+        this.roomPictures = roomPictures;
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
