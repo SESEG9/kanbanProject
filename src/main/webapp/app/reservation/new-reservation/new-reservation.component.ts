@@ -79,9 +79,9 @@ export class NewReservationComponent implements OnInit {
 
   createReservation(): void {
     this.form.markAllAsTouched()
-    // if (this.form.valid) {
+    if (this.form.valid) {
 
-    // }
+    }
     this.error = false;
     this.vacationDate = false;
     this.success = false;
