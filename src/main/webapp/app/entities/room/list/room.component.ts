@@ -103,7 +103,7 @@ export class RoomComponent implements OnInit {
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
-    let dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
+    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.rooms = this.refineData(dataFromBody);
   }
 
@@ -112,7 +112,7 @@ export class RoomComponent implements OnInit {
   }
 
   protected fillComponentAttributesFromResponseBody(data: IRoomWithMinPrice[] | null): IRoomWithMinPrice[] {
-    let responseRooms = data ?? [];
+    const responseRooms = data ?? [];
     responseRooms.forEach(r => {
       r.minPrice = this.getMinPrice(r.prices);
       if (r.pictureIDs && r.pictureIDs.length > 0) {
