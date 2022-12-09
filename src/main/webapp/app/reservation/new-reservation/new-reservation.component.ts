@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +8,8 @@ import { IRoom, RoomPicture, RoomPrice } from 'app/entities/room/room.model';
 import { RoomService } from 'app/entities/room/service/room.service';
 import { SortService } from 'app/shared/sort/sort.service';
 import { map } from 'rxjs';
+import { Reservation, ReservationResponse } from '../reservation.model';
+import { ReservationService } from '../reservation.service';
 
 
 interface IRoomWithMinPrice extends IRoom {
@@ -26,28 +29,31 @@ export class NewReservationComponent implements OnInit {
   ascending = true;
 
   error = false;
+  errorMessage = ''
   success = false;
   vacationDate = false;
 
   promo: string | null = null;
+
+  reservation?: ReservationResponse
 
   form = new FormGroup({
     billingCustomer: new FormGroup({
         firstName: new FormControl('', [Validators.required]),
         lastName: new FormControl('', [Validators.required]),
         email: new FormControl('', [Validators.email, Validators.required]),
-        birthdate: new FormControl(new Date(), [Validators.required]),
+        birthday: new FormControl(new Date(), [Validators.required]),
         gender: new FormControl('', [Validators.required]),
-        tel: new FormControl('', [Validators.required]),
-        address: new FormControl('', [Validators.required])
+        telephone: new FormControl('', [Validators.required]),
+        billingAddress: new FormControl('', [Validators.required])
     }),
     customers: new FormArray([]),
     vacationStart: new FormControl(new Date(), [Validators.required]),
     vacationEnd: new FormControl(new Date(), [Validators.required]),
     rooms: new FormArray([
       new FormGroup({
-          room: new FormControl('', [Validators.required]),
-          countPersons: new FormControl('', [Validators.required])
+          roomID: new FormControl('', [Validators.required]),
+          capacityID: new FormControl('', [Validators.required])
       })
     ])
   });
@@ -57,6 +63,7 @@ export class NewReservationComponent implements OnInit {
     private $roomService: RoomService,
     private $roomPictureService: RoomPictureService,
     protected $sortService: SortService,
+    private $reservationService: ReservationService
   ) {}
 
   ngOnInit(): void {
@@ -77,10 +84,49 @@ export class NewReservationComponent implements OnInit {
     // }
   }
 
+  dateDiffInDays(a: Date, b: Date): number {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
+  getEndDate(date: string, duration: number): string {
+    const endDate = new Date(date)
+    endDate.setDate(endDate.getDate() + duration)
+    return formatDate(endDate, 'dd.MM.yyyy', 'en-US')
+  }
+
+
   createReservation(): void {
     this.form.markAllAsTouched()
     if (this.form.valid) {
-
+      console.log(this.form.value)
+      const reservation: any = this.form.value
+      reservation.duration = this.dateDiffInDays(new Date(reservation.vacationStart), new Date(reservation.vacationEnd))
+      reservation.startDate = reservation.vacationStart
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      reservation.billingCustomer.name = reservation.billingCustomer.firstName + " " + reservation.billingCustomer.lastName
+      delete reservation.billingCustomer.firstName
+      delete reservation.billingCustomer.lastName
+      for (let i = 0; i < reservation.customers.length; i++) {
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+        reservation.customer[i].name = reservation.customer[i].firstName + " " + reservation.customer[i].lastName
+        delete reservation.customer[i].firstName
+        delete reservation.customer[i].lastName
+      }
+      delete reservation.vacationStart
+      delete reservation.vacationEnd
+      this.$reservationService.create(reservation as Reservation).subscribe({
+        next: (value) => {
+          this.reservation = value
+        },
+        error: (error) => {
+          this.error = true
+          this.errorMessage = error.message
+        }
+      })
     }
     this.error = false;
     this.vacationDate = false;
@@ -109,10 +155,10 @@ export class NewReservationComponent implements OnInit {
         firstName: new FormControl('', [Validators.required]),
         lastName: new FormControl('', [Validators.required]),
         email: new FormControl('', [Validators.email, Validators.required]),
-        birthdate: new FormControl(new Date(), [Validators.required]),
+        birthday: new FormControl(new Date(), [Validators.required]),
         gender: new FormControl('', [Validators.required]),
-        tel: new FormControl('', [Validators.required]),
-        address: new FormControl('', [Validators.required])
+        telephone: new FormControl('', [Validators.required]),
+        billingAddress: new FormControl('', [Validators.required])
       })
     )
   }

@@ -1,11 +1,51 @@
 <div class="container" style="max-width: 650px">
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center flex-column">
     <div class="alert alert-success" *ngIf="success">
       <strong>Reservierung gespeichert!</strong> Bitte überprüfen Sie Ihre E-Mails für die Bestätigung.
     </div>
+    <div *ngIf="success && reservation">
+      <div class="container" style="max-width: 650px">
+        <div class="mt-4" *ngIf="reservation">
+          <h4>Reservierungsdetails</h4>
+          <table class="table reservation-table mt-1 table-striped" *ngIf="reservation">
+            <tbody>
+              <tr>
+                <td>{{ reservation.billingCustomer.name }}</td>
+                <td>{{ reservation.billingCustomer.email }}</td>
+              </tr>
+              <tr>
+                <td>{{ reservation.bookingCode }}</td>
+                <td>{{ reservation.billingCustomer.billingAddress }}</td>
+              </tr>
+              <tr *ngFor="let customer of reservation.customers">
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.email }}</td>
+              </tr>
+              <tr>
+                <td>{{ reservation.startDate }}</td>
+                <td>{{ getEndDate(reservation.startDate, reservation.duration) }}</td>
+              </tr>
+              <tr>
+                <td>{{ reservation.price + '€' }}</td>
+                <td>{{ ((1 - reservation.discount) * 100).toFixed(2) + '%' }}</td>
+              </tr>
+              <tr *ngFor="let room of reservation.rooms">
+                <td>{{ room.room.identifyer }}</td>
+                <td>{{ room.capacity.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-    <div class="alert alert-danger" *ngIf="error"><strong>Reservierung fehlgeschlagen!</strong> Bitte versuchen Sie es später nochmal.</div>
-
+    <div class="alert alert-danger" *ngIf="error">
+      <strong>Reservierung fehlgeschlagen!</strong>
+      <div>
+        {{errorMessage}}
+      </div>
+      <div>Bitte versuchen Sie es später nochmal.</div>
+    </div>
     <div class="alert alert-danger" *ngIf="vacationDate">
       <strong>Zimmer nicht verfügbar!</strong> Bitte wählen Sie einen anderen Zeitraum aus.
     </div>
@@ -49,8 +89,8 @@
             </div> -->
           </div>
           <div class="col">
-            <label class="form-label" for="tel">Phone</label>
-            <input type="text" class="form-control" id="tel" name="tel" placeholder="Telefonnummer" formControlName="tel" />
+            <label class="form-label" for="telephone">Phone</label>
+            <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telefonnummer" formControlName="telephone" />
             <!-- <div *ngIf="form.get('tel')!.invalid && (form.get('tel')!.dirty || form.get('tel')!.touched)">
               <small class="form-text text-danger" *ngIf="form.get('tel')?.errors?.required">
                 Ihre Telefonnummer wird für die Reservierung benötigt.
@@ -60,8 +100,8 @@
         </div>
         <div class="row">
           <div class="col">
-            <label class="form-label" for="birthdate">Geburtsdatum</label>
-            <input type="date" class="form-control" id="birthdate" name="birthdate" placeholder="Geburtsdatum" formControlName="birthdate" />
+            <label class="form-label" for="birthday">Geburtsdatum</label>
+            <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Geburtsdatum" formControlName="birthday" />
             <!-- <div *ngIf="form.get('birthdate')!.invalid && (form.get('birthdate')!.dirty || form.get('birthdate')!.touched)">
               <small class="form-text text-danger" *ngIf="form.get('birhtdate')?.errors?.required">
                 Ihr Geburtsdatum wird für die Reservierung benötigt.
@@ -71,9 +111,9 @@
           <div class="col">
             <label class="form-label" for="gender">Geschlecht</label>
             <select class="form-select" id="gender" name="gender" formControlName="gender">
-              <option value="m">Männlich</option>
-              <option value="w">Weiblich</option>
-              <option value="d">Divers</option>
+              <option value="MALE">Männlich</option>
+              <option value="FEMALE">Weiblich</option>
+              <option value="DIVERSE">Divers</option>
             </select>
             <!-- <div *ngIf="form.get('gender')!.invalid && (form.get('gender')!.dirty || form.get('gender')!.touched)">
               <small class="form-text text-danger" *ngIf="form.get('gender')?.errors?.required">
@@ -84,13 +124,13 @@
         </div>
         <div class="row">
           <div class="col">
-            <label class="form-label" for="address">Adresse</label>
-            <input class="form-control" id="address" name="address" placeholder="Adresse" formControlName="address" />
-            <div *ngIf="form.controls['billingCustomer'].get('birthdate')!.invalid && (form.controls['billingCustomer'].get('birthdate')!.dirty || form.controls['billingCustomer'].get('address')!.touched)">
+            <label class="form-label" for="billingAddress">Adresse</label>
+            <input class="form-control" id="billingAddress" name="billingAddress" placeholder="Adresse" formControlName="billingAddress" />
+            <!-- <div *ngIf="form.controls['billingCustomer'].get('birthdate')!.invalid && (form.controls['billingCustomer'].get('birthdate')!.dirty || form.controls['billingCustomer'].get('address')!.touched)">
               <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('birhtdate')?.errors?.required">
                 Ihr Geburtsdatum wird für die Reservierung benötigt.
               </small>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -137,8 +177,8 @@
                 </div> -->
               </div>
               <div class="col">
-                <label class="form-label" for="tel">Phone</label>
-                <input type="text" class="form-control" name="tel" placeholder="Telefonnummer" formControlName="tel" />
+                <label class="form-label" for="telephone">Phone</label>
+                <input type="text" class="form-control" name="telephone" placeholder="Telefonnummer" formControlName="telephone" />
                 <!-- <div *ngIf="form.get('tel')!.invalid && (form.get('tel')!.dirty || form.get('tel')!.touched)">
                   <small class="form-text text-danger" *ngIf="form.get('tel')?.errors?.required">
                     Ihre Telefonnummer wird für die Reservierung benötigt.
@@ -148,8 +188,8 @@
             </div>
             <div class="row">
               <div class="col">
-                <label class="form-label" for="birthdate">Geburtsdatum</label>
-                <input type="date" class="form-control" name="birthdate" placeholder="Geburtsdatum" formControlName="birthdate" />
+                <label class="form-label" for="birthday">Geburtsdatum</label>
+                <input type="date" class="form-control" name="birthday" placeholder="Geburtsdatum" formControlName="birthday" />
                 <!-- <div *ngIf="form.get('birthdate')!.invalid && (form.get('birthdate')!.dirty || form.get('birthdate')!.touched)">
                   <small class="form-text text-danger" *ngIf="form.get('birhtdate')?.errors?.required">
                     Ihr Geburtsdatum wird für die Reservierung benötigt.
@@ -159,9 +199,9 @@
               <div class="col">
                 <label class="form-label" for="gender">Geschlecht</label>
                 <select class="form-select" name="gender" formControlName="gender">
-                  <option value="m">Männlich</option>
-                  <option value="w">Weiblich</option>
-                  <option value="d">Divers</option>
+                  <option value="MALE">Männlich</option>
+                  <option value="FEMALE">Weiblich</option>
+                  <option value="DIVERSE">Divers</option>
                 </select>
                 <!-- <div *ngIf="form.get('gender')!.invalid && (form.get('gender')!.dirty || form.get('gender')!.touched)">
                   <small class="form-text text-danger" *ngIf="form.get('gender')?.errors?.required">
@@ -172,8 +212,8 @@
             </div>
             <div class="row">
               <div class="col">
-                <label class="form-label" for="address">Adresse</label>
-                <input class="form-control" name="address" placeholder="Adresse" formControlName="address" />
+                <label class="form-label" for="billingAddress">Adresse</label>
+                <input class="form-control" name="billingAddress" placeholder="Adresse" formControlName="billingAddress" />
                 <!-- <div *ngIf="form.controls['billingCustomer'].get('birthdate')!.invalid && (form.controls['billingCustomer'].get('birthdate')!.dirty || form.controls['billingCustomer'].get('address')!.touched)">
                   <small class="form-text text-danger" *ngIf="form.controls['billingCustomer'].get('birhtdate')?.errors?.required">
                     Ihr Geburtsdatum wird für die Reservierung benötigt.
@@ -223,7 +263,7 @@
             <div class="row">
               <div class="col">
                 <label class="form-label" for="room">Zimmer</label>
-                <select class="form-select" id="room" name="room" formControlName="room">
+                <select class="form-select" id="room" name="room" formControlName="roomID">
                   <option *ngFor="let room of rooms" value="{{ room.id }}">{{ room.identifyer }}</option>
                 </select>
                 <!-- <div *ngIf="form.get('room')!.invalid && (form.get('room')!.dirty || form.get('room')!.touched)">
@@ -234,8 +274,8 @@
               </div>
               <div class="col">
                 <label class="form-label" for="room">Belegung</label>
-                <select class="form-select" id="room" name="room" formControlName="room">
-                  <option *ngFor="let price of getRoomById(roomsFormControl.at(index).get('room')?.value).prices" value="{{ price.capacity?.id }}">{{ price.capacity?.name }}</option>
+                <select class="form-select" id="room" name="room" formControlName="capacityID">
+                  <option *ngFor="let price of getRoomById(roomsFormControl.at(index).get('roomID')?.value).prices" value="{{ price.capacity?.id }}">{{ price.capacity?.name }}</option>
                 </select>
               </div>
             </div>

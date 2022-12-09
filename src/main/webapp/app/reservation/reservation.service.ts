@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { Observable } from 'rxjs';
+import { Reservation, ReservationResponse } from './reservation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ export class ReservationService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-//   create(reservation: IReservation): Observable<EntityResponseType> {
-//     return this.http.post<IRoom>(this.resourceUrl, room, { observe: 'response' });
-//   }
+  create(reservation: Reservation): Observable<ReservationResponse> {
+    console.log(reservation)
+    return this.http.post<ReservationResponse>(this.publicResourceUrl, reservation);
+  }
 }
