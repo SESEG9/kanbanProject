@@ -115,7 +115,6 @@ export class RoomComponent implements OnInit {
     let responseRooms = data ?? [];
     responseRooms.forEach(r => {
       r.minPrice = this.getMinPrice(r.prices);
-      console.log(r.pictureIDs);
       if (r.pictureIDs && r.pictureIDs.length > 0) {
         this.roomPictureService.find(r.pictureIDs[0]).subscribe({ next: next => (r.picture = next.body) });
       }
