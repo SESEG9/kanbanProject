@@ -14,7 +14,6 @@ export class ReservationService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(reservation: Reservation): Observable<ReservationResponse> {
-    console.log(reservation)
     return this.http.post<ReservationResponse>(this.publicResourceUrl, reservation);
   }
 }
