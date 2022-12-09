@@ -8,7 +8,7 @@
         <span jhiTranslate="lionhotelApp.booking.home.refreshListLabel">Liste aktualisieren</span>
       </button>
 
-      <button
+      <!-- <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-booking"
@@ -16,7 +16,7 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="lionhotelApp.booking.home.createLabel"> Booking erstellen </span>
-      </button>
+      </button> -->
     </div>
   </h2>
 
@@ -35,6 +35,12 @@
           <th scope="col" jhiSortBy="id">
             <div class="d-flex">
               <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span>BookingCode</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -70,7 +76,13 @@
           </th>
           <th scope="col" jhiSortBy="customers.id">
             <div class="d-flex">
-              <span jhiTranslate="lionhotelApp.booking.customers">Customers</span>
+              <span>Customer</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="customers.id">
+            <div class="d-flex">
+              <span>Email</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -88,26 +100,36 @@
           <td>
             <a [routerLink]="['/booking', booking.id, 'view']">{{ booking.id }}</a>
           </td>
+          <td>{{ booking.bookingCode }}</td>
           <td>{{ booking.discount }}</td>
-          <td>{{ booking.price }}</td>
-          <td>{{ booking.startDate | formatMediumDate }}</td>
+          <td>{{ booking.price / 100 + "€" }}</td>
+          <td>{{ booking.startDate }}</td>
           <td>{{ booking.duration }}</td>
           <td>{{ booking.cancled }}</td>
-          <td>
+          <td>{{ booking.billingCustomer === null ? '' : booking.billingCustomer.name }}</td>
+          <td>{{ booking.billingCustomer === null ? '' : booking.billingCustomer.email }}</td>
+          <!-- <td>
             <span *ngFor="let customers of booking.customers; let last = last">
               <a class="form-control-static" [routerLink]="['/customer', customers.id, 'view']">{{ customers.id }}</a
               >{{ last ? '' : ', ' }}
             </span>
-          </td>
+          </td> -->
           <td>
+            <div *ngFor="let room of booking.rooms">
+              <span>
+                {{room.room.identifyer + '|' + room.capacity.name}}
+              </span>
+            </div>
+          </td>
+          <!-- <td>
             <span *ngFor="let rooms of booking.rooms; let last = last">
               <a class="form-control-static" [routerLink]="['/room', rooms.id, 'view']">{{ rooms.id }}</a
               >{{ last ? '' : ', ' }}
             </span>
-          </td>
+          </td> -->
           <td class="text-end">
             <div class="btn-group">
-              <button
+              <!-- <button
                 type="submit"
                 [routerLink]="['/booking', booking.id, 'view']"
                 class="btn btn-info btn-sm"
@@ -125,11 +147,11 @@
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
-              </button>
+              </button> -->
 
               <button type="submit" (click)="delete(booking)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
+                <span class="d-none d-md-inline">Stornieren</span>
               </button>
             </div>
           </td>

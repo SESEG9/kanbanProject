@@ -141,6 +141,12 @@ export class RoomComponent implements OnInit {
     });
   }
 
+  protected routeToNewReservation(roomId: number): void {
+    this.router.navigate(['reservation', 'new'], {
+      queryParams: {id: roomId}
+    })
+  }
+
   protected getSortQueryParam(predicate = this.predicate, ascending = this.ascending): string[] {
     const ascendingQueryParam = ascending ? ASC : DESC;
     if (predicate === '') {

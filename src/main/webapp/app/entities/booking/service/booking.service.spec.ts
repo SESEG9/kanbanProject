@@ -75,29 +75,6 @@ describe('Booking Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should return a list of Booking', () => {
-      const returnedFromService = { ...requireRestSample };
-
-      const expected = { ...sampleWithRequiredData };
-
-      service.query().subscribe(resp => (expectedResult = resp.body));
-
-      const req = httpMock.expectOne({ method: 'GET' });
-      req.flush([returnedFromService]);
-      httpMock.verify();
-      expect(expectedResult).toMatchObject([expected]);
-    });
-
-    it('should delete a Booking', () => {
-      const expected = true;
-
-      service.delete(123).subscribe(resp => (expectedResult = resp.ok));
-
-      const req = httpMock.expectOne({ method: 'DELETE' });
-      req.flush({ status: 200 });
-      expect(expectedResult).toBe(expected);
-    });
-
     describe('addBookingToCollectionIfMissing', () => {
       it('should add a Booking to an empty array', () => {
         const booking: IBooking = sampleWithRequiredData;

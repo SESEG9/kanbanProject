@@ -49,7 +49,7 @@ public class BookingResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new booking, or with status {@code 400 (Bad Request)} if the booking has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/bookings")
+    @PostMapping("/public/bookings")
     public ResponseEntity<Booking> createBooking(@RequestBody BookingDTO booking) throws URISyntaxException {
         log.debug("REST request to save Booking : {}", booking);
         if (booking == null) {

@@ -3,7 +3,7 @@ import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IBooking } from '../booking.model';
+import { Booking } from '../booking.model';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, BookingService } from '../service/booking.service';
 import { BookingDeleteDialogComponent } from '../delete/booking-delete-dialog.component';
@@ -14,7 +14,7 @@ import { SortService } from 'app/shared/sort/sort.service';
   templateUrl: './booking.component.html',
 })
 export class BookingComponent implements OnInit {
-  bookings?: IBooking[];
+  bookings?: Booking[];
   isLoading = false;
 
   predicate = 'id';
@@ -28,41 +28,49 @@ export class BookingComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  trackId = (_index: number, item: IBooking): number => this.bookingService.getBookingIdentifier(item);
+  trackId = (_index: number, item: Booking): number => this.bookingService.getBookingIdentifier(item);
 
   ngOnInit(): void {
-    this.load();
+    this.loadBookings()
   }
 
-  delete(booking: IBooking): void {
+  delete(booking: Booking): void {
     const modalRef = this.modalService.open(BookingDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.booking = booking;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
-        switchMap(() => this.loadFromBackendWithRouteInformations())
+        switchMap(() => this.bookingService.query())
       )
       .subscribe({
-        next: (res: EntityArrayResponseType) => {
-          this.onResponseSuccess(res);
-        },
+        next: (bookings: Booking[]) => {
+          this.bookings = bookings;
+        }
       });
   }
 
-  load(): void {
-    this.loadFromBackendWithRouteInformations().subscribe({
-      next: (res: EntityArrayResponseType) => {
-        this.onResponseSuccess(res);
+  loadBookings(): void {
+    this.bookingService.query().subscribe({
+      next: (res: Booking[]) => {
+        this.bookings = this.refineData(res)
       },
-    });
+    })
+  }
+
+  load(): void {
+    // this.loadFromBackendWithRouteInformations().subscribe({
+    //   next: (res: EntityArrayResponseType) => {
+    //     this.onResponseSuccess(res);
+    //   },
+    // });
   }
 
   navigateToWithComponentValues(): void {
     this.handleNavigation(this.predicate, this.ascending);
   }
 
-  protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
+  protected loadFromBackendWithRouteInformations(): Observable<Booking[]> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
       switchMap(() => this.queryBackend(this.predicate, this.ascending))
@@ -75,20 +83,15 @@ export class BookingComponent implements OnInit {
     this.ascending = sort[1] === ASC;
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.bookings = this.refineData(dataFromBody);
-  }
-
-  protected refineData(data: IBooking[]): IBooking[] {
+  protected refineData(data: Booking[]): Booking[] {
     return data.sort(this.sortService.startSort(this.predicate, this.ascending ? 1 : -1));
   }
 
-  protected fillComponentAttributesFromResponseBody(data: IBooking[] | null): IBooking[] {
+  protected fillComponentAttributesFromResponseBody(data: Booking[] | null): Booking[] {
     return data ?? [];
   }
 
-  protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
+  protected queryBackend(predicate?: string, ascending?: boolean): Observable<Booking[]> {
     this.isLoading = true;
     const queryObject = {
       eagerload: true,
