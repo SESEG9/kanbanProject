@@ -70,6 +70,8 @@ class BookingResourceIT {
     private static final String DEFAULT_DISCOUNT_CODE = "123polizei";
 
     private static final String ENTITY_API_URL = "/api/bookings";
+
+    private static final String ENTITY_API_PUBLIC_URL = "/api/public/bookings";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
@@ -155,7 +157,7 @@ class BookingResourceIT {
         // Create the Booking
         restBookingMockMvc
             .perform(
-                post(ENTITY_API_URL)
+                post(ENTITY_API_PUBLIC_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(newBooking))
@@ -174,7 +176,7 @@ class BookingResourceIT {
         // An entity with an existing ID cannot be created, so this API call must fail
         restBookingMockMvc
             .perform(
-                post(ENTITY_API_URL)
+                post(ENTITY_API_PUBLIC_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(booking))
