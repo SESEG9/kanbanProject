@@ -75,20 +75,6 @@ describe('Booking Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should return a list of Booking', () => {
-      const returnedFromService = { ...requireRestSample };
-
-      const expected = { ...sampleWithRequiredData };
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      service.query().subscribe((resp: any) => (expectedResult = resp.body));
-
-      const req = httpMock.expectOne({ method: 'GET' });
-      req.flush([returnedFromService]);
-      httpMock.verify();
-      expect(expectedResult).toMatchObject([expected]);
-    });
-
     describe('addBookingToCollectionIfMissing', () => {
       it('should add a Booking to an empty array', () => {
         const booking: IBooking = sampleWithRequiredData;
