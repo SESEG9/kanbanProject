@@ -105,7 +105,7 @@ public class BookingService {
 
         // create booking
         Booking booking = new Booking();
-        Float totalPrice = calculatePrice(roomPrices, bookingDTO.getDiscountCode());
+        Float totalPrice = calculatePrice(roomPrices, duration, bookingDTO.getDiscountCode());
         booking.setPrice(totalPrice.intValue());
         booking.setBookingCode(generateRandomBookingCode());
         booking.setRooms(roomPrices);
@@ -177,7 +177,7 @@ public class BookingService {
             .toString();
     }
 
-    private Float calculatePrice(Set<RoomPrice> rooms, String discountCode) {
+    private Float calculatePrice(Set<RoomPrice> rooms, Integer duration, String discountCode) {
         Float multiplier = 1.0f;
         Float totalPrice = 0f;
 
@@ -189,6 +189,7 @@ public class BookingService {
         for (RoomPrice r : rooms) {
             totalPrice += r.getPrice();
         }
+        totalPrice *= duration;
         totalPrice *= multiplier;
 
         return totalPrice;
