@@ -10,8 +10,5 @@ import { rooms } from 'app/app.constants';
 export class RoomsComponent {
   rooms = rooms;
 
-  constructor(
-    private router: Router
-  ) {}
-
+  constructor(private router: Router) {}
 }

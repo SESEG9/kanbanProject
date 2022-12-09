@@ -9,4 +9,4 @@ import { HOME_ROUTE } from './home-old.route';
   imports: [SharedModule, RouterModule.forChild([HOME_ROUTE])],
   declarations: [HomeComponent],
 })
-export class HomeOldModule { }
+export class HomeOldModule {}

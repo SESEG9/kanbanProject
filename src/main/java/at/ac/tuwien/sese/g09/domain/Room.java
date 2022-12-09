@@ -4,8 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -38,14 +47,13 @@ public class Room implements Serializable {
     @JsonIgnoreProperties(value = { "capacity", "room" }, allowSetters = true)
     private Set<RoomPrice> prices = new HashSet<>();
 
+    @OneToMany(mappedBy = "room")
+    @JsonIgnoreProperties(value = { "room" }, allowSetters = true)
+    private Set<RoomPicture> roomPictures = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "rooms" }, allowSetters = true)
     private Invoice invoice;
-
-    @ManyToMany(mappedBy = "rooms")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "customers", "rooms" }, allowSetters = true)
-    private Set<Booking> bookings = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -132,34 +140,12 @@ public class Room implements Serializable {
         return this;
     }
 
-    public Set<Booking> getBookings() {
-        return this.bookings;
+    public Set<RoomPicture> getRoomPictures() {
+        return roomPictures;
     }
 
-    public void setBookings(Set<Booking> bookings) {
-        if (this.bookings != null) {
-            this.bookings.forEach(i -> i.removeRooms(this));
-        }
-        if (bookings != null) {
-            bookings.forEach(i -> i.addRooms(this));
-        }
-        this.bookings = bookings;
-    }
-
-    public Room bookings(Set<Booking> bookings) {
-        this.setBookings(bookings);
-        return this;
-    }
-
-    public Room addBookings(Booking booking) {
-        this.bookings.add(booking);
-        booking.getRooms().add(this);
-        return this;
-    }
-
-    public Room removeBookings(Booking booking) {
-        this.bookings.remove(booking);
-        booking.getRooms().remove(this);
+    public Room setRoomPictures(Set<RoomPicture> roomPictures) {
+        this.roomPictures = roomPictures;
         return this;
     }
 

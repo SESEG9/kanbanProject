@@ -3,4 +3,4 @@
  *
  * More information on https://github.com/zalando/problem-spring-web
  */
-package at.ac.tuwien.sese.g09.web.rest.errors;
+package at.ac.tuwien.sese.g09.service.errors;

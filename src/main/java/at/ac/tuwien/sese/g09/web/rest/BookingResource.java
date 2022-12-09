@@ -2,7 +2,9 @@ package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Booking;
 import at.ac.tuwien.sese.g09.repository.BookingRepository;
-import at.ac.tuwien.sese.g09.web.rest.errors.BadRequestAlertException;
+import at.ac.tuwien.sese.g09.service.BookingService;
+import at.ac.tuwien.sese.g09.service.dto.BookingDTO;
+import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -33,9 +35,11 @@ public class BookingResource {
     private String applicationName;
 
     private final BookingRepository bookingRepository;
+    private final BookingService bookingService;
 
-    public BookingResource(BookingRepository bookingRepository) {
+    public BookingResource(BookingRepository bookingRepository, BookingService bookingService) {
         this.bookingRepository = bookingRepository;
+        this.bookingService = bookingService;
     }
 
     /**
@@ -45,13 +49,13 @@ public class BookingResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new booking, or with status {@code 400 (Bad Request)} if the booking has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/bookings")
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws URISyntaxException {
+    @PostMapping("/public/bookings")
+    public ResponseEntity<Booking> createBooking(@RequestBody BookingDTO booking) throws URISyntaxException {
         log.debug("REST request to save Booking : {}", booking);
-        if (booking.getId() != null) {
-            throw new BadRequestAlertException("A new booking cannot already have an ID", ENTITY_NAME, "idexists");
+        if (booking == null) {
+            throw new BadRequestAlertException("Booking can not be null", ENTITY_NAME, "cannotbenull");
         }
-        Booking result = bookingRepository.save(booking);
+        Booking result = bookingService.createBooking(booking);
         return ResponseEntity
             .created(new URI("/api/bookings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -71,23 +75,7 @@ public class BookingResource {
     @PutMapping("/bookings/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable(value = "id", required = false) final Long id, @RequestBody Booking booking)
         throws URISyntaxException {
-        log.debug("REST request to update Booking : {}, {}", id, booking);
-        if (booking.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, booking.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!bookingRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Booking result = bookingRepository.save(booking);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, booking.getId().toString()))
-            .body(result);
+        throw new BadRequestAlertException("PUT Not implemented", ENTITY_NAME, "notimplemented");
     }
 
     /**
@@ -183,12 +171,11 @@ public class BookingResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/bookings/{id}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-        log.debug("REST request to delete Booking : {}", id);
-        bookingRepository.deleteById(id);
+    public ResponseEntity<Booking> deleteBooking(@PathVariable Long id, @RequestParam String email, @RequestParam String bookingCode) {
+        Booking booking = bookingService.cancelBooking(id, email, bookingCode);
         return ResponseEntity
-            .noContent()
+            .ok()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+            .body(booking);
     }
 }

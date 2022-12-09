@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IRoom, NewRoom } from '../room.model';
+import { IRoom, Room, RoomResponse } from '../room.model';
 
 export type PartialUpdateRoom = Partial<IRoom> & Pick<IRoom, 'id'>;
 
@@ -15,10 +15,11 @@ export type EntityArrayResponseType = HttpResponse<IRoom[]>;
 @Injectable({ providedIn: 'root' })
 export class RoomService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/rooms');
+  protected publicResourceUrl = this.applicationConfigService.getEndpointFor('api/public/rooms');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(room: NewRoom): Observable<EntityResponseType> {
+  create(room: Room): Observable<EntityResponseType> {
     return this.http.post<IRoom>(this.resourceUrl, room, { observe: 'response' });
   }
 
@@ -30,13 +31,13 @@ export class RoomService {
     return this.http.patch<IRoom>(`${this.resourceUrl}/${this.getRoomIdentifier(room)}`, room, { observe: 'response' });
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IRoom>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  find(id: number): Observable<HttpResponse<RoomResponse>> {
+    return this.http.get<RoomResponse>(`${this.publicResourceUrl}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IRoom[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<IRoom[]>(this.publicResourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

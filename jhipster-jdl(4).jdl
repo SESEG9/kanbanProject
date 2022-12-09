@@ -1,0 +1,190 @@
+//
+// CUSTOMER
+//
+
+entity Customer {
+	name String required
+    birthday LocalDate required
+    gender Gender required
+    billingAddress String required
+    companyName String
+    note String
+    discount Float
+    telephone String required
+    email String required
+    web String
+    fax String
+}
+
+enum Gender {
+  MALE,
+  FEMALE,
+  DIVERSE
+}
+
+//
+// ROOM
+//
+
+entity Room {
+	identifyer String unique
+    maxCapacity Integer min(1)
+}
+
+entity RoomCapacity {
+  name String unique
+  capacity Integer min(1)
+}
+
+entity RoomPrice {
+    price Integer
+}
+
+entity RoomPicture {
+	image String
+    description String
+    weight Long
+}
+
+relationship ManyToOne {
+  RoomPrice{capacity} to RoomCapacity
+}
+
+relationship OneToMany {
+	Room{prices} to RoomPrice
+    Room{pictures} to RoomPicture
+}
+
+//
+// BOOKING
+//
+entity Booking {
+  discount Float
+  price Integer
+  startDate LocalDate
+  duration Integer
+  cancled Boolean
+}
+
+relationship ManyToMany {
+	Booking{customers} to Customer{bookings}
+    Booking{rooms} to Room{bookings}
+}
+
+//
+// INVOICE
+//
+
+entity Invoice {
+  hotelAddress String
+  customerAddress String
+  discount Float
+  price Integer
+  duration Integer
+  billingDate LocalDate
+  cancled Boolean
+}
+
+relationship ManyToOne {
+  Invoice{room} to Room
+}
+
+entity GloablSettings {
+  cancelTime Integer
+}
+
+//
+// DEFICIT
+//
+
+entity Deficit {
+  description String
+  state DeficitState
+  discount Float
+}
+
+enum DeficitState {
+  NEW,
+  IN_PROCESS,
+  DONE
+}
+
+relationship ManyToOne {
+  Deficit{room} to Room
+
+}
+
+//
+// HRM
+//
+
+entity HumanResource {
+  type HumanResourceType
+  abbr String unique required
+  name String required
+  birthday LocalDate required
+  gender Gender required
+  phone String
+  email String
+  ssn String
+  bannking String
+  relationshipType String
+}
+
+enum HumanResourceType {
+  RECEPTION,
+  KITCHEN,
+  SERVICE,
+  CLEANING,
+  OTHER
+}
+
+entity WorkPackage {
+  start LocalDate
+  end LocalDate
+  summary String
+  description String
+}
+
+entity Vacation {
+  start LocalDate
+  end LocalDate
+  state VacationState
+}
+
+enum VacationState {
+  REQUESTED,
+  ACCEPTED,
+  DECLINED
+}
+
+relationship ManyToOne {
+  WorkPackage {humanResource} to HumanResource
+  Vacation {humanResource} to HumanResource
+}
+
+
+//
+// MARKETING
+//
+
+entity BulkLetterTemplate {
+  type BulkLetterType
+  date LocalDate
+  subject String
+  content TextBlob
+}
+
+enum BulkLetterType {
+  BIRTHDAY,
+  DATE,
+  REPEATING_DATE
+}
+
+entity EmailAttachment {
+  image String
+}
+
+relationship OneToMany {
+  BulkLetterTemplate{images} to EmailAttachment
+}

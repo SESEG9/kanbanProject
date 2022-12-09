@@ -1,32 +1,28 @@
-<div class="container" style="max-width: 50rem !important;">
-
-  <div class="card m-2" style="width: 50rem;">
-    <img class="card-img-top" src="../../content/images/sale.jpg" alt="Aktuelle Angebote">
+<div class="container" style="max-width: 50rem !important">
+  <div class="card m-2" style="width: 50rem">
+    <img class="card-img-top" src="../../content/images/sale.jpg" alt="Aktuelle Angebote" />
     <div class="card-body">
-
-
-    <ngb-accordion #acc="ngbAccordion" activeIds="panel-0" [closeOthers]="true">
-      <ngb-panel title="Winteraktion" id="panel-0">
-        <ng-template ngbPanelContent>
-          <div>
-            Bei der aktuellen Winteraktion haben Sie die Möglichkeit bei einer Buchung im Zeitraum von 1.12.2022 bis 15.1.2023 einen Rabatt von 25% zu erhalten.
-          </div>
-          <div class="d-flex w-100 justify-content-end">
-            <a href="#" class="btn btn-primary" routerLink="/reservation/new" [state]="{ promo: 'winter' }">Jetzt nützen</a>
-          </div>
-        </ng-template>
-      </ngb-panel>
-      <ngb-panel title="Längenaktion" id="panel-1">
-        <ng-template ngbPanelContent>
-          <div>
-            Bei der aktuellen Längenaktion haben Sie die Möglichkeit bei einer Buchung über mindestens 10 Tage 25% zu sparen.
-          </div>
-          <div class="d-flex w-100 justify-content-end">
-            <a href="#" class="btn btn-primary" routerLink="/reservation/new" [state]="{ promo: 'length' }">Jetzt nützen</a>
-          </div>
-        </ng-template>
-      </ngb-panel>
-    </ngb-accordion>
-
+      <ngb-accordion #acc="ngbAccordion" activeIds="panel-0" [closeOthers]="true">
+        <ngb-panel title="Winteraktion" id="panel-0">
+          <ng-template ngbPanelContent>
+            <div>
+              Bei der aktuellen Winteraktion haben Sie die Möglichkeit bei einer Buchung im Zeitraum von 1.12.2022 bis 15.1.2023 einen
+              Rabatt von 25% zu erhalten.
+            </div>
+            <div class="d-flex w-100 justify-content-end">
+              <a href="#" class="btn btn-primary" routerLink="/reservation/new" [state]="{ promo: 'winter' }">Jetzt nützen</a>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel title="Längenaktion" id="panel-1">
+          <ng-template ngbPanelContent>
+            <div>Bei der aktuellen Längenaktion haben Sie die Möglichkeit bei einer Buchung über mindestens 10 Tage 25% zu sparen.</div>
+            <div class="d-flex w-100 justify-content-end">
+              <a href="#" class="btn btn-primary" routerLink="/reservation/new" [state]="{ promo: 'length' }">Jetzt nützen</a>
+            </div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
   </div>
 </div>

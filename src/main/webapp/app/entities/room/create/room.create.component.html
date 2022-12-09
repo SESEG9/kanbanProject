@@ -1,0 +1,107 @@
+<div class="base">
+  <div class="root">
+    <h1>Erstelle neues Zimmer</h1>
+    <jhi-alert></jhi-alert>
+    <jhi-alert-error></jhi-alert-error>
+    <div>
+      <div class="form">
+        <div class="content">
+          <div class="general box">
+            <h2>Zimmerinformation</h2>
+            <div class="option">
+              <label for="id-input">Zimmernummer:</label>
+              <ng-template #identifierTip>{{ identifierError }}</ng-template>
+              <input
+                id="id-input"
+                [class]="{ 'form-control': true, 'is-invalid': !validateIdentifier(identifier) || identifierChecked.error }"
+                minlength="1"
+                [(ngModel)]="identifier"
+                type="text"
+                [ngbTooltip]="identifierError.length > 0 ? identifierTip : ''"
+                (blur)="checkIdentifier()"
+              />
+            </div>
+            <div class="option">
+              <label for="capacity-input">Maximalbelegung:</label>
+              <ng-template #maxCapacityTip>{{ maxCapacityError }}</ng-template>
+              <input
+                id="capacity-input"
+                [class]="{ 'form-control': true, 'is-invalid': !validateMaxCapacity(maxCapacity) }"
+                [(ngModel)]="maxCapacity"
+                type="number"
+                min="1"
+                [ngbTooltip]="maxCapacityError.length > 0 ? maxCapacityTip : ''"
+              />
+            </div>
+          </div>
+
+          <div class="general box">
+            <h2>Preise</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Belegung</th>
+                  <th>Preis in €</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let price of prices; let i = index">
+                  <td>
+                    <ng-template #capacityTip>{{ price.capacityError }}</ng-template>
+                    <select
+                      [(ngModel)]="price.capacity"
+                      [class]="{ 'form-control': true, 'is-invalid': !validatePriceCapacity(price) }"
+                      [ngbTooltip]="price.capacityError.length != 0 ? capacityTip : ''"
+                    >
+                      <option *ngFor="let capacity of capacities" [ngValue]="capacity">
+                        {{ capacity.name + ' (' + capacity.capacity + ')' }}
+                      </option>
+                    </select>
+                  </td>
+                  <td>
+                    <ng-template #priceTip>{{ price.priceError }}</ng-template>
+                    <input
+                      type="number"
+                      [class]="{ 'form-control': true, 'is-invalid': !validatePrice(price) }"
+                      [(ngModel)]="price.price"
+                      min="0"
+                      [ngbTooltip]="price.priceError.length != 0 ? priceTip : ''"
+                    />
+                  </td>
+                  <td>
+                    <button (click)="removePriceItem(i)" class="btn btn-danger">
+                      <fa-icon icon="trash-can" [fixedWidth]="true"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="btn btn-secondary" (click)="addNewPrice()">Weiteren Preis hinzufügen</button>
+          </div>
+        </div>
+        <div class="center"></div>
+        <div class="pictures">
+          <div class="picture-card box" *ngFor="let picture of pictures; let i = index">
+            <button (click)="removePicture(i)" class="x-button btn btn-danger">
+              <fa-icon icon="xmark"></fa-icon>
+            </button>
+            <img alt="{{ picture.description }}" src="{{ picture.image }}" />
+            <input class="picture-description form-control" placeholder="Bildbeschreibung" type="text" [(ngModel)]="picture.description" />
+          </div>
+          <input
+            type="button"
+            value="Bilder hinzufügen"
+            class="btn btn-secondary"
+            onclick="document.getElementById('selectedFile').click();"
+          />
+          <input type="file" style="display: none" id="selectedFile" (change)="onFileSelected($event)" accept="image/*" multiple />
+        </div>
+      </div>
+    </div>
+    <div class="submit-box">
+      <hr />
+      <button class="submit-button btn btn-primary" (click)="submitRoom()">Erstelle Zimmer</button>
+    </div>
+  </div>
+</div>

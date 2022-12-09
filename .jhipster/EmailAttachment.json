@@ -7,8 +7,7 @@
   "fields": [
     {
       "fieldName": "image",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "image"
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,
@@ -24,5 +23,7 @@
       "relationshipType": "many-to-one"
     }
   ],
-  "service": "no"
+  "service": "no",
+  "skipClient": true,
+  "skipServer": true
 }

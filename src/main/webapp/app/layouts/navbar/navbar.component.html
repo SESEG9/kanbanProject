@@ -1,8 +1,12 @@
-<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark" style="padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);">
+<nav
+  data-cy="navbar"
+  class="navbar navbar-dark navbar-expand-md bg-dark"
+  style="padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x)"
+>
   <div class="container-fluid">
     <a class="navbar-brand logo d-flex align-items-center" routerLink="/" (click)="collapseNavbar()">
-      <img src="../../../content/images/lowe.png" alt="Logo" height="40px" style="filter: invert(100%)">
-      <span class="navbar-title ms-3" style="font-weight: normal !important;">Zum goldenen Löwen</span>
+      <img src="../../../content/images/lowe.png" alt="Logo" height="40px" style="filter: invert(100%)" />
+      <span class="navbar-title ms-3" style="font-weight: normal !important">Zum goldenen Löwen</span>
       <!-- <span class="navbar-version">{{ version }}</span> -->
     </a>
     <a
@@ -20,7 +24,7 @@
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/rooms" (click)="collapseNavbar()">
+          <a class="nav-link" routerLink="/room" (click)="collapseNavbar()">
             <span>
               <span>Zimmer</span>
             </span>
@@ -33,22 +37,76 @@
             </span>
           </a>
         </li> -->
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/reservation/new" (click)="collapseNavbar()">
             <span>
-              <button class="btn btn-secondary">
-                Jetzt Buchen
-              </button>
+              <button class="btn btn-secondary">Jetzt Buchen</button>
               <!-- <span>Jetzt Buchen</span> -->
             </span>
           </a>
+        </li>
+
+        <li
+          *ngSwitchCase="true"
+          ngbDropdown
+          class="nav-item d-flex align-items-center dropdown pointer"
+          display="dynamic"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-options" data-cy="entity">
+            <span>
+              <fa-icon icon="th-list"></fa-icon>
+              <span jhiTranslate="global.menu.admin-menu.main">Adminstration</span>
+            </span>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-options">
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="room"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin-menu.rooms">Zimmerverwaltung</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="room-capacity"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin-menu.room-capacities">Belegungsmöglichkeiten</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="booking"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span>Reservierungsverwaltung</span>
+              </a>
+            </li>
+
+            <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+          </ul>
         </li>
 
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         <li
           *ngSwitchCase="true"
           ngbDropdown
-          class="nav-item dropdown pointer"
+          class="nav-item d-flex align-items-center dropdown pointer"
           display="dynamic"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -222,7 +280,7 @@
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
-          class="nav-item dropdown pointer"
+          class="nav-item d-flex align-items-center dropdown pointer"
           display="dynamic"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -273,7 +331,7 @@
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           </ul>
         </li>
-        <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
+        <li ngbDropdown class="nav-item d-flex align-items-center dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
             <span>
               <fa-icon icon="flag"></fa-icon>

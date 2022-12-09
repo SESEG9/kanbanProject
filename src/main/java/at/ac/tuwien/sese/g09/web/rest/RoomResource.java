@@ -1,21 +1,31 @@
 package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Room;
-import at.ac.tuwien.sese.g09.repository.RoomRepository;
-import at.ac.tuwien.sese.g09.web.rest.errors.BadRequestAlertException;
+import at.ac.tuwien.sese.g09.service.RoomService;
+import at.ac.tuwien.sese.g09.service.dto.RoomResponseDTO;
+import at.ac.tuwien.sese.g09.service.mapper.RoomMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -34,10 +44,12 @@ public class RoomResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final RoomRepository roomRepository;
+    private final RoomService roomService;
+    private final RoomMapper roomMapper;
 
-    public RoomResource(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
+    public RoomResource(RoomService roomService, RoomMapper roomMapper) {
+        this.roomService = roomService;
+        this.roomMapper = roomMapper;
     }
 
     /**
@@ -50,10 +62,7 @@ public class RoomResource {
     @PostMapping("/rooms")
     public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room) throws URISyntaxException {
         log.debug("REST request to save Room : {}", room);
-        if (room.getId() != null) {
-            throw new BadRequestAlertException("A new room cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Room result = roomRepository.save(room);
+        final var result = roomService.createRoom(room);
         return ResponseEntity
             .created(new URI("/api/rooms/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -68,24 +77,11 @@ public class RoomResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated room,
      * or with status {@code 400 (Bad Request)} if the room is not valid,
      * or with status {@code 500 (Internal Server Error)} if the room couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/rooms/{id}")
-    public ResponseEntity<Room> updateRoom(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Room room)
-        throws URISyntaxException {
+    public ResponseEntity<Room> updateRoom(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Room room) {
         log.debug("REST request to update Room : {}, {}", id, room);
-        if (room.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, room.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!roomRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Room result = roomRepository.save(room);
+        final var result = roomService.updateRoom(id, room);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, room.getId().toString()))
@@ -101,39 +97,14 @@ public class RoomResource {
      * or with status {@code 400 (Bad Request)} if the room is not valid,
      * or with status {@code 404 (Not Found)} if the room is not found,
      * or with status {@code 500 (Internal Server Error)} if the room couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/rooms/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Room> partialUpdateRoom(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Room room
-    ) throws URISyntaxException {
+    ) {
         log.debug("REST request to partial update Room partially : {}, {}", id, room);
-        if (room.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, room.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!roomRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<Room> result = roomRepository
-            .findById(room.getId())
-            .map(existingRoom -> {
-                if (room.getIdentifyer() != null) {
-                    existingRoom.setIdentifyer(room.getIdentifyer());
-                }
-                if (room.getMaxCapacity() != null) {
-                    existingRoom.setMaxCapacity(room.getMaxCapacity());
-                }
-
-                return existingRoom;
-            })
-            .map(roomRepository::save);
-
+        final var result = roomService.partialUpdateRoom(id, room);
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, room.getId().toString())
@@ -145,10 +116,10 @@ public class RoomResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rooms in body.
      */
-    @GetMapping("/rooms")
-    public List<Room> getAllRooms() {
+    @GetMapping("/public/rooms")
+    public List<RoomResponseDTO> getAllRooms() {
         log.debug("REST request to get all Rooms");
-        return roomRepository.findAll();
+        return roomService.getAllRooms().stream().map(roomMapper::roomToRoomResponseDTO).collect(Collectors.toList());
     }
 
     /**
@@ -157,11 +128,14 @@ public class RoomResource {
      * @param id the id of the room to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the room, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/rooms/{id}")
-    public ResponseEntity<Room> getRoom(@PathVariable Long id) {
+    @GetMapping("/public/rooms/{id}")
+    public ResponseEntity<RoomResponseDTO> getRoom(@PathVariable Long id) {
         log.debug("REST request to get Room : {}", id);
-        Optional<Room> room = roomRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(room);
+        final var result = roomService.getRoom(id);
+
+        return result
+            .map(r -> ResponseEntity.ok().body(roomMapper.roomToRoomResponseDTO(r)))
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     /**
@@ -173,7 +147,7 @@ public class RoomResource {
     @DeleteMapping("/rooms/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         log.debug("REST request to delete Room : {}", id);
-        roomRepository.deleteById(id);
+        roomService.deleteRoom(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

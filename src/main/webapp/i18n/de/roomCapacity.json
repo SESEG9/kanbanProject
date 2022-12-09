@@ -2,10 +2,10 @@
   "lionhotelApp": {
     "roomCapacity": {
       "home": {
-        "title": "Room Capacities",
+        "title": "Belegungen",
         "refreshListLabel": "Liste aktualisieren",
-        "createLabel": "Room Capacity erstellen",
-        "createOrEditLabel": "Room Capacity erstellen oder bearbeiten",
+        "createLabel": "Neue Belegungsmöglichkeit erstellen",
+        "createOrEditLabel": "Belegung bearbeiten",
         "notFound": "Keine Room Capacities gefunden"
       },
       "created": "Room Capacity erstellt mit ID {{ param }}",
@@ -19,7 +19,7 @@
       },
       "id": "ID",
       "name": "Name",
-      "capacity": "Capacity"
+      "capacity": "Kapazität"
     }
   }
 }

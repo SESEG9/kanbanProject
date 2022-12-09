@@ -37,5 +37,7 @@
       "relationshipType": "one-to-many"
     }
   ],
-  "service": "no"
+  "service": "no",
+  "skipClient": true,
+  "skipServer": true
 }

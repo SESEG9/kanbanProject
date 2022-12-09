@@ -9,10 +9,9 @@ describe('PromotionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PromotionComponent ],
-      imports: [ SharedModule, ]
-    })
-    .compileComponents();
+      declarations: [PromotionComponent],
+      imports: [SharedModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PromotionComponent);
     component = fixture.componentInstance;

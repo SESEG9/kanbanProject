@@ -4,7 +4,7 @@ import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IRoomCapacity } from '../room-capacity.model';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, RoomCapacityService } from '../service/room-capacity.service';
 import { RoomCapacityDeleteDialogComponent } from '../delete/room-capacity-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
@@ -12,6 +12,7 @@ import { SortService } from 'app/shared/sort/sort.service';
 @Component({
   selector: 'jhi-room-capacity',
   templateUrl: './room-capacity.component.html',
+  styleUrls: ['../room-capacity.global.scss'],
 })
 export class RoomCapacityComponent implements OnInit {
   roomCapacities?: IRoomCapacity[];

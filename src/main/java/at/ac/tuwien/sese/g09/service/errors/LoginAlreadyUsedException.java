@@ -1,4 +1,4 @@
-package at.ac.tuwien.sese.g09.web.rest.errors;
+package at.ac.tuwien.sese.g09.service.errors;
 
 @SuppressWarnings("java:S110") // Inheritance tree of classes should not be too deep
 public class LoginAlreadyUsedException extends BadRequestAlertException {

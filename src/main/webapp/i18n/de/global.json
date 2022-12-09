@@ -3,6 +3,12 @@
     "title": "Lionhotel",
     "browsehappy": "Sie benutzen einen <strong>veralteten</strong> Browser. Bitte <a href=\"http://browsehappy.com/?locale=de/\">aktualisieren Sie Ihren Browser</a>, um die Benutzerfreundlichkeit zu erhöhen.",
     "menu": {
+      "admin-menu": {
+        "main": "Administration",
+        "rooms": "Zimmerverwaltung",
+        "room-capacities": "Belegungsmöglichkeiten"
+      },
+
       "home": "Startseite",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {

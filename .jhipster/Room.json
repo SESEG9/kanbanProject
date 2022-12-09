@@ -30,10 +30,10 @@
       "relationshipType": "one-to-many"
     },
     {
-      "otherEntityName": "invoice",
+      "otherEntityName": "roomPicture",
       "otherEntityRelationshipName": "room",
-      "relationshipName": "invoice",
-      "relationshipType": "many-to-one"
+      "relationshipName": "pictures",
+      "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "booking",
@@ -43,5 +43,7 @@
       "relationshipType": "many-to-many"
     }
   ],
-  "service": "no"
+  "service": "no",
+  "skipClient": true,
+  "skipServer": true
 }
