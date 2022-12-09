@@ -1,5 +1,3 @@
-import { RoomPicture } from "app/entities/room/room.model"
-
 export interface Customer {
     name: string,
     birthday: string,

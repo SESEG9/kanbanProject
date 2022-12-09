@@ -8,7 +8,7 @@ import { isPresent } from 'app/core/util/operators';
 import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IBooking, NewBooking } from '../booking.model';
+import { Booking, IBooking, NewBooking } from '../booking.model';
 
 export type PartialUpdateBooking = Partial<IBooking> & Pick<IBooking, 'id'>;
 
@@ -58,15 +58,16 @@ export class BookingService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http
-      .get<RestBooking[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  query(req?: any): Observable<Booking[]> {
+    return this.http.get<Booking[]>(this.resourceUrl + '?eagerload=true')
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+//   delete(id: number): Observable<HttpResponse<{}>> {
+//     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+//   }
+
+  delete(id: number, email: string, bookingCode: string): Observable<Booking> {
+    return this.http.delete<Booking>(this.resourceUrl + `/${id}?email=${email}&bookingCode=${bookingCode}`)
   }
 
   getBookingIdentifier(booking: Pick<IBooking, 'id'>): number {

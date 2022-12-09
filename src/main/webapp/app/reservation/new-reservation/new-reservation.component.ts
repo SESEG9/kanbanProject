@@ -167,8 +167,6 @@ export class NewReservationComponent implements OnInit {
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.rooms = this.refineData(dataFromBody)
-    // eslint-disable-next-line no-console
-    console.log(this.rooms)
   }
   protected fillComponentAttributesFromResponseBody(data: IRoomWithMinPrice[] | null): IRoomWithMinPrice[] {
     const responseRooms = data ?? [];
