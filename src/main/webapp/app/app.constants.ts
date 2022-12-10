@@ -46,3 +46,5 @@ export const rooms = [
     description: 'Einzelzimmer mit Flat-Screen',
   },
 ];
+
+export const HOTEL_ADDRESS = 'Karlsplatz 1, 1010 Wien';

@@ -91,7 +91,7 @@
           <td>{{ invoice.hotelAddress }}</td>
           <td>{{ invoice.customerAddress }}</td>
           <td>{{ invoice.discount }}</td>
-          <td>{{ invoice.price }}</td>
+          <td>{{ (invoice.price || 0) / 100 | currency: 'EUR' }}</td>
           <td>{{ invoice.duration }}</td>
           <td>{{ invoice.billingDate | formatMediumDate }}</td>
           <td>{{ invoice.cancled }}</td>
