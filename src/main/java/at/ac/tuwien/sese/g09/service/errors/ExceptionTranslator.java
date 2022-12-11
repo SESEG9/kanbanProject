@@ -164,6 +164,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(ex, problem, request);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<Problem> handlePDFGenerationFailure(PDFGenerationFailureException ex, NativeWebRequest request) {
+        Problem problem = Problem
+            .builder()
+            .withStatus(Status.INTERNAL_SERVER_ERROR)
+            .with(MESSAGE_KEY, ErrorConstants.PDF_GENERATION_FAILURE)
+            .build();
+        return create(ex, problem, request);
+    }
+
     @Override
     public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());

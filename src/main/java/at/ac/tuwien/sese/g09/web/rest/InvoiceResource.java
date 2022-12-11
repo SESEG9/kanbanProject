@@ -13,6 +13,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -200,5 +203,20 @@ public class InvoiceResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/invoices/{id}/pdf")
+    public ResponseEntity<byte[]> getInvoicePDF(@PathVariable Long id) {
+        log.debug("REST request to delete Invoice : {}", id);
+
+        Optional<byte[]> pdf = invoiceService.generatePdf(id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+        headers.add(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment().filename(String.format("Rechnung_%d.pdf", id)).build().toString()
+        );
+        return ResponseUtil.wrapOrNotFound(pdf, headers);
     }
 }

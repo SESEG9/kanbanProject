@@ -46,6 +46,8 @@
 
         <!-- Dependency versions -->
         <jhipster-dependencies.version>7.9.3</jhipster-dependencies.version>
+        <pdfbox.version>2.0.27</pdfbox.version>
+        <easytabe.version>0.8.5</easytabe.version>
         <!-- The spring-boot version should match the one managed by
         https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
         <spring-boot.version>2.7.3</spring-boot.version>
@@ -281,6 +283,16 @@
             <artifactId>metrics-core</artifactId>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vandeseer</groupId>
+            <artifactId>easytable</artifactId>
+            <version>${easytabe.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
