@@ -45,7 +45,7 @@
               </tr>
               <tr>
                 <td>Preis</td>
-                <td>{{ reservation.price + '€' }}</td>
+                <td>{{ reservation.price / 100 | currency: 'EUR' }}</td>
               </tr>
               <tr>
                 <td>Rabatt</td>
