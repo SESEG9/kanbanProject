@@ -2,6 +2,8 @@ package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Invoice;
 import at.ac.tuwien.sese.g09.repository.InvoiceRepository;
+import at.ac.tuwien.sese.g09.service.InvoiceService;
+import at.ac.tuwien.sese.g09.service.dto.InvoiceDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -41,9 +43,11 @@ public class InvoiceResource {
     private String applicationName;
 
     private final InvoiceRepository invoiceRepository;
+    private final InvoiceService invoiceService;
 
-    public InvoiceResource(InvoiceRepository invoiceRepository) {
+    public InvoiceResource(InvoiceRepository invoiceRepository, InvoiceService invoiceService) {
         this.invoiceRepository = invoiceRepository;
+        this.invoiceService = invoiceService;
     }
 
     /**
@@ -54,12 +58,9 @@ public class InvoiceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/invoices")
-    public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) throws URISyntaxException {
+    public ResponseEntity<Invoice> createInvoice(@RequestBody InvoiceDTO invoice) throws URISyntaxException {
         log.debug("REST request to save Invoice : {}", invoice);
-        if (invoice.getId() != null) {
-            throw new BadRequestAlertException("A new invoice cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Invoice result = invoiceRepository.save(invoice);
+        Invoice result = invoiceService.save(invoice);
         return ResponseEntity
             .created(new URI("/api/invoices/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

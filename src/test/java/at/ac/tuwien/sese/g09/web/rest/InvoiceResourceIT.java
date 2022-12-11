@@ -113,56 +113,6 @@ class InvoiceResourceIT {
 
     @Test
     @Transactional
-    void createInvoice() throws Exception {
-        int databaseSizeBeforeCreate = invoiceRepository.findAll().size();
-        // Create the Invoice
-        restInvoiceMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(invoice))
-            )
-            .andExpect(status().isCreated());
-
-        // Validate the Invoice in the database
-        List<Invoice> invoiceList = invoiceRepository.findAll();
-        assertThat(invoiceList).hasSize(databaseSizeBeforeCreate + 1);
-        Invoice testInvoice = invoiceList.get(invoiceList.size() - 1);
-        assertThat(testInvoice.getHotelAddress()).isEqualTo(DEFAULT_HOTEL_ADDRESS);
-        assertThat(testInvoice.getCustomerAddress()).isEqualTo(DEFAULT_CUSTOMER_ADDRESS);
-        assertThat(testInvoice.getDiscount()).isEqualTo(DEFAULT_DISCOUNT);
-        assertThat(testInvoice.getPrice()).isEqualTo(DEFAULT_PRICE);
-        assertThat(testInvoice.getDuration()).isEqualTo(DEFAULT_DURATION);
-        assertThat(testInvoice.getBillingDate()).isEqualTo(DEFAULT_BILLING_DATE);
-        assertThat(testInvoice.getCancled()).isEqualTo(DEFAULT_CANCLED);
-    }
-
-    @Test
-    @Transactional
-    void createInvoiceWithExistingId() throws Exception {
-        // Create the Invoice with an existing ID
-        invoice.setId(1L);
-
-        int databaseSizeBeforeCreate = invoiceRepository.findAll().size();
-
-        // An entity with an existing ID cannot be created, so this API call must fail
-        restInvoiceMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(invoice))
-            )
-            .andExpect(status().isBadRequest());
-
-        // Validate the Invoice in the database
-        List<Invoice> invoiceList = invoiceRepository.findAll();
-        assertThat(invoiceList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
     void getAllInvoices() throws Exception {
         // Initialize the database
         invoiceRepository.saveAndFlush(invoice);
