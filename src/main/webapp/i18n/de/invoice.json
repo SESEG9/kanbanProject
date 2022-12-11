@@ -20,12 +20,13 @@
       "id": "ID",
       "hotelAddress": "Hoteladresse",
       "customerAddress": "Kundenadresse",
-      "discount": "Rabatt",
+      "discount": "Rabatt (Faktor)",
       "price": "Preis",
       "duration": "Dauer (Tage)",
       "billingDate": "Rechnungsdatum",
       "cancled": "Storniert",
-      "room": "Zimmer"
+      "room": "Zimmer",
+      "booking": "Buchung"
     }
   }
 }
