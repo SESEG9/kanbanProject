@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import dayjs from 'dayjs/esm';
@@ -30,6 +30,10 @@ export class InvoiceService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/invoices');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
+  getInvoicePdfUrl(id: number): string {
+    return `${this.resourceUrl}/${id}/pdf`;
+  }
 
   create(invoice: NewInvoice): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(invoice);

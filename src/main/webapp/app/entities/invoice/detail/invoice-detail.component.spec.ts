@@ -3,13 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { InvoiceDetailComponent } from './invoice-detail.component';
+import { InvoiceService } from '../service/invoice.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Invoice Management Detail Component', () => {
   let comp: InvoiceDetailComponent;
   let fixture: ComponentFixture<InvoiceDetailComponent>;
+  let service: InvoiceService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [InvoiceDetailComponent],
       providers: [
         {
@@ -22,6 +26,7 @@ describe('Invoice Management Detail Component', () => {
       .compileComponents();
     fixture = TestBed.createComponent(InvoiceDetailComponent);
     comp = fixture.componentInstance;
+    service = TestBed.inject(InvoiceService);
   });
 
   describe('OnInit', () => {

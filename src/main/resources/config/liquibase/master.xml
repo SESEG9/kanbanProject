@@ -41,4 +41,6 @@
     <include file="config/liquibase/changelog/20221208150000_booking_changes_code.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221219110000_invoice_changes.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221219110000_room_changes.sql" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221219212600_updated_booking_faker.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221219212600_updated_Invoice_faker.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

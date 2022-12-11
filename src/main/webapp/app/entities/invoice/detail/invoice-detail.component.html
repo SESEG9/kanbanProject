@@ -59,6 +59,11 @@
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
       </button>
       -->
+
+      <a type="button" [href]="getInvoicePdfUrl()" class="btn btn-danger" download>
+        <fa-icon icon="file-pdf"></fa-icon>&nbsp;<span>PDF</span>
+      </a>
+      
     </div>
   </div>
 </div>
