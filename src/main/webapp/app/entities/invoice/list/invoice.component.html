@@ -109,17 +109,13 @@
 
               <button
                 type="submit"
-                [routerLink]="['/invoice', invoice.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
+                (click)="delete(invoice)"
+                [disabled]="invoice.cancled"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
               >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
-              </button>
-
-              <button type="submit" (click)="delete(invoice)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
+                <span class="d-none d-md-inline">Stornieren</span>
               </button>
             </div>
           </td>

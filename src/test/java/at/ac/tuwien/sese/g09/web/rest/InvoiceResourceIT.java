@@ -404,7 +404,7 @@ class InvoiceResourceIT {
         List<Invoice> invoiceList = invoiceRepository.findAll();
         assertThat(invoiceList).hasSize(databaseSizeBeforeUpdate);
     }
-
+    /* Invoices can't be deleted; they are cancelled instead
     @Test
     @Transactional
     void deleteInvoice() throws Exception {
@@ -422,4 +422,5 @@ class InvoiceResourceIT {
         List<Invoice> invoiceList = invoiceRepository.findAll();
         assertThat(invoiceList).hasSize(databaseSizeBeforeDelete - 1);
     }
+    */
 }

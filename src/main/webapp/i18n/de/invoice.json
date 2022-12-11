@@ -10,9 +10,9 @@
       },
       "created": "Invoice erstellt mit ID {{ param }}",
       "updated": "Invoice aktualisiert mit ID {{ param }}",
-      "deleted": "Invoice gelöscht mit ID {{ param }}",
+      "deleted": "Invoice storniert mit ID {{ param }}",
       "delete": {
-        "question": "Soll Invoice {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Invoice {{ id }} wirklich dauerhaft storniert werden?"
       },
       "detail": {
         "title": "Rechnung"
