@@ -5,6 +5,7 @@ import { IRoom, Room, RoomPicture, RoomPrice } from '../room.model';
 import { RoomService } from '../service/room.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from '../../../core/util/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-create',
@@ -32,7 +33,8 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
     private roomCapacityService: RoomCapacityService,
     private roomService: RoomService,
     private modalService: NgbModal,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -145,11 +147,13 @@ export class RoomCreateComponent implements OnInit, AfterContentInit {
       };
       this.roomService.create(room).subscribe({
         next: next => {
-          this.alertService.addAlert({
-            type: 'success',
-            message: 'Zimmer erfolgreich erstellt!',
-            timeout: 2000,
-          });
+          this.router.navigate(['/room']).then(() =>
+            this.alertService.addAlert({
+              type: 'success',
+              message: 'Zimmer erfolgreich erstellt!',
+              timeout: 2000,
+            })
+          );
         },
         error: error => {
           this.alertService.addAlert({ type: 'danger', message: 'Ein Fehler ist aufgetreten!', timeout: 2000 });
