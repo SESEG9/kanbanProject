@@ -56,21 +56,6 @@
             </small>
           </div>
         </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="lionhotelApp.room.invoice" for="field_invoice">Invoice</label>
-          <select
-            class="form-control"
-            id="field_invoice"
-            data-cy="invoice"
-            name="invoice"
-            formControlName="invoice"
-            [compareWith]="compareInvoice"
-          >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="invoiceOption" *ngFor="let invoiceOption of invoicesSharedCollection">{{ invoiceOption.id }}</option>
-          </select>
-        </div>
       </div>
 
       <div>
