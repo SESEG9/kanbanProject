@@ -4,23 +4,29 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { InvoiceFormService, InvoiceFormGroup } from './invoice-form.service';
+import { InvoiceFormGroup, InvoiceFormService } from './invoice-form.service';
 import { IInvoice } from '../invoice.model';
 import { InvoiceService } from '../service/invoice.service';
+import { BookingService } from '../../booking/service/booking.service';
+import { Booking } from '../../booking/booking.model';
 
 @Component({
   selector: 'jhi-invoice-update',
   templateUrl: './invoice-update.component.html',
+  styleUrls: ['./invoice-update.component.scss'],
 })
 export class InvoiceUpdateComponent implements OnInit {
   isSaving = false;
   invoice: IInvoice | null = null;
+  bookings: Booking[] | null = null;
+  selectedBooking: Booking | null = null;
 
   editForm: InvoiceFormGroup = this.invoiceFormService.createInvoiceFormGroup();
 
   constructor(
     protected invoiceService: InvoiceService,
     protected invoiceFormService: InvoiceFormService,
+    protected bookingService: BookingService,
     protected activatedRoute: ActivatedRoute
   ) {}
 
@@ -29,7 +35,27 @@ export class InvoiceUpdateComponent implements OnInit {
       this.invoice = invoice;
       if (invoice) {
         this.updateForm(invoice);
+      } else {
+        this.loadBookings();
       }
+    });
+  }
+
+  loadBookings(): void {
+    this.bookingService.query().subscribe({
+      next: response => {
+        this.bookings = response;
+      },
+    });
+  }
+
+  updateData(): void {
+    const booking = this.selectedBooking!;
+    this.editForm.patchValue({
+      customerAddress: booking.billingCustomer.billingAddress,
+      discount: booking.discount,
+      price: booking.price,
+      duration: booking.duration,
     });
   }
 

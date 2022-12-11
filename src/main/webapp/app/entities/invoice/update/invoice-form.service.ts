@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {Injectable} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
-import { IInvoice, NewInvoice } from '../invoice.model';
+import {IInvoice, NewInvoice} from '../invoice.model';
+import {HOTEL_ADDRESS} from '../../../app.constants';
+import dayjs from 'dayjs/esm';
 
 /**
  * A partial Type with required key is used as form input.
@@ -14,7 +16,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type InvoiceFormGroupInput = IInvoice | PartialWithRequiredKeyOf<NewInvoice>;
 
-type InvoiceFormDefaults = Pick<NewInvoice, 'id' | 'cancled'>;
+type InvoiceFormDefaults = Pick<NewInvoice, 'id' | 'cancled' | 'hotelAddress' | 'billingDate'>;
 
 type InvoiceFormGroupContent = {
   id: FormControl<IInvoice['id'] | NewInvoice['id']>;
@@ -29,27 +31,27 @@ type InvoiceFormGroupContent = {
 
 export type InvoiceFormGroup = FormGroup<InvoiceFormGroupContent>;
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class InvoiceFormService {
-  createInvoiceFormGroup(invoice: InvoiceFormGroupInput = { id: null }): InvoiceFormGroup {
+  createInvoiceFormGroup(invoice: InvoiceFormGroupInput = {id: null}): InvoiceFormGroup {
     const invoiceRawValue = {
       ...this.getFormDefaults(),
       ...invoice,
     };
     return new FormGroup<InvoiceFormGroupContent>({
       id: new FormControl(
-        { value: invoiceRawValue.id, disabled: true },
+        {value: invoiceRawValue.id, disabled: true},
         {
           nonNullable: true,
           validators: [Validators.required],
         }
       ),
-      hotelAddress: new FormControl(invoiceRawValue.hotelAddress),
-      customerAddress: new FormControl(invoiceRawValue.customerAddress),
+      hotelAddress: new FormControl(invoiceRawValue.hotelAddress, [Validators.required, Validators.minLength(5)]),
+      customerAddress: new FormControl(invoiceRawValue.customerAddress, [Validators.required, Validators.minLength(5)]),
       discount: new FormControl(invoiceRawValue.discount),
-      price: new FormControl(invoiceRawValue.price),
-      duration: new FormControl(invoiceRawValue.duration),
-      billingDate: new FormControl(invoiceRawValue.billingDate),
+      price: new FormControl(invoiceRawValue.price, [Validators.required, Validators.min(0)]),
+      duration: new FormControl(invoiceRawValue.duration, [Validators.required, Validators.min(0)]),
+      billingDate: new FormControl(invoiceRawValue.billingDate, [Validators.required]),
       cancled: new FormControl(invoiceRawValue.cancled),
     });
   }
@@ -59,11 +61,11 @@ export class InvoiceFormService {
   }
 
   resetForm(form: InvoiceFormGroup, invoice: InvoiceFormGroupInput): void {
-    const invoiceRawValue = { ...this.getFormDefaults(), ...invoice };
+    const invoiceRawValue = {...this.getFormDefaults(), ...invoice};
     form.reset(
       {
         ...invoiceRawValue,
-        id: { value: invoiceRawValue.id, disabled: true },
+        id: {value: invoiceRawValue.id, disabled: true},
       } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
@@ -72,6 +74,8 @@ export class InvoiceFormService {
     return {
       id: null,
       cancled: false,
+      hotelAddress: HOTEL_ADDRESS,
+      billingDate: dayjs(new Date()),
     };
   }
 }

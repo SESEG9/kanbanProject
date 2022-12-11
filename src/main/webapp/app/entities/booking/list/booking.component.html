@@ -102,7 +102,7 @@
           </td>
           <td>{{ booking.bookingCode }}</td>
           <td>{{ booking.discount }}</td>
-          <td>{{ booking.price / 100 + "€" }}</td>
+          <td>{{ (booking.price || 0) / 100 | currency: 'EUR' }}</td>
           <td>{{ booking.startDate }}</td>
           <td>{{ booking.duration }}</td>
           <td>{{ booking.cancled }}</td>
@@ -117,7 +117,7 @@
           <td>
             <div *ngFor="let room of booking.rooms">
               <span>
-                {{room.room.identifyer + '|' + room.capacity.name}}
+                {{ room.room.identifyer + '|' + room.capacity.name }}
               </span>
             </div>
           </td>

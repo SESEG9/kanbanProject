@@ -1,10 +1,26 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-invoice-heading" data-cy="InvoiceCreateUpdateHeading" jhiTranslate="lionhotelApp.invoice.home.createOrEditLabel">
-        Invoice erstellen oder bearbeiten
-      </h2>
+    <h2 id="jhi-invoice-heading" data-cy="InvoiceCreateUpdateHeading" jhiTranslate="lionhotelApp.invoice.home.createOrEditLabel">
+      Invoice erstellen oder bearbeiten
+    </h2>
 
+    <!-- Select Booking -->
+    <div *ngIf="invoice == null" class="booking-selection">
+      <label for="select-booking">Wählen Sie eine Buchung aus, um die Daten zu übernehmen.</label>
+      <div class="row mb-3">
+        <select id="select-booking" [(ngModel)]="selectedBooking" class="form-control" (change)="updateData()">
+          <option [ngValue]="null" disabled>Buchung auswählen</option>
+          <option *ngFor="let booking of bookings" [ngValue]="booking">
+            {{ booking.id }}
+            | {{ booking.billingCustomer.name }} | {{ booking.startDate }} | {{ booking.bookingCode }}
+          </option>
+        </select>
+        <div class="row mb-3" *ngIf="bookings == null || bookings.length <= 0">Es wurden noch keine Buchungen erfassten.</div>
+      </div>
+    </div>
+
+    <!-- Invoice Form -->
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <div>
         <jhi-alert-error></jhi-alert-error>
 
@@ -54,7 +70,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="lionhotelApp.invoice.billingDate" for="field_billingDate">Billing Date</label>
-          <div class="input-group">
+          <div class="input-group billing-date">
             <input
               id="field_billingDate"
               data-cy="billingDate"
