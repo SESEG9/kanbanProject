@@ -9,6 +9,7 @@ import { IInvoice } from '../invoice.model';
 import { InvoiceService } from '../service/invoice.service';
 import { BookingService } from '../../booking/service/booking.service';
 import { Booking, IBooking } from '../../booking/booking.model';
+import { Customer } from '../../../reservation/reservation.model';
 
 @Component({
   selector: 'jhi-invoice-update',
@@ -44,16 +45,17 @@ export class InvoiceUpdateComponent implements OnInit {
   loadBookings(): void {
     this.bookingService.query().subscribe({
       next: response => {
-        this.bookings = response?.filter(b => !b.cancled);
+        this.bookings = response.filter(b => !b.cancled);
       },
     });
   }
 
   updateData(): void {
-    const booking = this.editForm.getRawValue().booking as Booking;
+    const booking = this.editForm.getRawValue().booking as Booking | null;
+    const customer = booking?.billingCustomer as Customer | null;
     this.editForm.patchValue({
       bookingId: booking?.id,
-      customerAddress: booking?.billingCustomer?.billingAddress,
+      customerAddress: customer?.billingAddress,
       discount: booking?.discount,
       price: booking?.price,
       duration: booking?.duration,
