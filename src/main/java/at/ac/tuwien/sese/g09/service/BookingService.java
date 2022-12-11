@@ -103,6 +103,10 @@ public class BookingService {
             }
         }
 
+        if (roomPrices.stream().mapToInt(rp -> rp.getCapacity().getCapacity()).sum() < (customers.size() + 1)) {
+            throw new BadRequestAlertException("Room capacities and number of customers don't match", ENTITY_NAME, "tooFewRooms");
+        }
+
         // create booking
         Booking booking = new Booking();
         Float totalPrice = calculatePrice(roomPrices, duration, bookingDTO.getDiscountCode());
