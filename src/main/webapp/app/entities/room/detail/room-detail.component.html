@@ -32,7 +32,7 @@
           <tbody>
             <tr *ngFor="let price of room?.prices ?? []">
               <td>{{ price.capacity?.name ?? '' }} ({{ price.capacity?.capacity ?? '' }})</td>
-              <td class="price-cell">€ {{ price.price / 100 | number: '1.2-2' }}</td>
+              <td class="price-cell">{{ price.price / 100 | currency: 'EUR' }}</td>
             </tr>
           </tbody>
         </table>

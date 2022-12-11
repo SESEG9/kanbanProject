@@ -10,9 +10,9 @@
       },
       "created": "Invoice erstellt mit ID {{ param }}",
       "updated": "Invoice aktualisiert mit ID {{ param }}",
-      "deleted": "Invoice gelöscht mit ID {{ param }}",
+      "deleted": "Invoice storniert mit ID {{ param }}",
       "delete": {
-        "question": "Soll Invoice {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Invoice {{ id }} wirklich dauerhaft storniert werden?"
       },
       "detail": {
         "title": "Rechnung"
@@ -20,12 +20,13 @@
       "id": "ID",
       "hotelAddress": "Hoteladresse",
       "customerAddress": "Kundenadresse",
-      "discount": "Rabatt",
+      "discount": "Rabatt (Faktor)",
       "price": "Preis",
       "duration": "Dauer (Tage)",
       "billingDate": "Rechnungsdatum",
       "cancled": "Storniert",
-      "room": "Zimmer"
+      "room": "Zimmer",
+      "booking": "Buchung"
     }
   }
 }

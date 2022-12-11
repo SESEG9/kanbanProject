@@ -154,6 +154,9 @@ public class InvoiceResource {
                 if (invoice.getCancled() != null) {
                     existingInvoice.setCancled(invoice.getCancled());
                 }
+                if (invoice.getBooking() != null) {
+                    existingInvoice.setBooking(invoice.getBooking());
+                }
 
                 return existingInvoice;
             })
@@ -196,13 +199,14 @@ public class InvoiceResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/invoices/{id}")
-    public ResponseEntity<Void> deleteInvoice(@PathVariable Long id) {
+    public ResponseEntity<Invoice> deleteInvoice(@PathVariable Long id) {
         log.debug("REST request to delete Invoice : {}", id);
-        invoiceRepository.deleteById(id);
+        //invoiceRepository.deleteById(id);
+        Invoice invoice = invoiceService.cancelInvoice(id);
         return ResponseEntity
-            .noContent()
+            .ok()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+            .body(invoice);
     }
 
     @GetMapping("/invoices/{id}/pdf")

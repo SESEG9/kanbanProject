@@ -102,7 +102,7 @@
           </div>
         </div>
         <div class="card-body d-flex w-100 justify-content-between">
-          <span *ngIf="room.minPrice; else noprice" style="font-weight: bold">ab {{ room.minPrice | number: '1.2-2' }}€</span>
+          <span *ngIf="room.minPrice; else noprice" style="font-weight: bold">ab {{ room.minPrice | currency: 'EUR' }}</span>
           <ng-template #noprice>
             <span style="font-weight: bold">Kein Preis festgelegt</span>
           </ng-template>

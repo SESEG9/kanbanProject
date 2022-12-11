@@ -14,6 +14,12 @@
         <dd>
           <span>{{ invoice.id }}</span>
         </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.booking">Booking</span></dt>
+        <dd>
+          <span
+            ><a href="/booking/{{ invoice.booking?.id }}/view">{{ invoice.booking?.id }}</a></span
+          >
+        </dd>
         <dt><span jhiTranslate="lionhotelApp.invoice.hotelAddress">Hotel Address</span></dt>
         <dd>
           <span>{{ invoice.hotelAddress }}</span>
@@ -28,7 +34,7 @@
         </dd>
         <dt><span jhiTranslate="lionhotelApp.invoice.price">Price</span></dt>
         <dd>
-          <span>{{ invoice.price }}</span>
+          <span>{{ (invoice.price || 0) / 100 | currency: 'EUR' }}</span>
         </dd>
         <dt><span jhiTranslate="lionhotelApp.invoice.duration">Duration</span></dt>
         <dd>
@@ -48,13 +54,16 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Zurück</span>
       </button>
 
+      <!--
       <button type="button" [routerLink]="['/invoice', invoice.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Bearbeiten</span>
       </button>
+      -->
 
       <a type="button" [href]="getInvoicePdfUrl()" class="btn btn-danger" download>
         <fa-icon icon="file-pdf"></fa-icon>&nbsp;<span>PDF</span>
       </a>
+      
     </div>
   </div>
 </div>

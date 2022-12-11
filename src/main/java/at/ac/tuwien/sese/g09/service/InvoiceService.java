@@ -468,4 +468,16 @@ public class InvoiceService {
 
         return tableBuilder.build();
     }
+
+    public Invoice cancelInvoice(Long id) {
+        Optional<Invoice> optionalInvoice = invoiceRepository.findById(id);
+        if (optionalInvoice.isPresent()) {
+            Invoice invoice = optionalInvoice.get();
+            invoice.setCancled(true);
+
+            return invoiceRepository.save(invoice);
+        } else {
+            throw new BadRequestAlertException("Invoice with id " + id + " not found", ENTITY_NAME, "invoiceNotFound");
+        }
+    }
 }

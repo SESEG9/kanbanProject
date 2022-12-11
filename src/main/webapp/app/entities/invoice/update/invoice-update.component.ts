@@ -8,7 +8,8 @@ import { InvoiceFormGroup, InvoiceFormService } from './invoice-form.service';
 import { IInvoice } from '../invoice.model';
 import { InvoiceService } from '../service/invoice.service';
 import { BookingService } from '../../booking/service/booking.service';
-import { Booking } from '../../booking/booking.model';
+import { Booking, IBooking } from '../../booking/booking.model';
+import { Customer } from '../../../reservation/reservation.model';
 
 @Component({
   selector: 'jhi-invoice-update',
@@ -19,8 +20,6 @@ export class InvoiceUpdateComponent implements OnInit {
   isSaving = false;
   invoice: IInvoice | null = null;
   bookings: Booking[] | null = null;
-  selectedBooking: Booking | null = null;
-
   editForm: InvoiceFormGroup = this.invoiceFormService.createInvoiceFormGroup();
 
   constructor(
@@ -33,29 +32,33 @@ export class InvoiceUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ invoice }) => {
       this.invoice = invoice;
+      this.loadBookings();
       if (invoice) {
+        invoice.bookingId = invoice.booking.id;
         this.updateForm(invoice);
-      } else {
-        this.loadBookings();
       }
     });
   }
 
+  compareBooking = (o1: IBooking | null, o2: IBooking | null): boolean => this.bookingService.compareBooking(o1, o2);
+
   loadBookings(): void {
     this.bookingService.query().subscribe({
       next: response => {
-        this.bookings = response;
+        this.bookings = response.filter(b => !b.cancled);
       },
     });
   }
 
   updateData(): void {
-    const booking = this.selectedBooking!;
+    const booking = this.editForm.getRawValue().booking as Booking | null;
+    const customer = booking?.billingCustomer as Customer | null;
     this.editForm.patchValue({
-      customerAddress: booking.billingCustomer.billingAddress,
-      discount: booking.discount,
-      price: booking.price,
-      duration: booking.duration,
+      bookingId: booking?.id,
+      customerAddress: customer?.billingAddress,
+      discount: booking?.discount,
+      price: booking?.price,
+      duration: booking?.duration,
     });
   }
 
