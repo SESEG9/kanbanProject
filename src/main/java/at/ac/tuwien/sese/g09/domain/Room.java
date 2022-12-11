@@ -51,10 +51,6 @@ public class Room implements Serializable {
     @JsonIgnoreProperties(value = { "room" }, allowSetters = true)
     private Set<RoomPicture> roomPictures = new HashSet<>();
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "rooms" }, allowSetters = true)
-    private Invoice invoice;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -124,19 +120,6 @@ public class Room implements Serializable {
     public Room removePrices(RoomPrice roomPrice) {
         this.prices.remove(roomPrice);
         roomPrice.setRoom(null);
-        return this;
-    }
-
-    public Invoice getInvoice() {
-        return this.invoice;
-    }
-
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
-    }
-
-    public Room invoice(Invoice invoice) {
-        this.setInvoice(invoice);
         return this;
     }
 

@@ -44,6 +44,9 @@ public class Booking implements Serializable {
     @Column(name = "cancled")
     private Boolean cancled;
 
+    @OneToMany(mappedBy = "booking")
+    private Set<Invoice> invoices = new HashSet<>();
+
     @ManyToMany
     @JoinTable(
         name = "rel_booking__customers",
@@ -77,6 +80,14 @@ public class Booking implements Serializable {
     public Booking id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public Set<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(Set<Invoice> invoices) {
+        this.invoices = invoices;
     }
 
     public String getBookingCode() {
