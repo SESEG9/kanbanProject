@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { Injectable } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import {IInvoice, NewInvoice} from '../invoice.model';
-import {HOTEL_ADDRESS} from '../../../app.constants';
+import { IInvoice, NewInvoice } from '../invoice.model';
+import { HOTEL_ADDRESS } from '../../../app.constants';
 import dayjs from 'dayjs/esm';
 
 /**
@@ -27,20 +27,22 @@ type InvoiceFormGroupContent = {
   duration: FormControl<IInvoice['duration']>;
   billingDate: FormControl<IInvoice['billingDate']>;
   cancled: FormControl<IInvoice['cancled']>;
+  bookingId: FormControl<IInvoice['bookingId']>;
+  booking: FormControl<IInvoice['booking']>;
 };
 
 export type InvoiceFormGroup = FormGroup<InvoiceFormGroupContent>;
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class InvoiceFormService {
-  createInvoiceFormGroup(invoice: InvoiceFormGroupInput = {id: null}): InvoiceFormGroup {
+  createInvoiceFormGroup(invoice: InvoiceFormGroupInput = { id: null }): InvoiceFormGroup {
     const invoiceRawValue = {
       ...this.getFormDefaults(),
       ...invoice,
     };
     return new FormGroup<InvoiceFormGroupContent>({
       id: new FormControl(
-        {value: invoiceRawValue.id, disabled: true},
+        { value: invoiceRawValue.id, disabled: true },
         {
           nonNullable: true,
           validators: [Validators.required],
@@ -53,6 +55,8 @@ export class InvoiceFormService {
       duration: new FormControl(invoiceRawValue.duration, [Validators.required, Validators.min(0)]),
       billingDate: new FormControl(invoiceRawValue.billingDate, [Validators.required]),
       cancled: new FormControl(invoiceRawValue.cancled),
+      bookingId: new FormControl(invoiceRawValue.bookingId, [Validators.required]),
+      booking: new FormControl(invoiceRawValue.booking, [Validators.required]),
     });
   }
 
@@ -61,11 +65,11 @@ export class InvoiceFormService {
   }
 
   resetForm(form: InvoiceFormGroup, invoice: InvoiceFormGroupInput): void {
-    const invoiceRawValue = {...this.getFormDefaults(), ...invoice};
+    const invoiceRawValue = { ...this.getFormDefaults(), ...invoice };
     form.reset(
       {
         ...invoiceRawValue,
-        id: {value: invoiceRawValue.id, disabled: true},
+        id: { value: invoiceRawValue.id, disabled: true },
       } as any /* cast to workaround https://github.com/angular/angular/issues/46458 */
     );
   }
