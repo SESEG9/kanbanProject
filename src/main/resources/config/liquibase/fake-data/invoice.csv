@@ -1,11 +1,11 @@
-id;hotel_address;customer_address;discount;price;duration;billing_date;cancled
-1;Sachsen-Anhalt Focused;Table;5801;89234;94315;2022-11-16;false
-2;calculating;invoice;5148;79862;75071;2022-11-16;true
-3;bypassing national Frozen;streamline quantify;90663;48352;56857;2022-11-17;true
-4;Incredible Bhutanese;program 1080p Horizontal;41434;95348;45135;2022-11-17;true
-5;back-end synergy transmitting;Buckinghamshire strategic Krona;51438;92472;22551;2022-11-17;false
-6;Armenian HTTP sticky;Hamburg;23436;32278;88319;2022-11-17;false
-7;Lead Well;Agent Towels Groves;18406;97975;89828;2022-11-16;true
-8;Kaimaninseln;auxiliary;89523;80897;81535;2022-11-17;false
-9;Customer;Cotton back;57955;34085;96191;2022-11-17;true
-10;Irak;index array;58730;4123;5252;2022-11-16;true
+id;hotel_address;customer_address;discount;price;duration;billing_date;cancled;booking_id
+1;Sachsen-Anhalt Focused;Table;5801;89234;94315;2022-11-16;false;1
+2;calculating;invoice;5148;79862;75071;2022-11-16;true;2
+3;bypassing national Frozen;streamline quantify;90663;48352;56857;2022-11-17;true;3
+4;Incredible Bhutanese;program 1080p Horizontal;41434;95348;45135;2022-11-17;true;4
+5;back-end synergy transmitting;Buckinghamshire strategic Krona;51438;92472;22551;2022-11-17;false;5
+6;Armenian HTTP sticky;Hamburg;23436;32278;88319;2022-11-17;false;6
+7;Lead Well;Agent Towels Groves;18406;97975;89828;2022-11-16;true;7
+8;Kaimaninseln;auxiliary;89523;80897;81535;2022-11-17;false;8
+9;Customer;Cotton back;57955;34085;96191;2022-11-17;true;9
+10;Irak;index array;58730;4123;5252;2022-11-16;true;10
