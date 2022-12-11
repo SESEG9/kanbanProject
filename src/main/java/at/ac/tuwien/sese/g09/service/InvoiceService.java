@@ -7,7 +7,6 @@ import at.ac.tuwien.sese.g09.repository.InvoiceRepository;
 import at.ac.tuwien.sese.g09.service.dto.InvoiceDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +48,17 @@ public class InvoiceService {
 
         invoiceRepository.save(invoice);
         return invoice;
+    }
+
+    public Invoice cancelInvoice(Long id) {
+        Optional<Invoice> optionalInvoice = invoiceRepository.findById(id);
+        if (optionalInvoice.isPresent()) {
+            Invoice invoice = optionalInvoice.get();
+            invoice.setCancled(true);
+
+            return invoiceRepository.save(invoice);
+        } else {
+            throw new BadRequestAlertException("Invoice with id " + id + " not found", ENTITY_NAME, "invoiceNotFound");
+        }
     }
 }
