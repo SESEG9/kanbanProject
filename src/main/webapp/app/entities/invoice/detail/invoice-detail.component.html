@@ -14,6 +14,12 @@
         <dd>
           <span>{{ invoice.id }}</span>
         </dd>
+        <dt><span jhiTranslate="lionhotelApp.invoice.booking">Booking</span></dt>
+        <dd>
+          <span
+            ><a href="/booking/{{ invoice.booking?.id }}/view">{{ invoice.booking?.id }}</a></span
+          >
+        </dd>
         <dt><span jhiTranslate="lionhotelApp.invoice.hotelAddress">Hotel Address</span></dt>
         <dd>
           <span>{{ invoice.hotelAddress }}</span>
