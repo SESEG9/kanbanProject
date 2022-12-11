@@ -46,6 +46,7 @@ img {
   max-height: 20em;
 }
 .x-button {
+  z-index: 99;
   align-self: flex-end;
   padding: 0;
   height: 1.5rem;
