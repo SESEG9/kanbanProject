@@ -114,10 +114,11 @@ export class NewReservationComponent implements OnInit {
           next: (value) => {
             this.reservation = value
             this.success = true
+            this.error = false
           },
           error: (error) => {
             this.error = true
-            this.errorMessage = error.message
+            this.errorMessage = error.error.title
           }
         })
       } else {

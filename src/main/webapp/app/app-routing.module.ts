@@ -44,6 +44,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: 'promotion',
           loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule),
         },
+        {
+          path: 'contact',
+          loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule),
+        },
         navbarRoute,
         ...errorRoute,
       ],

@@ -24,6 +24,13 @@
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/contact" (click)="collapseNavbar()">
+            <span>
+              <span>Kontakt</span>
+            </span>
+          </a>
+        </li>
+        <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/room" (click)="collapseNavbar()">
             <span>
               <span>Zimmer</span>
