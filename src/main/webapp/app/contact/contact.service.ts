@@ -13,6 +13,6 @@ export class ContactService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   sendRequest(request: ContactRequest): Observable<any> {
-    return this.http.post(this.publicResourceUrl, request)
+    return this.http.post(this.publicResourceUrl + `?subject=${request.subject}&text=${request.text}&contactMail=${request.contactMail}`, {})
   }
 }

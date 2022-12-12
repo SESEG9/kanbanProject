@@ -27,7 +27,7 @@ public class MailResource {
     }
 
     @PostMapping("/public/mail")
-    public void createMail(@RequestParam String subject, @RequestParam String text, String contactMail) {
+    public void createMail(@RequestParam String subject, @RequestParam String text, @RequestParam String contactMail) {
         mailService.sendEmailToSelf(contactMail, subject, text, false, false);
     }
 }
