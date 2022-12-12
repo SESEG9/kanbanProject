@@ -1,0 +1,66 @@
+<div class="container" style="max-width: 650px">
+    <div class="alert alert-success" *ngIf="success">
+        <strong>Anfrage gesendet!</strong> Wir melden uns bei Ihnen so bald wie möglich.
+    </div>
+    <div class="alert alert-danger" *ngIf="error">
+        <strong>Anfrage konnte nicht gesendet werden!</strong> Bitte versuchen Sie es später noch einmal.
+    </div>
+    <div class="d-flex justify-content-center align-items-center mt-3 w-100">
+      <form name="form" class="w-100" role="form" (ngSubmit)="sendRequest()" [formGroup]="form" *ngIf="!success && !error">
+        <h4 class="my-2">Anfrage senden</h4>
+        <div class="card m-2 p-2">
+          <div class="row">
+            <div class="col">
+              <label class="form-label" for="subject">Betreff</label>
+              <input type="text" class="form-control" id="subject" name="subject" placeholder="Betreff" formControlName="subject" />
+              <div
+                *ngIf="
+                  form.controls['subject'].invalid &&
+                  (form.controls['subject'].dirty || form.controls['subject'].touched)
+                "
+              >
+                <small class="form-text text-danger" *ngIf="form.controls['subject'].errors?.required">
+                  Zum Senden einer Anfrage müssen Sie einen Betreff angeben
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <label class="form-label" for="text">Beschreibung</label>
+                <textarea class="form-control" id="text" name="text" placeholder="Beschreibung" formControlName="text"></textarea>
+                <div
+                    *ngIf="
+                    form.controls['text'].invalid &&
+                    (form.controls['text'].dirty || form.controls['text'].touched)
+                    "
+                >
+                    <small class="form-text text-danger" *ngIf="form.controls['text'].errors?.required">
+                    Zum Senden einer Anfrage müssen Sie einen Beschreibung angeben
+                    </small>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <label class="form-label" for="contactMail">Email</label>
+                <input type="text" class="form-control" id="contactMail" name="contactMail" placeholder="Email" formControlName="contactMail" />
+                <div
+                    *ngIf="
+                    form.controls['contactMail'].invalid &&
+                    (form.controls['contactMail'].dirty || form.controls['contactMail'].touched)
+                    "
+                >
+                    <small class="form-text text-danger" *ngIf="form.controls['contactMail'].errors?.required">
+                    Zum Senden einer Anfrage müssen Sie eine Email Adresse angeben
+                    </small>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex w-100 justify-content-end">
+            <button type="submit" [disabled]="form.invalid" class="btn btn-primary mt-3">Absenden</button>
+          </div>
+      </form>
+    </div>
+</div>
