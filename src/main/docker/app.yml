@@ -9,7 +9,9 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_DATASOURCE_URL=jdbc:postgresql://lionhotel-postgresql:5432/lionhotel
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://lionhotel-postgresql:5432/lionhotel
-      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - JHIPSTER_SLEEP=30
+      - LIONHOTEL_APPLICATION_MAIL_PW=<your_mail_secret>
+    # gives time for other services to boot before the application
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
