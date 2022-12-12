@@ -379,8 +379,8 @@
           <div [formGroupName]="index">
             <div class="row d-flex align-items-end">
               <div class="col">
-                <label class="form-label" for="room">Zimmer</label>
-                <select class="form-select" id="room" name="room" formControlName="roomID">
+                <label class="form-label" for="roomID">Zimmer</label>
+                <select class="form-select" id="roomID" name="room" formControlName="roomID">
                   <option *ngFor="let room of rooms" value="{{ room.id }}">{{ room.identifyer }}</option>
                 </select>
                 <div
@@ -395,8 +395,8 @@
                 </div>
               </div>
               <div class="col">
-                <label class="form-label" for="room">Belegung</label>
-                <select class="form-select" id="room" name="room" formControlName="capacityID">
+                <label class="form-label" for="capacityID">Belegung</label>
+                <select class="form-select" id="capacityID" name="room" formControlName="capacityID">
                   <option
                     *ngFor="let price of getRoomById(roomsFormControl.at(index).get('roomID')?.value).prices"
                     value="{{ price.capacity?.id }}"
@@ -417,7 +417,7 @@
               </div>
               <div class="d-flex col-2 h-100 justify-content-end" *ngIf="index > 0">
                 <label class="form-label" for="delete"></label>
-                <button type="button" name="delete" class="btn btn-danger" (click)="removeRoomRow(index)">
+                <button type="button" id="delete" name="delete" class="btn btn-danger" (click)="removeRoomRow(index)">
                   <fa-icon icon="times"></fa-icon>
                 </button>
               </div>
@@ -431,13 +431,13 @@
         </div>
       </div>
 
-      <div class="mt-5 mb-2">
+      <div class="mt-5 mb-2" *ngIf="getCountDays() > 0">
         <h4>Zusammenfassung</h4>
         <div *ngFor="let room of roomsFormControl.value">
-          <div class="d-flex w-100 justify-content-between">
+          <div class="d-flex w-100 justify-content-between" *ngIf="room.roomID !== null && room.roomID !== '' && room.capacityID !== null && room.capacityID !== ''">
             <div>{{ getRoomById(room.roomID).identifyer }}</div>
             <div>
-              <div>{{ getCountDays() + ' x ' + getPriceByCapacityID(getRoomById(room.roomID), room.capacityID) | currency: 'EUR' }}</div>
+              <div>{{getCountDays() + ' x '}} {{ getPriceByCapacityID(getRoomById(room.roomID), room.capacityID) | currency: 'EUR' }}</div>
             </div>
           </div>
         </div>
