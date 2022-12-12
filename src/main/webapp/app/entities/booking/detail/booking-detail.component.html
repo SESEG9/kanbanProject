@@ -20,7 +20,7 @@
         </dd>
         <dt><span jhiTranslate="lionhotelApp.booking.price">Price</span></dt>
         <dd>
-          <span>{{ booking.price }}</span>
+          <span>{{ (booking.price || 0) / 100 | currency: 'EUR' }}</span>
         </dd>
         <dt><span jhiTranslate="lionhotelApp.booking.startDate">Start Date</span></dt>
         <dd>

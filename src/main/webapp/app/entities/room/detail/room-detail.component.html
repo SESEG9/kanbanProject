@@ -32,12 +32,12 @@
           <tbody>
             <tr *ngFor="let price of room?.prices ?? []">
               <td>{{ price.capacity?.name ?? '' }} ({{ price.capacity?.capacity ?? '' }})</td>
-              <td class="price-cell">€ {{ price.price / 100 | number: '1.2-2' }}</td>
+              <td class="price-cell">{{ price.price / 100 | currency: 'EUR' }}</td>
             </tr>
           </tbody>
         </table>
         <div class="space"></div>
-        <div class="submit-box"><button class="btn btn-secondary" (click)="reserve()">Reservieren</button></div>
+        <a routerLink="/reservation/new" [state]="{ roomID: room?.id }" class="btn btn-primary">Reservieren</a>
       </div>
       <div class="admin-buttons"></div>
     </div>

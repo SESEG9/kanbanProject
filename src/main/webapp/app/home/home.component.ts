@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { HOTEL_ADDRESS } from '../app.constants';
 
 @Component({
   selector: 'jhi-home',
@@ -13,6 +14,7 @@ import { Account } from 'app/core/auth/account.model';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
+  hotelAddress: string = HOTEL_ADDRESS;
 
   private readonly destroy$ = new Subject<void>();
 

@@ -2,6 +2,8 @@ package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Invoice;
 import at.ac.tuwien.sese.g09.repository.InvoiceRepository;
+import at.ac.tuwien.sese.g09.service.InvoiceService;
+import at.ac.tuwien.sese.g09.service.dto.InvoiceDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,6 +13,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,9 +46,11 @@ public class InvoiceResource {
     private String applicationName;
 
     private final InvoiceRepository invoiceRepository;
+    private final InvoiceService invoiceService;
 
-    public InvoiceResource(InvoiceRepository invoiceRepository) {
+    public InvoiceResource(InvoiceRepository invoiceRepository, InvoiceService invoiceService) {
         this.invoiceRepository = invoiceRepository;
+        this.invoiceService = invoiceService;
     }
 
     /**
@@ -54,12 +61,9 @@ public class InvoiceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/invoices")
-    public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) throws URISyntaxException {
+    public ResponseEntity<Invoice> createInvoice(@RequestBody InvoiceDTO invoice) throws URISyntaxException {
         log.debug("REST request to save Invoice : {}", invoice);
-        if (invoice.getId() != null) {
-            throw new BadRequestAlertException("A new invoice cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Invoice result = invoiceRepository.save(invoice);
+        Invoice result = invoiceService.save(invoice);
         return ResponseEntity
             .created(new URI("/api/invoices/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -150,6 +154,9 @@ public class InvoiceResource {
                 if (invoice.getCancled() != null) {
                     existingInvoice.setCancled(invoice.getCancled());
                 }
+                if (invoice.getBooking() != null) {
+                    existingInvoice.setBooking(invoice.getBooking());
+                }
 
                 return existingInvoice;
             })
@@ -192,12 +199,28 @@ public class InvoiceResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/invoices/{id}")
-    public ResponseEntity<Void> deleteInvoice(@PathVariable Long id) {
+    public ResponseEntity<Invoice> deleteInvoice(@PathVariable Long id) {
         log.debug("REST request to delete Invoice : {}", id);
-        invoiceRepository.deleteById(id);
+        //invoiceRepository.deleteById(id);
+        Invoice invoice = invoiceService.cancelInvoice(id);
         return ResponseEntity
-            .noContent()
+            .ok()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+            .body(invoice);
+    }
+
+    @GetMapping("/invoices/{id}/pdf")
+    public ResponseEntity<byte[]> getInvoicePDF(@PathVariable Long id) {
+        log.debug("REST request to delete Invoice : {}", id);
+
+        Optional<byte[]> pdf = invoiceService.generatePdf(id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+        headers.add(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment().filename(String.format("Rechnung_%d.pdf", id)).build().toString()
+        );
+        return ResponseUtil.wrapOrNotFound(pdf, headers);
     }
 }

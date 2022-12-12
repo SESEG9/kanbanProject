@@ -1,16 +1,13 @@
 package at.ac.tuwien.sese.g09.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A Invoice.
+ * An Invoice.
  */
 @Entity
 @Table(name = "invoice")
@@ -47,10 +44,9 @@ public class Invoice implements Serializable {
     @Column(name = "cancled")
     private Boolean cancled;
 
-    @OneToMany(mappedBy = "invoice")
+    @ManyToOne
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "prices", "invoice", "bookings" }, allowSetters = true)
-    private Set<Room> rooms = new HashSet<>();
+    private Booking booking;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -61,6 +57,14 @@ public class Invoice implements Serializable {
     public Invoice id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
     public void setId(Long id) {
@@ -156,37 +160,6 @@ public class Invoice implements Serializable {
 
     public void setCancled(Boolean cancled) {
         this.cancled = cancled;
-    }
-
-    public Set<Room> getRooms() {
-        return this.rooms;
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        if (this.rooms != null) {
-            this.rooms.forEach(i -> i.setInvoice(null));
-        }
-        if (rooms != null) {
-            rooms.forEach(i -> i.setInvoice(this));
-        }
-        this.rooms = rooms;
-    }
-
-    public Invoice rooms(Set<Room> rooms) {
-        this.setRooms(rooms);
-        return this;
-    }
-
-    public Invoice addRoom(Room room) {
-        this.rooms.add(room);
-        room.setInvoice(this);
-        return this;
-    }
-
-    public Invoice removeRoom(Room room) {
-        this.rooms.remove(room);
-        room.setInvoice(null);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

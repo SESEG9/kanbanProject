@@ -1,16 +1,35 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-invoice-heading" data-cy="InvoiceCreateUpdateHeading" jhiTranslate="lionhotelApp.invoice.home.createOrEditLabel">
-        Invoice erstellen oder bearbeiten
-      </h2>
+    <h2 id="jhi-invoice-heading" data-cy="InvoiceCreateUpdateHeading" jhiTranslate="lionhotelApp.invoice.home.createOrEditLabel">
+      Invoice erstellen oder bearbeiten
+    </h2>
 
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <div>
         <jhi-alert-error></jhi-alert-error>
 
         <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="lionhotelApp.invoice.booking" for="field_booking">Booking</label>
+          <select
+            id="field_booking"
+            name="booking"
+            data-yc="booking"
+            formControlName="booking"
+            class="form-control"
+            (change)="updateData()"
+            [compareWith]="compareBooking"
+          >
+            <option [ngValue]="null" disabled>Buchung auswählen</option>
+            <option *ngFor="let booking of bookings" [ngValue]="booking">
+              {{ booking.id }}
+              | {{ booking.billingCustomer?.name || 'Kein Name hinterlegt' }} | {{ booking.startDate }} | {{ booking.bookingCode }}
+            </option>
+          </select>
         </div>
 
         <div class="row mb-3">
@@ -39,11 +58,22 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="lionhotelApp.invoice.discount" for="field_discount">Discount</label>
-          <input type="number" class="form-control" name="discount" id="field_discount" data-cy="discount" formControlName="discount" />
+          <input
+            type="number"
+            class="form-control"
+            name="discount"
+            id="field_discount"
+            data-cy="discount"
+            formControlName="discount"
+            step="0.01"
+          />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="lionhotelApp.invoice.price" for="field_price">Price</label>
+          <label class="form-label" for="field_price"
+            ><span jhiTranslate="lionhotelApp.invoice.price">Price</span>:
+            {{ (editForm.getRawValue().price || 0) / 100 | currency: 'EUR' }}</label
+          >
           <input type="number" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
         </div>
 
@@ -54,7 +84,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="lionhotelApp.invoice.billingDate" for="field_billingDate">Billing Date</label>
-          <div class="input-group">
+          <div class="input-group billing-date">
             <input
               id="field_billingDate"
               data-cy="billingDate"

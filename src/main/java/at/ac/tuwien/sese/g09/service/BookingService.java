@@ -4,15 +4,22 @@ import at.ac.tuwien.sese.g09.domain.Booking;
 import at.ac.tuwien.sese.g09.domain.Customer;
 import at.ac.tuwien.sese.g09.domain.Room;
 import at.ac.tuwien.sese.g09.domain.RoomPrice;
-import at.ac.tuwien.sese.g09.repository.*;
+import at.ac.tuwien.sese.g09.repository.BookingRepository;
+import at.ac.tuwien.sese.g09.repository.CustomerRepository;
+import at.ac.tuwien.sese.g09.repository.RoomPriceRepository;
+import at.ac.tuwien.sese.g09.repository.RoomRepository;
 import at.ac.tuwien.sese.g09.service.dto.BookingDTO;
 import at.ac.tuwien.sese.g09.service.dto.CustomerDTO;
 import at.ac.tuwien.sese.g09.service.dto.RoomBookingDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -103,6 +110,10 @@ public class BookingService {
             }
         }
 
+        if (roomPrices.stream().mapToInt(rp -> rp.getCapacity().getCapacity()).sum() < (customers.size() + 1)) {
+            throw new BadRequestAlertException("Room capacities and number of customers don't match", ENTITY_NAME, "tooFewRooms");
+        }
+
         // create booking
         Booking booking = new Booking();
         Float totalPrice = calculatePrice(roomPrices, duration, bookingDTO.getDiscountCode());
@@ -122,7 +133,7 @@ public class BookingService {
         mailService.sendEmailWithCCs(
             retVal.getBillingCustomer().getEmail(),
             retVal.getCustomers().stream().map(Customer::getEmail).collect(Collectors.toList()),
-            "Conformation of your reservation",
+            "Confirmation of your reservation",
             "Confirmation of your reservation, cancel code is " + retVal.getBookingCode(),
             false,
             false
@@ -145,7 +156,7 @@ public class BookingService {
                     mailService.sendEmailWithCCs(
                         retVal.getBillingCustomer().getEmail(),
                         retVal.getCustomers().stream().map(Customer::getEmail).collect(Collectors.toList()),
-                        "Conformation of your canceled reservation",
+                        "Confirmation of your canceled reservation",
                         "Confirmation of your canceled reservation",
                         false,
                         false

@@ -97,6 +97,18 @@
                 <span>Reservierungsverwaltung</span>
               </a>
             </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="invoice"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span>Rechnungslegung</span>
+              </a>
+            </li>
 
             <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
           </ul>
@@ -104,7 +116,7 @@
 
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         <li
-          *ngSwitchCase="true"
+          *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
           class="nav-item d-flex align-items-center dropdown pointer"
           display="dynamic"
@@ -331,7 +343,12 @@
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           </ul>
         </li>
-        <li ngbDropdown class="nav-item d-flex align-items-center dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
+        <li
+          ngbDropdown
+          class="nav-item d-flex align-items-center dropdown pointer"
+          display="dynamic"
+          *ngIf="languages && languages.length > 1"
+        >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
             <span>
               <fa-icon icon="flag"></fa-icon>
@@ -408,12 +425,12 @@
                 <span jhiTranslate="global.menu.account.login">Anmelden</span>
               </a>
             </li>
-            <li>
+            <!--<li>
               <a class="dropdown-item" routerLink="/reservation" data-cy="reservation">
                 <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
                 <span>Meine Reservierungen</span>
               </a>
-            </li>
+            </li>-->
             <!-- <li *ngSwitchCase="false">
               <a
                 class="dropdown-item"

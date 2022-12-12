@@ -2,30 +2,31 @@
   "lionhotelApp": {
     "invoice": {
       "home": {
-        "title": "Invoices",
+        "title": "Rechnungen",
         "refreshListLabel": "Liste aktualisieren",
-        "createLabel": "Invoice erstellen",
-        "createOrEditLabel": "Invoice erstellen oder bearbeiten",
-        "notFound": "Keine Invoices gefunden"
+        "createLabel": "Rechnung erstellen",
+        "createOrEditLabel": "Rechnung erstellen oder bearbeiten",
+        "notFound": "Keine Rechnungen gefunden"
       },
       "created": "Invoice erstellt mit ID {{ param }}",
       "updated": "Invoice aktualisiert mit ID {{ param }}",
-      "deleted": "Invoice gelöscht mit ID {{ param }}",
+      "deleted": "Invoice storniert mit ID {{ param }}",
       "delete": {
-        "question": "Soll Invoice {{ id }} wirklich dauerhaft gelöscht werden?"
+        "question": "Soll Invoice {{ id }} wirklich dauerhaft storniert werden?"
       },
       "detail": {
-        "title": "Invoice"
+        "title": "Rechnung"
       },
       "id": "ID",
-      "hotelAddress": "Hotel Address",
-      "customerAddress": "Customer Address",
-      "discount": "Discount",
-      "price": "Price",
-      "duration": "Duration",
-      "billingDate": "Billing Date",
-      "cancled": "Cancled",
-      "room": "Room"
+      "hotelAddress": "Hoteladresse",
+      "customerAddress": "Kundenadresse",
+      "discount": "Rabatt (Faktor)",
+      "price": "Preis",
+      "duration": "Dauer (Tage)",
+      "billingDate": "Rechnungsdatum",
+      "cancled": "Storniert",
+      "room": "Zimmer",
+      "booking": "Buchung"
     }
   }
 }

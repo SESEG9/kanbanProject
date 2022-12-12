@@ -4,32 +4,61 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { InvoiceFormService, InvoiceFormGroup } from './invoice-form.service';
+import { InvoiceFormGroup, InvoiceFormService } from './invoice-form.service';
 import { IInvoice } from '../invoice.model';
 import { InvoiceService } from '../service/invoice.service';
+import { BookingService } from '../../booking/service/booking.service';
+import { Booking, IBooking } from '../../booking/booking.model';
+import { Customer } from '../../../reservation/reservation.model';
 
 @Component({
   selector: 'jhi-invoice-update',
   templateUrl: './invoice-update.component.html',
+  styleUrls: ['./invoice-update.component.scss'],
 })
 export class InvoiceUpdateComponent implements OnInit {
   isSaving = false;
   invoice: IInvoice | null = null;
-
+  bookings: Booking[] | null = null;
   editForm: InvoiceFormGroup = this.invoiceFormService.createInvoiceFormGroup();
 
   constructor(
     protected invoiceService: InvoiceService,
     protected invoiceFormService: InvoiceFormService,
+    protected bookingService: BookingService,
     protected activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ invoice }) => {
       this.invoice = invoice;
+      this.loadBookings();
       if (invoice) {
+        invoice.bookingId = invoice.booking.id;
         this.updateForm(invoice);
       }
+    });
+  }
+
+  compareBooking = (o1: IBooking | null, o2: IBooking | null): boolean => this.bookingService.compareBooking(o1, o2);
+
+  loadBookings(): void {
+    this.bookingService.query().subscribe({
+      next: response => {
+        this.bookings = response.filter(b => !b.cancled);
+      },
+    });
+  }
+
+  updateData(): void {
+    const booking = this.editForm.getRawValue().booking as Booking | null;
+    const customer = booking?.billingCustomer as Customer | null;
+    this.editForm.patchValue({
+      bookingId: booking?.id,
+      customerAddress: customer?.billingAddress,
+      discount: booking?.discount,
+      price: booking?.price,
+      duration: booking?.duration,
     });
   }
 
