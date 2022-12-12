@@ -81,6 +81,17 @@ public class MailService {
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+        sendEmail(jHipsterProperties.getMail().getFrom(), to, subject, content, isMultipart, isHtml);
+    }
+
+    @Async
+    public void sendEmailToSelf(String contactMail, String subject, String content, boolean isMultipart, boolean isHtml) {
+        String mail = jHipsterProperties.getMail().getFrom();
+        content += "\n\n Reply to " + contactMail;
+        sendEmail(mail, mail, subject, content, isMultipart, isHtml);
+    }
+
+    private void sendEmail(String from, String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug(
             "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
             isMultipart,
@@ -95,7 +106,7 @@ public class MailService {
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
             message.setTo(to);
-            message.setFrom(jHipsterProperties.getMail().getFrom());
+            message.setFrom(from);
             message.setSubject(subject);
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
