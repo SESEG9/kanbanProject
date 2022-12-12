@@ -54,44 +54,21 @@ public class MailService {
 
     @Async
     public void sendEmailWithCCs(String to, List<String> cc, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug(
-            "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-            isMultipart,
-            isHtml,
-            to,
-            subject,
-            content
-        );
-
-        // Prepare message using a Spring helper
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
-            message.setTo(to);
-            message.setCc(cc.toArray(new String[0]));
-            message.setFrom(jHipsterProperties.getMail().getFrom());
-            message.setSubject(subject);
-            message.setText(content, isHtml);
-            javaMailSender.send(mimeMessage);
-            log.debug("Sent email to User '{}'", to);
-        } catch (MailException | MessagingException e) {
-            log.warn("Email could not be sent to user '{}'", to, e);
-        }
+        sendEmail(jHipsterProperties.getMail().getFrom(), to, cc, subject, content, isMultipart, isHtml);
     }
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        sendEmail(jHipsterProperties.getMail().getFrom(), to, subject, content, isMultipart, isHtml);
+        sendEmail(jHipsterProperties.getMail().getFrom(), to, null, subject, content, isMultipart, isHtml);
     }
 
     @Async
     public void sendEmailToSelf(String contactMail, String subject, String content, boolean isMultipart, boolean isHtml) {
-        String mail = jHipsterProperties.getMail().getFrom();
         content += "\n\n Reply to " + contactMail;
-        sendEmail(mail, mail, subject, content, isMultipart, isHtml);
+        sendEmail(jHipsterProperties.getMail().getFrom(), "office.lion.hotel@gmail.com", null, subject, content, isMultipart, isHtml);
     }
 
-    private void sendEmail(String from, String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+    private void sendEmail(String from, String to, List<String> cc, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug(
             "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
             isMultipart,
@@ -107,6 +84,9 @@ public class MailService {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
             message.setTo(to);
             message.setFrom(from);
+            if (cc != null && !cc.isEmpty()) {
+                message.setCc(cc.toArray(new String[0]));
+            }
             message.setSubject(subject);
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
