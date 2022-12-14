@@ -2,6 +2,7 @@ package at.ac.tuwien.sese.g09.service;
 
 import at.ac.tuwien.sese.g09.domain.Booking;
 import at.ac.tuwien.sese.g09.domain.Customer;
+import at.ac.tuwien.sese.g09.domain.Discount;
 import at.ac.tuwien.sese.g09.domain.Room;
 import at.ac.tuwien.sese.g09.domain.RoomPrice;
 import at.ac.tuwien.sese.g09.repository.BookingRepository;
@@ -22,6 +23,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,18 +38,22 @@ public class BookingService {
     private final CustomerRepository customerRepository;
     private final MailService mailService;
 
+    private final DiscountService discountService;
+
     public BookingService(
         BookingRepository bookingRepository,
         RoomRepository roomRepository,
         CustomerRepository customerRepository,
         RoomPriceRepository roomPriceRepository,
-        MailService mailService
+        MailService mailService,
+        DiscountService discountService
     ) {
         this.bookingRepository = bookingRepository;
         this.roomRepository = roomRepository;
         this.customerRepository = customerRepository;
         this.roomPriceRepository = roomPriceRepository;
         this.mailService = mailService;
+        this.discountService = discountService;
     }
 
     public Booking createBooking(BookingDTO bookingDTO) {
@@ -122,7 +128,13 @@ public class BookingService {
         booking.setRooms(roomPrices);
         booking.setBillingCustomer(billingCustomer);
         booking.setCustomers(customers);
-        booking.setDiscount(0.9f);
+
+        if (StringUtils.isNotBlank(bookingDTO.getDiscountCode())) {
+            // TODO maybe catch exception if not found
+            Discount discount = discountService.getDiscount(bookingDTO.getDiscountCode());
+            booking.setDiscount(discount.getDiscountPercentage());
+        }
+
         booking.setCancled(false);
         booking.setDuration(duration);
         booking.setStartDate(startDate);

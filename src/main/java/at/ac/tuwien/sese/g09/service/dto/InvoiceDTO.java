@@ -9,7 +9,6 @@ public class InvoiceDTO implements Serializable {
 
     private String hotelAddress;
     private String customerAddress;
-    private Float discount;
     private Integer price;
     private Integer duration;
     private LocalDate billingDate;
@@ -28,7 +27,6 @@ public class InvoiceDTO implements Serializable {
     ) {
         this.hotelAddress = hotelAddress;
         this.customerAddress = customerAddress;
-        this.discount = discount;
         this.price = price;
         this.duration = duration;
         this.billingDate = billingDate;
@@ -52,14 +50,6 @@ public class InvoiceDTO implements Serializable {
 
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
-    }
-
-    public Float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Float discount) {
-        this.discount = discount;
     }
 
     public Integer getPrice() {

@@ -61,7 +61,7 @@ public class InvoiceService {
         Invoice invoice = new Invoice();
         invoice.setBooking(b.get());
         invoice.setCancled(newInvoice.getCancled());
-        invoice.setDiscount(newInvoice.getDiscount());
+        invoice.setDiscount(b.get().getDiscount());
         invoice.setDuration(newInvoice.getDuration());
         invoice.setBillingDate(newInvoice.getBillingDate());
         invoice.setPrice(newInvoice.getPrice());
