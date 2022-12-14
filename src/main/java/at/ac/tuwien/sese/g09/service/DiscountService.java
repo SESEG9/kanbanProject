@@ -25,7 +25,7 @@ public class DiscountService {
                 "discountCodeWrongLength"
             );
         }
-        if (percentage < 0 || percentage > 100) {
+        if (percentage < 0 || percentage > 1) {
             throw new BadRequestAlertException(
                 "Discount Percentage must be between 0 and 100 characters long",
                 ENTITY_NAME,
