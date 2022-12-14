@@ -3,6 +3,7 @@ package at.ac.tuwien.sese.g09.service;
 import at.ac.tuwien.sese.g09.domain.Discount;
 import at.ac.tuwien.sese.g09.repository.DiscountRepository;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,9 @@ public class DiscountService {
         }
 
         return discount;
+    }
+
+    public List<Discount> getAllDiscounts() {
+        return discountRepository.findAll();
     }
 }

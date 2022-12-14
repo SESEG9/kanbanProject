@@ -2,6 +2,7 @@ package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Discount;
 import at.ac.tuwien.sese.g09.service.DiscountService;
+import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,5 +29,10 @@ public class DiscountResource {
     @GetMapping("/public/discount")
     public Discount getDiscountPercentage(@RequestParam String discountCode) {
         return discountService.getDiscount(discountCode);
+    }
+
+    @GetMapping("/discount")
+    public List<Discount> getAllDiscounts(@RequestParam String discountCode) {
+        return discountService.getAllDiscounts();
     }
 }
