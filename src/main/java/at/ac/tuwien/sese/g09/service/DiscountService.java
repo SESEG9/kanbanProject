@@ -54,4 +54,14 @@ public class DiscountService {
     public List<Discount> getAllDiscounts() {
         return discountRepository.findAll();
     }
+
+    public void deleteDiscount(String code) {
+        Discount discount = discountRepository.findByDiscountCode(code).stream().findFirst().orElse(null);
+
+        if (discount == null) {
+            throw new BadRequestAlertException("No Discount with this code found", ENTITY_NAME, "discountNotFound");
+        }
+
+        discountRepository.deleteById(discount.getId());
+    }
 }

@@ -4,6 +4,7 @@ import at.ac.tuwien.sese.g09.domain.Discount;
 import at.ac.tuwien.sese.g09.service.DiscountService;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,5 +35,10 @@ public class DiscountResource {
     @GetMapping("/discounts")
     public List<Discount> getAllDiscounts() {
         return discountService.getAllDiscounts();
+    }
+
+    @DeleteMapping("/discount")
+    public void deleteDiscount(@RequestParam String discountCode) {
+        discountService.deleteDiscount(discountCode);
     }
 }
