@@ -18,7 +18,7 @@ public class DiscountService {
         this.discountRepository = discountRepository;
     }
 
-    public void addDiscount(String code, Float percentage) {
+    public void addDiscount(String code, Integer percentage) {
         if (code.length() < 5 || code.length() > 10) {
             throw new BadRequestAlertException(
                 "Discount Code length must be between 5 and 10 characters long",
@@ -36,7 +36,7 @@ public class DiscountService {
 
         Discount discount = new Discount();
         discount.setDiscountCode(code);
-        discount.setDiscountPercentage(percentage);
+        discount.setDiscountPercentage(Float.valueOf(percentage));
 
         discountRepository.save(discount);
     }

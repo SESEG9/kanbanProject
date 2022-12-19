@@ -23,7 +23,7 @@ public class DiscountResource {
     }
 
     @PostMapping("/discounts")
-    public void createBooking(@RequestParam String discountCode, @RequestParam Float discountPercentage) {
+    public void createBooking(@RequestParam String discountCode, @RequestParam Integer discountPercentage) {
         discountService.addDiscount(discountCode, discountPercentage);
     }
 
