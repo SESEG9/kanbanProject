@@ -4,6 +4,7 @@ import at.ac.tuwien.sese.g09.domain.Discount;
 import at.ac.tuwien.sese.g09.service.DiscountService;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,18 +22,23 @@ public class DiscountResource {
         this.discountService = discountService;
     }
 
-    @PostMapping("/discount")
-    public void createBooking(@RequestParam String discountCode, @RequestParam Float discountPercentage) {
+    @PostMapping("/discounts")
+    public void createBooking(@RequestParam String discountCode, @RequestParam Integer discountPercentage) {
         discountService.addDiscount(discountCode, discountPercentage);
     }
 
-    @GetMapping("/public/discount")
+    @GetMapping("/public/discounts")
     public Discount getDiscountPercentage(@RequestParam String discountCode) {
         return discountService.getDiscount(discountCode);
     }
 
-    @GetMapping("/discount")
-    public List<Discount> getAllDiscounts(@RequestParam String discountCode) {
+    @GetMapping("/discounts")
+    public List<Discount> getAllDiscounts() {
         return discountService.getAllDiscounts();
+    }
+
+    @DeleteMapping("/discounts")
+    public void deleteDiscount(@RequestParam String discountCode) {
+        discountService.deleteDiscount(discountCode);
     }
 }

@@ -18,7 +18,7 @@ public class DiscountService {
         this.discountRepository = discountRepository;
     }
 
-    public void addDiscount(String code, Float percentage) {
+    public void addDiscount(String code, Integer percentage) {
         if (code.length() < 5 || code.length() > 10) {
             throw new BadRequestAlertException(
                 "Discount Code length must be between 5 and 10 characters long",
@@ -26,7 +26,7 @@ public class DiscountService {
                 "discountCodeWrongLength"
             );
         }
-        if (percentage < 0 || percentage > 1) {
+        if (percentage < 0 || percentage > 100) {
             throw new BadRequestAlertException(
                 "Discount Percentage must be between 0 and 100 characters long",
                 ENTITY_NAME,
@@ -36,7 +36,7 @@ public class DiscountService {
 
         Discount discount = new Discount();
         discount.setDiscountCode(code);
-        discount.setDiscountPercentage(percentage);
+        discount.setDiscountPercentage(Float.valueOf(percentage));
 
         discountRepository.save(discount);
     }
@@ -53,5 +53,15 @@ public class DiscountService {
 
     public List<Discount> getAllDiscounts() {
         return discountRepository.findAll();
+    }
+
+    public void deleteDiscount(String code) {
+        Discount discount = discountRepository.findByDiscountCode(code).stream().findFirst().orElse(null);
+
+        if (discount == null) {
+            throw new BadRequestAlertException("No Discount with this code found", ENTITY_NAME, "discountNotFound");
+        }
+
+        discountRepository.deleteById(discount.getId());
     }
 }
