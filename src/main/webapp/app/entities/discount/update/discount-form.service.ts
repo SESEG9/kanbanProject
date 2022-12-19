@@ -29,14 +29,14 @@ export class DiscountFormService {
         { value: DiscountRawValue.discountCode, disabled: false },
         {
           nonNullable: true,
-          validators: [Validators.required],
+          validators: [Validators.required, Validators.minLength(5), Validators.maxLength(10)],
         }
       ),
       discountPercentage: new FormControl(
         { value: DiscountRawValue.discountPercentage, disabled: false },
         {
           nonNullable: true,
-          validators: [Validators.required]
+          validators: [Validators.required, Validators.pattern("^[1-9][0-9]?$|^100$")]
         }
       ),
     });
