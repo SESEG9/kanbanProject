@@ -219,6 +219,13 @@ export class NewReservationComponent implements OnInit {
     }
     return sum
   }
+  getTempSum(rooms: [{roomID: number, capacityID: number}]) : number {
+    let sum = 0;
+    rooms.forEach((room) => {
+      sum += this.getCountDays() * this.getPriceByCapacityID(this.getRoomById(room.roomID), room.capacityID)
+    })
+    return sum
+  }
   getDiscount(rooms: [{roomID: number, capacityID: number}]) : number {
     let sum = 0;
     rooms.forEach((room) => {
