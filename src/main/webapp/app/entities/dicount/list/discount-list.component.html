@@ -1,0 +1,68 @@
+<div class="base">
+  <div class="root">
+    <h2 id="page-heading" data-cy="discountHeading">
+      <span>Discounts</span>
+
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          <span jhiTranslate="lionhotelApp.discount.home.refreshListLabel">Liste aktualisieren</span>
+        </button>
+
+        <button
+          id="jh-create-entity"
+          data-cy="entityCreateButton"
+          class="btn btn-secondary jh-create-entity create-discount-capacity"
+          [routerLink]="['/discount/new']"
+        >
+          <fa-icon icon="plus"></fa-icon>
+          <span> Discount erstellen </span>
+        </button>
+      </div>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="discounts?.length === 0">
+      <span jhiTranslate="lionhotelApp.discount.home.notFound">Keine Discounts gefunden</span>
+    </div>
+
+    <div class="table-responsive table-entities" id="entities" *ngIf="discounts && discounts.length > 0">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="discountCode">
+              <div class="d-flex">
+                <span>DiscountCode</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="discountPercentage">
+              <div class="d-flex">
+                <span>Discount</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let discount of discounts; trackBy: trackId" data-cy="entityTable">
+            <td>{{ discount.discountCode }}</td>
+            <td>{{ discount.discountPercentage }}</td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button type="submit" (click)="delete(discount)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <fa-icon icon="times"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
