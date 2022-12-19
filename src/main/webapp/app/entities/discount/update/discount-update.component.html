@@ -19,28 +19,37 @@
               <small
                   class="form-text text-danger"
                   [hidden]="!editForm.get('discountCode')?.errors?.minlength"
-                  jhiTranslate="entity.validation.number"
                 >
-                  Dieses Feld muss mindestens 5 Zeichen lang sein.
+                  Dieses Feld muss zwischen 5 und 10 Zeichen lang sein.
                 </small>
                 <small
                   class="form-text text-danger"
                   [hidden]="!editForm.get('discountCode')?.errors?.maxlength"
-                  jhiTranslate="entity.validation.number"
                 >
-                  Dieses Feld darf maximal 10 Zeichen lang sein.
+                Dieses Feld muss zwischen 5 und 10 Zeichen lang sein.
                 </small>
             </div>
           </div>
 
           <div class="row mb-3">
             <label class="form-label" for="field_name">Rabatt Prozentsatz</label>
-            <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="discountPercentage" />
+            <input type="number" class="form-control" name="name" id="field_name" data-cy="name" formControlName="discountPercentage" />
             <div *ngIf="editForm.get('discountPercentage')!.invalid && (editForm.get('discountPercentage')!.dirty || editForm.get('discountPercentage')!.touched)">
               <small
                   class="form-text text-danger"
+                  [hidden]="!editForm.get('discountPercentage')?.errors?.min"
+                >
+                  Diese Zahl muss zwischen 1 und 100 liegen.
+                </small>
+                <small
+                  class="form-text text-danger"
+                  [hidden]="!editForm.get('discountPercentage')?.errors?.max"
+                >
+                  Diese Zahl muss zwischen 1 und 100 liegen.
+                </small>
+              <small
+                  class="form-text text-danger"
                   [hidden]="!editForm.get('discountPercentage')?.errors?.pattern"
-                  jhiTranslate="entity.validation.number"
                 >
                   Dieses Feld muss eine Zahl sein.
                 </small>

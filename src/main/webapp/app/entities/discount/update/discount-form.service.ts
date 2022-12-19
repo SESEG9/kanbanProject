@@ -36,7 +36,7 @@ export class DiscountFormService {
         { value: DiscountRawValue.discountPercentage, disabled: false },
         {
           nonNullable: true,
-          validators: [Validators.required, Validators.pattern("^[1-9][0-9]?$|^100$")]
+          validators: [Validators.required, Validators.pattern("^[1-9][0-9]?$|^100$"), Validators.min(1), Validators.max(100)]
         }
       ),
     });
