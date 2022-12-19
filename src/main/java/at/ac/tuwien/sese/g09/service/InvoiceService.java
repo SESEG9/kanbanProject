@@ -64,7 +64,7 @@ public class InvoiceService {
         invoice.setDiscount(b.get().getDiscount());
         invoice.setDuration(newInvoice.getDuration());
         invoice.setBillingDate(newInvoice.getBillingDate());
-        invoice.setPrice(newInvoice.getPrice());
+        invoice.setPrice(b.get().getPrice());
         invoice.setCustomerAddress(newInvoice.getCustomerAddress());
         invoice.setHotelAddress(newInvoice.getHotelAddress());
 
