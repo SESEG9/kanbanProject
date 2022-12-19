@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-end">
         <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
           <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-          <span jhiTranslate="lionhotelApp.discount.home.refreshListLabel">Liste aktualisieren</span>
+          <span>Liste aktualisieren</span>
         </button>
 
         <button
@@ -26,7 +26,7 @@
     <jhi-alert></jhi-alert>
 
     <div class="alert alert-warning" id="no-result" *ngIf="discounts?.length === 0">
-      <span jhiTranslate="lionhotelApp.discount.home.notFound">Keine Discounts gefunden</span>
+      <span>Keine Discounts gefunden</span>
     </div>
 
     <div class="table-responsive table-entities" id="entities" *ngIf="discounts && discounts.length > 0">
