@@ -61,7 +61,9 @@ public class InvoiceService {
         Invoice invoice = new Invoice();
         invoice.setBooking(b.get());
         invoice.setCancled(newInvoice.getCancled());
-        invoice.setDiscount(b.get().getDiscount());
+
+        Float discountFactor = (b.get().getDiscount() != null) ? (100f - b.get().getDiscount()) / 100f : 1f;
+        invoice.setDiscount(discountFactor);
         invoice.setDuration(newInvoice.getDuration());
         invoice.setBillingDate(newInvoice.getBillingDate());
         invoice.setPrice(b.get().getPrice());
@@ -394,7 +396,7 @@ public class InvoiceService {
                             .borderStyleTop(BorderStyle.SOLID)
                             .borderWidthTop(1f)
                             .horizontalAlignment(HorizontalAlignment.RIGHT)
-                            .text(String.format("%.0f €", invoice.getPrice() / 100.))
+                            .text(String.format("%.0f €", (invoice.getPrice() / invoice.getDiscount()) / 100.))
                             .build()
                     )
                     .build()
@@ -460,7 +462,7 @@ public class InvoiceService {
                         .borderStyleTop(BorderStyle.SOLID)
                         .borderWidthTop(1f)
                         .horizontalAlignment(HorizontalAlignment.RIGHT)
-                        .text(String.format("%.2f €", (invoice.getPrice() / 100.) * invoice.getDiscount()))
+                        .text(String.format("%.2f €", invoice.getPrice() / 100.))
                         .build()
                 )
                 .build()
