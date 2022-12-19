@@ -31,8 +31,8 @@ public class DiscountResource {
         return discountService.getDiscount(discountCode);
     }
 
-    @GetMapping("/discount")
-    public List<Discount> getAllDiscounts(@RequestParam String discountCode) {
+    @GetMapping("/discounts")
+    public List<Discount> getAllDiscounts() {
         return discountService.getAllDiscounts();
     }
 }
