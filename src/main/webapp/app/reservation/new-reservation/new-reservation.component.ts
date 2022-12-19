@@ -117,8 +117,8 @@ export class NewReservationComponent implements OnInit {
         }
         delete reservation.vacationStart
         delete reservation.vacationEnd
-        if (this.discountMultiplier === 1) {
-          delete reservation.discountCode
+        if (this.discountMultiplier !== 1) {
+          reservation.discountCode = this.form.controls['discountCode'].value!
         }
         this.$reservationService.create(reservation as Reservation).subscribe({
           next: (value) => {

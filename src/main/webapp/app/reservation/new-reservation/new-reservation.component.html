@@ -37,7 +37,7 @@
               </ng-container>
               <tr>
                 <td>Startdatum</td>
-                <td>{{ reservation.startDate }}</td>
+                <td>{{ reservation.startDate | date: 'dd.MM.yyyy' }}</td>
               </tr>
               <tr>
                 <td>Enddatum</td>
@@ -49,7 +49,7 @@
               </tr>
               <tr>
                 <td>Rabatt</td>
-                <td>{{ ((1 - reservation.discount) * 100).toFixed(2) + '%' }}</td>
+                <td>{{ reservation.discount + '%' }}</td>
               </tr>
               <ng-container *ngFor="let room of reservation.rooms">
                 <tr>
@@ -338,34 +338,6 @@
           <button type="button" class="btn btn-primary" (click)="addPersonRow()">Person hinzufügen</button>
         </div>
       </div>
-      <h4 class="mt-5 mb-2">Reservierungsdetails</h4>
-      <div class="row">
-        <div class="col">
-          <label class="form-label" for="start">Reservierungsbeginn</label>
-          <input
-            type="date"
-            class="form-control"
-            id="start"
-            name="start"
-            placeholder="Reservierungsbeginn"
-            formControlName="vacationStart"
-          />
-          <div *ngIf="form.get('vacationStart')!.invalid && (form.get('vacationStart')!.dirty || form.get('vacationStart')!.touched)">
-            <small class="form-text text-danger" *ngIf="form.get('vacationStart')?.errors?.required">
-              Der Reservierungsbeginn wird für die Reservierung benötigt.
-            </small>
-          </div>
-        </div>
-        <div class="col">
-          <label class="form-label" for="end">Reservierungsende</label>
-          <input type="date" class="form-control" id="end" name="end" placeholder="Reservierungsende" formControlName="vacationEnd" />
-          <div *ngIf="form.get('vacationEnd')!.invalid && (form.get('vacationStart')!.dirty || form.get('vacationEnd')!.touched)">
-            <small class="form-text text-danger" *ngIf="form.get('vacationEnd')?.errors?.required">
-              Das Reservierungsende wird für die Reservierung benötigt.
-            </small>
-          </div>
-        </div>
-      </div>
 
       <!--
 
@@ -373,60 +345,90 @@
 
       -->
 
-      <ng-container formArrayName="rooms">
-        <ng-container *ngFor="let roomForm of roomsFormControl.controls; let index = index">
-          <div [formGroupName]="index">
-            <div class="row d-flex align-items-end">
-              <div class="col">
-                <label class="form-label" for="roomID">Zimmer</label>
-                <select class="form-select" id="roomID" name="room" formControlName="roomID">
-                  <option *ngFor="let room of rooms" value="{{ room.id }}">{{ room.identifyer }}</option>
-                </select>
-                <div
-                  *ngIf="
-                    roomsFormControl.at(index).get('roomID')!.invalid &&
-                    (roomsFormControl.at(index).get('roomID')!.dirty || roomsFormControl.at(index).get('roomID')!.touched)
-                  "
-                >
-                  <small class="form-text text-danger" *ngIf="roomsFormControl.at(index).get('roomID')?.errors?.required">
-                    Sie müssen ein Zimmer für die Reservierung auswählen.
-                  </small>
-                </div>
-              </div>
-              <div class="col">
-                <label class="form-label" for="capacityID">Belegung</label>
-                <select class="form-select" id="capacityID" name="room" formControlName="capacityID">
-                  <option
-                    *ngFor="let price of getRoomById(roomsFormControl.at(index).get('roomID')?.value).prices"
-                    value="{{ price.capacity?.id }}"
-                  >
-                    {{ price.capacity?.name }}
-                  </option>
-                </select>
-                <div
-                  *ngIf="
-                    roomsFormControl.at(index).get('capacityID')!.invalid &&
-                    (roomsFormControl.at(index).get('capacityID')!.dirty || roomsFormControl.at(index).get('capacityID')!.touched)
-                  "
-                >
-                  <small class="form-text text-danger" *ngIf="roomsFormControl.at(index).get('capacityID')?.errors?.required">
-                    Sie müssen ein Belegung für die Reservierung auswählen.
-                  </small>
-                </div>
-              </div>
-              <div class="d-flex col-2 h-100 justify-content-end" *ngIf="index > 0">
-                <label class="form-label" for="delete"></label>
-                <button type="button" id="delete" name="delete" class="btn btn-danger" (click)="removeRoomRow(index)">
-                  <fa-icon icon="times"></fa-icon>
-                </button>
-              </div>
+      <h4 class="mt-5 mb-2">Reservierungsdetails</h4>
+      <div class="card m-2 p-2">
+        <div class="row">
+          <div class="col">
+            <label class="form-label" for="start">Reservierungsbeginn</label>
+            <input
+              type="date"
+              class="form-control"
+              id="start"
+              name="start"
+              placeholder="Reservierungsbeginn"
+              formControlName="vacationStart"
+            />
+            <div *ngIf="form.get('vacationStart')!.invalid && (form.get('vacationStart')!.dirty || form.get('vacationStart')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.get('vacationStart')?.errors?.required">
+                Der Reservierungsbeginn wird für die Reservierung benötigt.
+              </small>
             </div>
           </div>
+          <div class="col">
+            <label class="form-label" for="end">Reservierungsende</label>
+            <input type="date" class="form-control" id="end" name="end" placeholder="Reservierungsende" formControlName="vacationEnd" />
+            <div *ngIf="form.get('vacationEnd')!.invalid && (form.get('vacationStart')!.dirty || form.get('vacationEnd')!.touched)">
+              <small class="form-text text-danger" *ngIf="form.get('vacationEnd')?.errors?.required">
+                Das Reservierungsende wird für die Reservierung benötigt.
+              </small>
+            </div>
+          </div>
+        </div>
+        <ng-container formArrayName="rooms">
+          <ng-container *ngFor="let roomForm of roomsFormControl.controls; let index = index">
+            <div [formGroupName]="index">
+              <div class="row d-flex align-items-end">
+                <div class="col">
+                  <label class="form-label" for="roomID">Zimmer</label>
+                  <select class="form-select" id="roomID" name="room" formControlName="roomID">
+                    <option *ngFor="let room of rooms" value="{{ room.id }}">{{ room.identifyer }}</option>
+                  </select>
+                  <div
+                    *ngIf="
+                      roomsFormControl.at(index).get('roomID')!.invalid &&
+                      (roomsFormControl.at(index).get('roomID')!.dirty || roomsFormControl.at(index).get('roomID')!.touched)
+                    "
+                  >
+                    <small class="form-text text-danger" *ngIf="roomsFormControl.at(index).get('roomID')?.errors?.required">
+                      Sie müssen ein Zimmer für die Reservierung auswählen.
+                    </small>
+                  </div>
+                </div>
+                <div class="col">
+                  <label class="form-label" for="capacityID">Belegung</label>
+                  <select class="form-select" id="capacityID" name="room" formControlName="capacityID">
+                    <option
+                      *ngFor="let price of getRoomById(roomsFormControl.at(index).get('roomID')?.value).prices"
+                      value="{{ price.capacity?.id }}"
+                    >
+                      {{ price.capacity?.name }}
+                    </option>
+                  </select>
+                  <div
+                    *ngIf="
+                      roomsFormControl.at(index).get('capacityID')!.invalid &&
+                      (roomsFormControl.at(index).get('capacityID')!.dirty || roomsFormControl.at(index).get('capacityID')!.touched)
+                    "
+                  >
+                    <small class="form-text text-danger" *ngIf="roomsFormControl.at(index).get('capacityID')?.errors?.required">
+                      Sie müssen ein Belegung für die Reservierung auswählen.
+                    </small>
+                  </div>
+                </div>
+                <div class="d-flex col-2 h-100 justify-content-end" *ngIf="index > 0">
+                  <label class="form-label" for="delete"></label>
+                  <button type="button" id="delete" name="delete" class="btn btn-danger" (click)="removeRoomRow(index)">
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
         </ng-container>
-      </ng-container>
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn-primary" (click)="addRoomRow()">Zimmer hinzufügen</button>
+        <div class="row">
+          <div class="col">
+            <button type="button" class="btn btn-primary" (click)="addRoomRow()">Zimmer hinzufügen</button>
+          </div>
         </div>
       </div>
 
@@ -436,7 +438,7 @@
 
       -->
       <div class="card m-2 p-2">
-        <div class="row">
+        <div class="row d-flex align-items-end">
           <div class="col">
             <label class="form-label" for="discountCode">Rabattcode</label>
             <input type="text" class="form-control" name="discountCode" placeholder="Rabattcode" formControlName="discountCode" />
@@ -449,8 +451,11 @@
           <div class="col-3" *ngIf="discountMultiplier === 1">
             <button type="button" class="btn btn-primary mt-3" (click)="checkDiscount()">Rabattcode anwenden</button>
           </div>
-          <div class="col-3" *ngIf="discountMultiplier !== 1">
-            <button type="button" class="btn btn-danger mt-3" (click)="resetDiscount()"><fa-icon icon="times"></fa-icon></button>
+          <div class="d-flex col-3 h-100 justify-content-end" *ngIf="discountMultiplier !== 1">
+            <label class="form-label" for="discountDelete"></label>
+            <button type="button" id="discountDelete" name="discountDelete" class="btn btn-danger" (click)="resetDiscount()">
+              <fa-icon icon="times"></fa-icon>
+            </button>
           </div>
         </div>
       </div>
