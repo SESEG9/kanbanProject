@@ -10,6 +10,11 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule),
       },
       {
+        path: 'discount',
+        data: { pageTitle: 'lionhotelApp.discount.home.title' },
+        loadChildren: () => import('./discount/discount.module').then(m => m.DiscountModule),
+      },
+      {
         path: 'room',
         data: { pageTitle: 'lionhotelApp.room.home.title' },
         loadChildren: () => import('./room/room.module').then(m => m.RoomModule),

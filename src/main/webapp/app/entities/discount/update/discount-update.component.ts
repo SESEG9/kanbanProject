@@ -39,6 +39,7 @@ export class DiscountUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const discount = this.discountFormService.getDiscount(this.editForm);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (discount.discountCode !== null) {
       // this.subscribeToSaveResponse(this.discountService.update(discount));
     } else {
