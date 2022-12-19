@@ -22,12 +22,12 @@ public class DiscountResource {
         this.discountService = discountService;
     }
 
-    @PostMapping("/discount")
+    @PostMapping("/discounts")
     public void createBooking(@RequestParam String discountCode, @RequestParam Float discountPercentage) {
         discountService.addDiscount(discountCode, discountPercentage);
     }
 
-    @GetMapping("/public/discount")
+    @GetMapping("/public/discounts")
     public Discount getDiscountPercentage(@RequestParam String discountCode) {
         return discountService.getDiscount(discountCode);
     }
@@ -37,7 +37,7 @@ public class DiscountResource {
         return discountService.getAllDiscounts();
     }
 
-    @DeleteMapping("/discount")
+    @DeleteMapping("/discounts")
     public void deleteDiscount(@RequestParam String discountCode) {
         discountService.deleteDiscount(discountCode);
     }
