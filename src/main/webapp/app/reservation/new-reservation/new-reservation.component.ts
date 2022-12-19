@@ -239,12 +239,17 @@ export class NewReservationComponent implements OnInit {
       next: (discount: IDiscount) => {
         this.discountMultiplier = (100 - discount.discountPercentage) / 100
         this.discountError = false
+        this.form.controls['discountCode'].disable({emitEvent: false})
       },
       error: (error) => {
         this.discountError = true
         this.discountErrorMessage = "Rabattcode ungültig"
       }
     })
+  }
+  resetDiscount(): void {
+    this.discountMultiplier = 1
+    this.form.controls['discountCode'].enable({emitEvent: false})
   }
 
 
