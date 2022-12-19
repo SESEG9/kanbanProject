@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { EntityArrayResponseType } from 'app/entities/customer/service/customer.service';
+import { DiscountService } from 'app/entities/discount/service/discount.service';
+import { IDiscount } from 'app/entities/discount/type/discount';
 import { RoomPictureService } from 'app/entities/room-picture/service/room-picture.service';
 import { IRoom, RoomPicture, RoomPrice } from 'app/entities/room/room.model';
 import { RoomService } from 'app/entities/room/service/room.service';
@@ -25,11 +27,15 @@ export class NewReservationComponent implements OnInit {
   rooms?: IRoomWithMinPrice[];
   room: any;
 
+  discountMultiplier = 1
+
   predicate = 'id';
   ascending = true;
 
   error = false;
   errorMessage = ''
+  discountError = false
+  discountErrorMessage = ''
   success = false;
 
   promo: string | null = null;
@@ -54,7 +60,8 @@ export class NewReservationComponent implements OnInit {
           roomID: new FormControl('', [Validators.required]),
           capacityID: new FormControl('', [Validators.required])
       })
-    ])
+    ]),
+    discountCode: new FormControl("")
   });
 
   constructor(
@@ -62,7 +69,8 @@ export class NewReservationComponent implements OnInit {
     private $roomService: RoomService,
     private $roomPictureService: RoomPictureService,
     protected $sortService: SortService,
-    private $reservationService: ReservationService
+    private $reservationService: ReservationService,
+    private $discountService: DiscountService
   ) {}
 
   ngOnInit(): void {
@@ -89,7 +97,6 @@ export class NewReservationComponent implements OnInit {
     return formatDate(endDate, 'dd.MM.yyyy', 'en-US')
   }
 
-
   createReservation(): void {
     this.form.markAllAsTouched()
     if (this.form.valid) {
@@ -110,6 +117,9 @@ export class NewReservationComponent implements OnInit {
         }
         delete reservation.vacationStart
         delete reservation.vacationEnd
+        if (this.discountMultiplier === 1) {
+          delete reservation.discountCode
+        }
         this.$reservationService.create(reservation as Reservation).subscribe({
           next: (value) => {
             this.reservation = value
@@ -204,7 +214,30 @@ export class NewReservationComponent implements OnInit {
     rooms.forEach((room) => {
       sum += this.getCountDays() * this.getPriceByCapacityID(this.getRoomById(room.roomID), room.capacityID)
     })
+    if (this.discountMultiplier !== 1) {
+      sum *= this.discountMultiplier
+    }
     return sum
+  }
+  getDiscount(rooms: [{roomID: number, capacityID: number}]) : number {
+    let sum = 0;
+    rooms.forEach((room) => {
+      sum += this.getCountDays() * this.getPriceByCapacityID(this.getRoomById(room.roomID), room.capacityID)
+    })
+    return sum - (sum * this.discountMultiplier)
+  }
+
+  checkDiscount(): void {
+    this.$discountService.check(this.form.controls['discountCode'].value!).subscribe({
+      next: (discount: IDiscount) => {
+        this.discountMultiplier = (100 - discount.discountPercentage) / 100
+        this.discountError = false
+      },
+      error: (error) => {
+        this.discountError = true
+        this.discountErrorMessage = "Rabattcode ungültig"
+      }
+    })
   }
 
 

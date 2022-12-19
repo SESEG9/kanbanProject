@@ -430,6 +430,31 @@
         </div>
       </div>
 
+      <!--
+
+        Rabatt
+
+      -->
+      <div class="card m-2 p-2">
+        <div class="row">
+          <div class="col-9">
+            <label class="form-label" for="discountCode">Rabattcode</label>
+            <input type="text" class="form-control" name="discountCode" placeholder="Rabattcode" formControlName="discountCode" />
+            <div *ngIf="form.controls['discountCode'].dirty || form.controls['discountCode'].touched">
+              <small class="form-text text-danger" *ngIf="discountError">
+                {{discountErrorMessage}}
+              </small>
+            </div>
+          </div>
+          <div class="col-3">
+            <button>
+              <button type="button" class="btn btn-primary mt-3" (click)="checkDiscount()">Rabattcode anwenden</button>
+            </button>
+          </div>
+        </div>
+      </div>
+
+
       <div class="mt-5 mb-2" *ngIf="getCountDays() > 0">
         <h4>Zusammenfassung</h4>
         <div *ngFor="let room of roomsFormControl.value">
@@ -448,6 +473,15 @@
           <div><strong>-</strong> Aktionspreis</div>
           <div><strong>-</strong> 222€</div>
         </div> -->
+        <hr />
+        <div class="d-flex w-100 justify-content-between">
+          <div>
+            <strong>Rabatt</strong>
+          </div>
+          <div>
+            <strong>{{ getDiscount(roomsFormControl.value) | currency: 'EUR' }}</strong>
+          </div>
+        </div>
         <hr />
         <div class="d-flex w-100 justify-content-between">
           <div>

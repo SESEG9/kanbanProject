@@ -9,6 +9,7 @@ import { IDiscount } from '../type/discount';
 })
 export class DiscountService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/discounts');
+  protected publicResourceUrl = this.applicationConfigService.getEndpointFor('api/public/discounts');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -28,5 +29,8 @@ export class DiscountService {
   create(discount: IDiscount): Observable<IDiscount> {
     // eslint-disable-next-line radix, @typescript-eslint/restrict-plus-operands
     return this.http.post<IDiscount>(this.resourceUrl + `?discountCode=${discount.discountCode}&discountPercentage=${parseInt(discount.discountPercentage+"")}`, {})
+  }
+  check(discountCode: string): Observable<IDiscount> {
+    return this.http.get<IDiscount>(this.publicResourceUrl + `?discountCode=${discountCode}`)
   }
 }
