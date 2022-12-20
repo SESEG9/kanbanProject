@@ -1,0 +1,78 @@
+<div class="base">
+  <div class="root d-flex justify-content-center">
+    <div class="col-8">
+      <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+        <h1
+          id="jhi-room-capacity-heading"
+          data-cy="RoomCapacityCreateUpdateHeading"
+        >
+          Discount erstellen
+        </h1>
+
+        <div class="content">
+          <jhi-alert-error></jhi-alert-error>
+
+          <div class="row mb-3">
+            <label class="form-label" for="field_id">Rabattcode</label>
+            <input type="text" class="form-control" name="discountCode" id="field_id" data-cy="discountCode" formControlName="discountCode" />
+            <div *ngIf="editForm.get('discountCode')!.invalid && (editForm.get('discountCode')!.dirty || editForm.get('discountCode')!.touched)">
+              <small
+                  class="form-text text-danger"
+                  [hidden]="!editForm.get('discountCode')?.errors?.minlength"
+                >
+                  Dieses Feld muss zwischen 5 und 10 Zeichen lang sein.
+                </small>
+                <small
+                  class="form-text text-danger"
+                  [hidden]="!editForm.get('discountCode')?.errors?.maxlength"
+                >
+                Dieses Feld muss zwischen 5 und 10 Zeichen lang sein.
+                </small>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="form-label" for="field_name">Rabatt Prozentsatz</label>
+            <input type="number" class="form-control" name="name" id="field_name" data-cy="name" formControlName="discountPercentage" />
+            <div *ngIf="editForm.get('discountPercentage')!.invalid && (editForm.get('discountPercentage')!.dirty || editForm.get('discountPercentage')!.touched)">
+              <small
+                  class="form-text text-danger"
+                  [hidden]="!editForm.get('discountPercentage')?.errors?.min"
+                >
+                  Diese Zahl muss zwischen 1 und 100 liegen.
+                </small>
+                <small
+                  class="form-text text-danger"
+                  [hidden]="!editForm.get('discountPercentage')?.errors?.max"
+                >
+                  Diese Zahl muss zwischen 1 und 100 liegen.
+                </small>
+              <small
+                  class="form-text text-danger"
+                  [hidden]="!editForm.get('discountPercentage')?.errors?.pattern"
+                >
+                  Dieses Feld muss eine Zahl sein.
+                </small>
+            </div>
+          </div>
+
+        </div>
+
+        <div>
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>
+          </button>
+          <button
+            type="submit"
+            id="save-entity"
+            data-cy="entityCreateSaveButton"
+            [disabled]="editForm.invalid || isSaving"
+            class="btn btn-primary"
+          >
+            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Speichern</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

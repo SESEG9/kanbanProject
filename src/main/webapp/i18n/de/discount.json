@@ -1,0 +1,9 @@
+{
+  "discount": {
+    "title": "Rabatt",
+    "home" : {
+      "refreshListLabel": "Liste aktualisieren",
+      "notFound": "Es konnten keine Rabatte gefunden werden."
+    }
+  }
+}
