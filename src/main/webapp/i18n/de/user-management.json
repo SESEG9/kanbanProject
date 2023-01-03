@@ -1,19 +1,19 @@
 {
   "userManagement": {
     "home": {
-      "title": "Benutzer",
+      "title": "Mitarbeiter",
       "refreshListLabel": "Refresh list",
-      "createLabel": "Neuen Benutzer erstellen",
-      "createOrEditLabel": "Benutzer erstellen oder bearbeiten"
+      "createLabel": "Neuen Mitarbeiter erstellen",
+      "createOrEditLabel": "Mitarbeiter erstellen oder bearbeiten"
     },
-    "created": "Ein neuer Benutzer wurde mit ID {{ param }} erstellt",
-    "updated": "Ein Benutzer mit ID {{ param }} wurde geändert",
-    "deleted": "Ein Benutzer mit ID {{ param }} wurde gelöscht",
+    "created": "Ein neuer Mitarbeiter wurde mit ID {{ param }} erstellt",
+    "updated": "Ein Mitarbeiter mit ID {{ param }} wurde geändert",
+    "deleted": "Ein Mitarbeiter mit ID {{ param }} wurde gelöscht",
     "delete": {
-      "question": "Sind Sie sicher, dass Sie den Benutzer {{ login }} löschen möchten?"
+      "question": "Sind Sie sicher, dass Sie den Mitarbeiter {{ login }} löschen möchten?"
     },
     "detail": {
-      "title": "Benutzer"
+      "title": "Mitarbeiter"
     },
     "login": "Login",
     "firstName": "Vorname",
@@ -21,7 +21,7 @@
     "email": "Email",
     "activated": "Aktiv",
     "deactivated": "Deaktiviert",
-    "profiles": "Profile",
+    "profiles": "Rechte",
     "langKey": "Sprache",
     "createdBy": "Erstellt von",
     "createdDate": "Erstellt am",
