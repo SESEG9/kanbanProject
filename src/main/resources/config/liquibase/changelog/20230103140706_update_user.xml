@@ -12,6 +12,7 @@
             <column name="banking" type="varchar(50)">
                 <constraints unique="true" uniqueConstraintName="ux_user_banking"/>
             </column>
+            <column name="phone" type="varchar(50)"/>
         </addColumn>
         <update tableName="jhi_user">
             <column name="abbr" valueComputed="login"/>
