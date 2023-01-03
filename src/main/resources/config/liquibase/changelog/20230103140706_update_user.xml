@@ -1,0 +1,25 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Patrik" id="1672754854459">
+        <addColumn tableName="jhi_user">
+            <column name="type" type="varchar(50)"/>
+            <column name="abbr" type="varchar(50)">
+                <constraints unique="true" uniqueConstraintName="ux_user_abbr"/>
+            </column>
+            <column name="birthday" type="date"/>
+            <column name="gender" type="varchar(10)"/>
+            <column name="ssn" type="varchar(10)"/>
+            <column name="banking" type="varchar(50)">
+                <constraints unique="true" uniqueConstraintName="ux_user_banking"/>
+            </column>
+        </addColumn>
+        <update tableName="jhi_user">
+            <column name="abbr" valueComputed="login"/>
+            <column name="type" value="OTHER" />
+            <column name="gender" value="DIVERSE"/>
+        </update>
+        <addNotNullConstraint tableName="jhi_user" columnName="abbr"/>
+        <addNotNullConstraint tableName="jhi_user" columnName="type"/>
+        <addNotNullConstraint tableName="jhi_user" columnName="gender"/>
+    </changeSet>
+</databaseChangeLog>
