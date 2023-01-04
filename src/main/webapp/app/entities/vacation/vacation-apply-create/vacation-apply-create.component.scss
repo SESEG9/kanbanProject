@@ -29,6 +29,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  row-gap: 0.5rem;
 }
 
 .expandable {
@@ -102,4 +103,16 @@ h3 {
 
 .approved {
   background-color: #c1e1c1 !important;
+}
+
+.list-control {
+  display: flex;
+  justify-content: center;
+  column-gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.list-control > input {
+  width: 5rem;
+  text-align: center;
 }

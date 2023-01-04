@@ -27,6 +27,8 @@ export class VacationApplyCreateComponent implements OnInit {
 
   vacations: VacationApply[] = [];
 
+  year = new Date().getFullYear();
+
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
     this.fromDate = null;
     this.toDate = null;
@@ -36,33 +38,7 @@ export class VacationApplyCreateComponent implements OnInit {
   ngOnInit(): void {
     // TODO query for free days and current lists
     this.availableVacation = 10;
-    this.vacations = [
-      {
-        from: new Date('2023-01-01'),
-        to: new Date('2023-01-05'),
-        state: 'APPROVED',
-      },
-      {
-        from: new Date('2023-01-17'),
-        to: new Date('2023-01-23'),
-        state: 'APPROVED',
-      },
-      {
-        from: new Date('2023-02-01'),
-        to: new Date('2023-02-14'),
-        state: 'REJECTED',
-      },
-      {
-        from: new Date('2023-03-15'),
-        to: new Date('2023-03-18'),
-        state: 'APPLIED',
-      },
-      {
-        from: new Date('2023-05-21'),
-        to: new Date('2023-06-03'),
-        state: 'APPLIED',
-      },
-    ];
+    this.loadVacations();
   }
 
   onDateSelection(date: NgbDate): void {
@@ -120,5 +96,39 @@ export class VacationApplyCreateComponent implements OnInit {
         state: 'APPLIED',
       };
     }
+  }
+
+  isCurrentYear(): boolean {
+    return new Date().getFullYear() === this.year;
+  }
+
+  loadVacations(): void {
+    this.vacations = [
+      {
+        from: new Date('2023-01-01'),
+        to: new Date('2023-01-05'),
+        state: 'APPROVED',
+      },
+      {
+        from: new Date('2023-01-17'),
+        to: new Date('2023-01-23'),
+        state: 'APPROVED',
+      },
+      {
+        from: new Date('2023-02-01'),
+        to: new Date('2023-02-14'),
+        state: 'REJECTED',
+      },
+      {
+        from: new Date('2023-03-15'),
+        to: new Date('2023-03-18'),
+        state: 'APPLIED',
+      },
+      {
+        from: new Date('2023-05-21'),
+        to: new Date('2023-06-03'),
+        state: 'APPLIED',
+      },
+    ];
   }
 }
