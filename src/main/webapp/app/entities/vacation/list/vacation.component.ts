@@ -3,18 +3,74 @@ import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IVacation } from '../vacation.model';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { IVacation, VacationApplyUser } from '../vacation.model';
+import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, VacationService } from '../service/vacation.service';
 import { VacationDeleteDialogComponent } from '../delete/vacation-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
+import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'jhi-vacation',
   templateUrl: './vacation.component.html',
+  styleUrls: ['../../room/room.global.scss', 'vacation.component.scss'],
 })
 export class VacationComponent implements OnInit {
+  ICONS = FontAwesome;
+
   vacations?: IVacation[];
+
+  vacationApply: VacationApplyUser[] = [
+    {
+      from: new Date('2023-02-01'),
+      to: new Date('2023-02-04'),
+      state: 'APPLIED',
+      id: 15,
+      user: {
+        firstName: 'Jürgen',
+        lastName: 'Müller',
+        area: 'Rezeption',
+        freeVacation: 10,
+      },
+    },
+    {
+      from: new Date('2023-02-01'),
+      to: new Date('2023-02-15'),
+      state: 'APPLIED',
+      id: 15,
+      user: {
+        firstName: 'Sandra',
+        lastName: 'Kegler',
+        area: 'Technik',
+        freeVacation: 10,
+      },
+    },
+    {
+      from: new Date('2023-01-30'),
+      to: new Date('2023-02-06'),
+      state: 'APPLIED',
+      id: 15,
+      user: {
+        firstName: 'Anja',
+        lastName: 'Löwe',
+        area: 'Rezeption',
+        freeVacation: 10,
+      },
+    },
+    {
+      from: new Date('2023-01-25'),
+      to: new Date('2023-02-01'),
+      state: 'APPLIED',
+      id: 15,
+      user: {
+        firstName: 'Annemarie',
+        lastName: 'Stöger',
+        area: 'Cleaning',
+        freeVacation: 10,
+      },
+    },
+  ];
+
   isLoading = false;
 
   predicate = 'id';
@@ -114,5 +170,9 @@ export class VacationComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  datediff(first: Date, second: Date): number {
+    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   }
 }

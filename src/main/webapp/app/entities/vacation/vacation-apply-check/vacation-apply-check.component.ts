@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VacationApply } from '../vacation.model';
+import { VacationApply, VacationApplyUser } from '../vacation.model';
 
 @Component({
   selector: 'jhi-vacation-apply-check',
@@ -20,11 +20,12 @@ export class VacationApplyCheckComponent implements OnInit {
     state: 'APPLIED',
   };
 
-  overlappings = [
+  overlappings: VacationApplyUser[] = [
     {
       from: new Date('2023-02-01'),
       to: new Date('2023-02-04'),
       state: 'APPLIED',
+      id: 15,
       user: {
         firstName: 'Jürgen',
         lastName: 'Müller',
@@ -36,6 +37,7 @@ export class VacationApplyCheckComponent implements OnInit {
       from: new Date('2023-02-01'),
       to: new Date('2023-02-15'),
       state: 'APPLIED',
+      id: 15,
       user: {
         firstName: 'Sandra',
         lastName: 'Kegler',
@@ -47,6 +49,7 @@ export class VacationApplyCheckComponent implements OnInit {
       from: new Date('2023-01-30'),
       to: new Date('2023-02-06'),
       state: 'APPLIED',
+      id: 15,
       user: {
         firstName: 'Anja',
         lastName: 'Löwe',
@@ -58,6 +61,7 @@ export class VacationApplyCheckComponent implements OnInit {
       from: new Date('2023-01-25'),
       to: new Date('2023-02-01'),
       state: 'APPLIED',
+      id: 15,
       user: {
         firstName: 'Annemarie',
         lastName: 'Stöger',

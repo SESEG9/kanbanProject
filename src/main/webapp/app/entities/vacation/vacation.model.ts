@@ -18,4 +18,13 @@ export interface VacationApply {
   state: VacationApplyState;
 }
 
+export type TmpUser = {
+  firstName: string;
+  lastName: string;
+  area: string;
+  freeVacation: number;
+};
+
+export type VacationApplyUser = VacationApply & { user: TmpUser } & { id: number };
+
 export type VacationApplyState = 'APPROVED' | 'REJECTED' | 'APPLIED';

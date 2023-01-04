@@ -49,7 +49,7 @@ const vacationRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: 'check', // TODO introduce ID
+    path: 'check/:id', // TODO introduce ID
     component: VacationApplyCheckComponent,
     canActivate: [UserRouteAccessService],
   },
