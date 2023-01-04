@@ -6,6 +6,7 @@ import { VacationUpdateComponent } from './update/vacation-update.component';
 import { VacationDeleteDialogComponent } from './delete/vacation-delete-dialog.component';
 import { VacationRoutingModule } from './route/vacation-routing.module';
 import { VacationApplyCreateComponent } from './vacation-apply-create/vacation-apply-create.component';
+import { VacationStatePipePipe } from './vacation-apply-create/vacation-state-pipe.pipe';
 
 @NgModule({
   imports: [SharedModule, VacationRoutingModule],
@@ -15,6 +16,7 @@ import { VacationApplyCreateComponent } from './vacation-apply-create/vacation-a
     VacationUpdateComponent,
     VacationDeleteDialogComponent,
     VacationApplyCreateComponent,
+    VacationStatePipePipe,
   ],
 })
 export class VacationModule {}

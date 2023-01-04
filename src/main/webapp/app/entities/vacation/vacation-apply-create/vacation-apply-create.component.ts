@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 import { VacationApply } from '../vacation.model';
 
 @Component({
@@ -20,7 +20,10 @@ export class VacationApplyCreateComponent implements OnInit {
 
   choosenDays: number | null;
 
-  faCalendarIcon = faCalendarDays;
+  faCalendarIcon = FontAwesome.faCalendarDays;
+  faQuestionIcon = FontAwesome.faQuestion;
+  faCheckmarkIcon = FontAwesome.faCheck;
+  faCrossIcon = FontAwesome.faXmark;
 
   vacations: VacationApply[] = [];
 
@@ -32,13 +35,31 @@ export class VacationApplyCreateComponent implements OnInit {
 
   ngOnInit(): void {
     // TODO query for free days and current lists
-    console.log('TODO');
-
     this.availableVacation = 10;
     this.vacations = [
       {
-        from: new Date(),
-        to: new Date(),
+        from: new Date('2023-01-01'),
+        to: new Date('2023-01-05'),
+        state: 'APPROVED',
+      },
+      {
+        from: new Date('2023-01-17'),
+        to: new Date('2023-01-23'),
+        state: 'APPROVED',
+      },
+      {
+        from: new Date('2023-02-01'),
+        to: new Date('2023-02-14'),
+        state: 'REJECTED',
+      },
+      {
+        from: new Date('2023-03-15'),
+        to: new Date('2023-03-18'),
+        state: 'APPLIED',
+      },
+      {
+        from: new Date('2023-05-21'),
+        to: new Date('2023-06-03'),
         state: 'APPLIED',
       },
     ];
@@ -62,15 +83,15 @@ export class VacationApplyCreateComponent implements OnInit {
     if (this.fromDate && this.toDate) {
       const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
       const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
-      this.choosenDays = VacationApplyCreateComponent.datediff(fromDateJs, toDateJs) + 1;
+      this.choosenDays = this.datediff(fromDateJs, toDateJs);
     }
   }
 
-  private static datediff(first: Date, second: Date) {
-    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24));
+  datediff(first: Date, second: Date): number {
+    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   }
 
-  private static ngbDateToJsDate(ngbDate: NgbDate): Date {
+  static ngbDateToJsDate(ngbDate: NgbDate): Date {
     return new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
   }
 
@@ -91,14 +112,13 @@ export class VacationApplyCreateComponent implements OnInit {
     return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
   }
 
-  applyVacation() {
+  applyVacation(): void {
     if (this.fromDate && this.toDate) {
       const vacationApply: VacationApply = {
         from: VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate),
         to: VacationApplyCreateComponent.ngbDateToJsDate(this.toDate),
         state: 'APPLIED',
       };
-      console.log('send date ' + JSON.stringify(vacationApply));
     }
   }
 }
