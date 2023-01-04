@@ -13,7 +13,7 @@ import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'jhi-vacation',
   templateUrl: './vacation.component.html',
-  styleUrls: ['../../room/room.global.scss', 'vacation.component.scss'],
+  styleUrls: ['../../room/room.global.scss', './vacation.component.scss'],
 })
 export class VacationComponent implements OnInit {
   ICONS = FontAwesome;
