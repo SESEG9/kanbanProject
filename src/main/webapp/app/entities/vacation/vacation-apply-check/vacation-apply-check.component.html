@@ -1,0 +1,52 @@
+<div class="base">
+  <div class="root">
+    <h1>Urlaub Genehmigen:</h1>
+
+    <div class="box">
+      <div class="applyment-column">
+        <div class="applyment-row">
+          <div class="appl-label">Name</div>
+          {{ user.firstName }} {{ user.lastName }}
+        </div>
+        <div class="applyment-row">
+          <div class="appl-label">Bereich</div>
+          {{ user.area }}
+        </div>
+      </div>
+      <div class="applyment-column">
+        <div class="applyment-row">
+          <div class="appl-label">Aktueller Urlaub:</div>
+          {{ user.freeVacation }} Tage
+        </div>
+        <div class="applyment-row">
+          <div class="appl-label">Resturlaub:</div>
+          {{ datediff(vacation.from, vacation.to) }} Tage
+        </div>
+      </div>
+      <div class="applyment-column">
+        <div class="applyment-row">
+          <div class="appl-label">Von:</div>
+          {{ vacation.from | date }}
+        </div>
+        <div class="applyment-row">
+          <div class="appl-label">Bis:</div>
+          {{ vacation.to | date }}
+        </div>
+      </div>
+    </div>
+
+    <div class="vacation-form"><button class="btn btn-danger">Ablehnen</button> <button class="btn btn-success">Genehmigen</button></div>
+
+    <hr />
+
+    <h2>Überschneidungen:</h2>
+
+    <div class="overlapping-list">
+      <div class="box" *ngFor="let v of overlappings">
+        <h3>{{ v.user.firstName }} {{ v.user.lastName }}</h3>
+        <p>{{ v.user.area }}</p>
+        <p>{{ v.from | date }} - {{ v.to | date }}</p>
+      </div>
+    </div>
+  </div>
+</div>

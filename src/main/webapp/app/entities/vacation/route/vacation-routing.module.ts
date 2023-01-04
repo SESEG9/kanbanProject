@@ -8,6 +8,7 @@ import { VacationUpdateComponent } from '../update/vacation-update.component';
 import { VacationRoutingResolveService } from './vacation-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
 import { VacationApplyCreateComponent } from '../vacation-apply-create/vacation-apply-create.component';
+import { VacationApplyCheckComponent } from '../vacation-apply-check/vacation-apply-check.component';
 
 const vacationRoute: Routes = [
   {
@@ -45,6 +46,11 @@ const vacationRoute: Routes = [
   {
     path: 'apply',
     component: VacationApplyCreateComponent,
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'check', // TODO introduce ID
+    component: VacationApplyCheckComponent,
     canActivate: [UserRouteAccessService],
   },
 ];
