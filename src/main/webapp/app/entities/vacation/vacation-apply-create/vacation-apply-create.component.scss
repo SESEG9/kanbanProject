@@ -1,0 +1,56 @@
+.vacation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vacation-header > p,
+.vacation-body > p,
+.vacation-footer > p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.vacation-label {
+  font-weight: bolder;
+  font-style: italic;
+}
+
+.add-button {
+  font-weight: bold;
+}
+
+.vacation-lists {
+  display: flex;
+  column-gap: 2rem;
+}
+
+.vacation-list-card {
+  flex-grow: 1;
+}
+
+.expandable {
+  background: #fff;
+  overflow: hidden;
+  color: #000;
+  line-height: 50px;
+
+  transition: all 0.5s ease-in-out;
+  height: 0;
+}
+
+.expandable:target {
+  height: 50px;
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+hr {
+  margin: 0.5em 0;
+}
+
+.vacation-body {
+  margin: 1rem;
+}
