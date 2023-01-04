@@ -80,7 +80,7 @@ public class TimeManagementService {
         if (loggedInUserName.isPresent()) {
             Optional<User> user = userRepository.findOneByLogin(loggedInUserName.get());
             if (user.isPresent()) {
-                return filterTimeManagement(List.of(user.get().getId()), null, null);
+                return filterTimeManagement(List.of(user.get().getId()), workdays, timeSlotNames);
             }
         }
         throw new BadRequestAlertException("Logged in user not found!", ENTITY_NAME, "userNotFound");
