@@ -79,9 +79,12 @@ public class TimeManagementResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of timeManagments in body.
      */
     @GetMapping("/time-management")
-    public List<TimeManagement> getOwnTimeManagement() {
+    public List<TimeManagement> getOwnTimeManagement(
+        @RequestParam(required = false) List<String> timeSlots,
+        @RequestParam(required = false) List<LocalDate> workdays
+    ) {
         log.debug("REST request to filter TimeManagements");
-        return timeManagementService.filterTimeManagement();
+        return timeManagementService.filterTimeManagement(workdays, timeSlots);
     }
 
     /**

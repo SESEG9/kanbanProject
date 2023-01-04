@@ -75,7 +75,7 @@ public class TimeManagementService {
         return newTimeManagement;
     }
 
-    public List<TimeManagement> filterTimeManagement() {
+    public List<TimeManagement> filterTimeManagement(List<LocalDate> workdays, List<String> timeSlotNames) {
         Optional<String> loggedInUserName = SecurityUtils.getCurrentUserLogin();
         if (loggedInUserName.isPresent()) {
             Optional<User> user = userRepository.findOneByLogin(loggedInUserName.get());
