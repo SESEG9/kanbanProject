@@ -45,7 +45,7 @@ export class VacationApplyCreateComponent implements OnInit {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
       this.updateChosenDays();
-    } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
+    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
       this.updateChosenDays();
     } else {
