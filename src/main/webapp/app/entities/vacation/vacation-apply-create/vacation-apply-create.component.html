@@ -93,7 +93,7 @@
     <hr />
 
     <div class="list-control">
-      <button class="btn btn-secondary" [disabled]="isCurrentYear()" (click)="year = year + 1; loadVacations()">&lt;</button>
+      <button class="btn btn-secondary" (click)="year = year + 1; loadVacations()">&lt;</button>
       <input disabled class="form-control" [value]="year" />
       <button class="btn btn-secondary" (click)="year = year - 1; loadVacations()">&gt;</button>
     </div>

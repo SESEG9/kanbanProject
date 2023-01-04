@@ -98,10 +98,6 @@ export class VacationApplyCreateComponent implements OnInit {
     }
   }
 
-  isCurrentYear(): boolean {
-    return new Date().getFullYear() === this.year;
-  }
-
   loadVacations(): void {
     this.vacations = [
       {
