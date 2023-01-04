@@ -19,8 +19,8 @@ export class WorkSchedulingService {
     return this.http.get<Employee[]>(this.applicationConfigService.getEndpointFor('api/users'));
   }
 
-  createWorkSchedule(workSchedule: WorkSchedule): Observable<any> {
-    return this.http.post(this.resourceUrl, workSchedule);
+  createWorkSchedule(workSchedule: WorkSchedule): Observable<WorkScheduleResponse> {
+    return this.http.post<WorkScheduleResponse>(this.resourceUrl, workSchedule);
   }
 
   getMySchedule(): Observable<WorkScheduleResponse[]> {

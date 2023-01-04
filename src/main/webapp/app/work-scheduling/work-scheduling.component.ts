@@ -66,7 +66,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
           const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
           const end = new Date(workitem.workday + 'T' + workitem.timeSlot.endTime);
           let allDay = false;
-          if (workitem.timeSlot.name === 'nightShift') {
+          if (workitem.timeSlot.name === 'night_shift') {
             end.setDate(end.getDate() + 1);
           } else if (workitem.timeSlot.name === 'vacation') {
             allDay = true;
@@ -123,7 +123,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
           const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
           const end = new Date(workitem.workday + 'T' + workitem.timeSlot.endTime);
           let allDay = false;
-          if (workitem.timeSlot.name === 'nightShift') {
+          if (workitem.timeSlot.name === 'night_shift') {
             end.setDate(end.getDate() + 1);
           } else if (workitem.timeSlot.name === 'vacation') {
             allDay = true;
@@ -153,37 +153,27 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const workSchedule: any = this.form.value;
-      const start = new Date(this.form.controls['date'].value!);
-      const end = new Date(this.form.controls['date'].value!);
-      let allDay = false;
-      if (this.form.controls['shiftType'].value === 'nightShift') {
-        start.setHours(19);
-        start.setMinutes(0);
-        end.setDate(end.getDate() + 1);
-        end.setHours(7);
-        end.setMinutes(0);
-      } else if (this.form.controls['shiftType'].value === 'dayShift') {
-        start.setHours(7);
-        start.setMinutes(0);
-        end.setHours(19);
-        end.setMinutes(0);
-      } else {
-        allDay = true;
-      }
       const request: WorkSchedule = {
         userId: workSchedule.employee,
         workday: workSchedule.date,
         timeSlot: this.mapShift(workSchedule.shiftType),
       };
       this.$workSchedulingService.createWorkSchedule(request).subscribe({
-        next: () => {
-          const event = {
-            title: this.users.find(user => user.id === this.form.controls['employee'].value!)!.login,
-            start: formatDate(start, 'yyyy-MM-ddTHH:mm:ss', 'en-US'),
-            end: formatDate(end, 'yyyy-MM-ddTHH:mm:ss', 'en-US'),
+        next: workitem => {
+          const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
+          const end = new Date(workitem.workday + 'T' + workitem.timeSlot.endTime);
+          let allDay = false;
+          if (workitem.timeSlot.name === 'nightShift') {
+            end.setDate(end.getDate() + 1);
+          } else if (workitem.timeSlot.name === 'vacation') {
+            allDay = true;
+          }
+          this.calendarApi.addEvent({
+            title: workitem.user.firstName + ' ' + workitem.user.lastName,
+            start,
+            end,
             allDay,
-          };
-          this.calendarApi.addEvent(event);
+          });
           this.error = false;
         },
         error: error => {
