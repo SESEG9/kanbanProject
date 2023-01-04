@@ -11,3 +11,11 @@ export interface IVacation {
 }
 
 export type NewVacation = Omit<IVacation, 'id'> & { id: null };
+
+export interface VacationApply {
+  from: Date;
+  to: Date;
+  state: VacationApplyState;
+}
+
+export type VacationApplyState = 'APPROVED' | 'REJECTED' | 'APPLIED';

@@ -4,7 +4,7 @@
 
     <div class="current-vacation-header box">
       <div class="vacation-header">
-        <p><span class="vacation-label">Verfügbarer Urlaub:</span> 5 Tage</p>
+        <p><span class="vacation-label">Verfügbarer Urlaub:</span> {{ availableVacation }} Tage</p>
         <button
           type="button"
           class="btn btn-secondary add-button"
@@ -58,7 +58,7 @@
                   placeholder="yyyy-mm-dd"
                   name="dpFromDate"
                   [value]="formatter.format(fromDate)"
-                  (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+                  (input)="fromDate = validateInput(fromDate, dpFromDate.value); updateChosenDays()"
                 />
                 <button class="btn btn-outline-secondary btn-calendar" (click)="datepicker.toggle()" type="button">
                   <fa-icon [icon]="faCalendarIcon"></fa-icon>
@@ -74,18 +74,19 @@
                   placeholder="yyyy-mm-dd"
                   name="dpToDate"
                   [value]="formatter.format(toDate)"
-                  (input)="toDate = validateInput(toDate, dpToDate.value)"
+                  (input)="toDate = validateInput(toDate, dpToDate.value); updateChosenDays()"
                 />
                 <button class="btn btn-outline-secondary btn-calendar" (click)="datepicker.toggle()" type="button">
                   <fa-icon [icon]="faCalendarIcon"></fa-icon>
                 </button>
               </div>
             </div>
+            <div *ngIf="choosenDays && choosenDays > 0">({{ choosenDays }} Tage)</div>
           </form>
         </div>
         <div class="vacation-footer">
-          <p><span class="vacation-label">Resturlaub:</span> 2 Tage</p>
-          <button class="btn btn-primary">Urlaub beantragen</button>
+          <p><span class="vacation-label">Resturlaub:</span> {{ availableVacation - (choosenDays ?? 0) }} Tage</p>
+          <button class="btn btn-primary" (click)="applyVacation()">Urlaub beantragen</button>
         </div>
       </div>
     </div>

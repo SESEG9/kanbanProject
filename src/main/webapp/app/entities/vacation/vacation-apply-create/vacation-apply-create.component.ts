@@ -15,11 +15,16 @@ export class VacationApplyCreateComponent implements OnInit {
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
 
+  availableVacation: number = 10;
+
+  choosenDays: number | null;
+
   faCalendarIcon = faCalendarDays;
 
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+    this.fromDate = null;
+    this.toDate = null;
+    this.choosenDays = null;
   }
 
   ngOnInit(): void {}
@@ -27,12 +32,27 @@ export class VacationApplyCreateComponent implements OnInit {
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
+      this.updateChosenDays();
     } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
       this.toDate = date;
+      this.updateChosenDays();
     } else {
       this.toDate = null;
       this.fromDate = date;
+      this.updateChosenDays();
     }
+  }
+
+  updateChosenDays() {
+    if (this.fromDate && this.toDate) {
+      const fromDateJs = new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day);
+      const toDateJs = new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day);
+      this.choosenDays = VacationApplyCreateComponent.datediff(fromDateJs, toDateJs) + 1;
+    }
+  }
+
+  private static datediff(first: Date, second: Date) {
+    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24));
   }
 
   isHovered(date: NgbDate) {
@@ -51,4 +71,6 @@ export class VacationApplyCreateComponent implements OnInit {
     const parsed = this.formatter.parse(input);
     return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
   }
+
+  applyVacation() {}
 }
