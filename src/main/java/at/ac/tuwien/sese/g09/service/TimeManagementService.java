@@ -10,10 +10,7 @@ import at.ac.tuwien.sese.g09.repository.UserRepository;
 import at.ac.tuwien.sese.g09.service.dto.TimeManagementDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -78,24 +75,63 @@ public class TimeManagementService {
     }
 
     public List<TimeManagement> filterTimeManagement(List<Long> userIds, List<LocalDate> workdays, List<String> timeSlotNames) {
-        List<User> users = new ArrayList<>();
-        List<TimeSlot> timeSlots = new ArrayList<>();
+        List<TimeManagement> response = new ArrayList<>();
 
-        if (userIds == null) userIds = new ArrayList<>();
-        if (workdays == null) workdays = new ArrayList<>();
-        if (timeSlotNames == null) timeSlotNames = new ArrayList<>();
-
-        if ((userIds.isEmpty()) && (workdays.isEmpty()) && (timeSlots.isEmpty())) {
+        // in case no parameters specified find all
+        if (
+            (userIds == null || userIds.isEmpty()) &&
+            (workdays == null || workdays.isEmpty()) &&
+            (timeSlotNames == null || timeSlotNames.isEmpty())
+        ) {
             return timeManagementRepository.findAll();
         }
-        if (!userIds.isEmpty()) {
-            users = userRepository.findAllById(userIds);
+
+        List<TimeManagement> filteredByUser = null;
+        List<TimeManagement> filteredByTimeSlot = null;
+        List<TimeManagement> filteredByWorkday = null;
+        List<List<TimeManagement>> filtered = new ArrayList<>();
+
+        if (userIds != null && !userIds.isEmpty()) {
+            List<User> users = userRepository.findAllById(userIds);
+            filteredByUser = timeManagementRepository.findByUserIn(users);
+            if (filteredByUser.isEmpty()) {
+                return new ArrayList<>();
+            } else {
+                response = filteredByUser;
+            }
         }
-        if (!timeSlotNames.isEmpty()) {
-            timeSlots = timeSlotRepository.findAllById(timeSlotNames);
+        if (timeSlotNames != null && !timeSlotNames.isEmpty()) {
+            List<TimeSlot> timeSlots = timeSlotRepository.findAllById(timeSlotNames);
+            filteredByTimeSlot = timeManagementRepository.findByTimeSlotIn(timeSlots);
+            if (filteredByTimeSlot.isEmpty()) {
+                return new ArrayList<>();
+            } else {
+                if (response.isEmpty()) {
+                    response = filteredByTimeSlot;
+                } else {
+                    filtered.add(filteredByTimeSlot);
+                }
+            }
+        }
+        if (workdays != null && !workdays.isEmpty()) {
+            filteredByWorkday = timeManagementRepository.findByWorkdayIn(workdays);
+            if (filteredByWorkday.isEmpty()) {
+                return new ArrayList<>();
+            } else {
+                if (response.isEmpty()) {
+                    response = filteredByWorkday;
+                } else {
+                    filtered.add(filteredByWorkday);
+                }
+            }
         }
 
-        return timeManagementRepository.findByUserIn(users);
+        // intersect lists
+        for (List<TimeManagement> list : filtered) {
+            response.retainAll(list);
+        }
+
+        return response;
     }
 
     public void deleteTimeManagement(Long id) {
