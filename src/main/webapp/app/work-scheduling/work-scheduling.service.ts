@@ -23,8 +23,12 @@ export class WorkSchedulingService {
     return this.http.post<WorkScheduleResponse>(this.resourceUrl, workSchedule);
   }
 
+  deleteSchedule(id: number): Observable<any> {
+    return this.http.delete(this.resourceUrl + '/' + id);
+  }
+
   getMySchedule(): Observable<WorkScheduleResponse[]> {
-    return this.http.get<WorkScheduleResponse[]>(this.resourceUrl);
+    return this.http.get<WorkScheduleResponse[]>(this.applicationConfigService.getEndpointFor('api/time-management'));
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
