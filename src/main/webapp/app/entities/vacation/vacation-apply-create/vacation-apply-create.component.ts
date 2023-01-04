@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { VacationApply } from '../vacation.model';
 
 @Component({
   selector: 'jhi-vacation-apply-create',
@@ -27,9 +28,12 @@ export class VacationApplyCreateComponent implements OnInit {
     this.choosenDays = null;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // TODO query for free days and current lists
+    console.log('TODO');
+  }
 
-  onDateSelection(date: NgbDate) {
+  onDateSelection(date: NgbDate): void {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
       this.updateChosenDays();
@@ -43,10 +47,10 @@ export class VacationApplyCreateComponent implements OnInit {
     }
   }
 
-  updateChosenDays() {
+  updateChosenDays(): void {
     if (this.fromDate && this.toDate) {
-      const fromDateJs = new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day);
-      const toDateJs = new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day);
+      const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
+      const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
       this.choosenDays = VacationApplyCreateComponent.datediff(fromDateJs, toDateJs) + 1;
     }
   }
@@ -55,15 +59,19 @@ export class VacationApplyCreateComponent implements OnInit {
     return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24));
   }
 
-  isHovered(date: NgbDate) {
+  private static ngbDateToJsDate(ngbDate: NgbDate): Date {
+    return new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+  }
+
+  isHovered(date: NgbDate): boolean | null {
     return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
   }
 
-  isInside(date: NgbDate) {
+  isInside(date: NgbDate): boolean | null {
     return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
   }
 
-  isRange(date: NgbDate) {
+  isRange(date: NgbDate): boolean | null {
     return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
   }
 
@@ -72,5 +80,14 @@ export class VacationApplyCreateComponent implements OnInit {
     return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
   }
 
-  applyVacation() {}
+  applyVacation() {
+    if (this.fromDate && this.toDate) {
+      const vacationApply: VacationApply = {
+        from: VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate),
+        to: VacationApplyCreateComponent.ngbDateToJsDate(this.toDate),
+        state: 'APPLIED',
+      };
+      console.log('send date ' + JSON.stringify(vacationApply));
+    }
+  }
 }
