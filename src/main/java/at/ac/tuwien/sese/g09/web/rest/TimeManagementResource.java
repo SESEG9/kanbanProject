@@ -74,6 +74,17 @@ public class TimeManagementResource {
     }
 
     /**
+     * {@code GET  /time-managements} : get all the timeManagments.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of timeManagments in body.
+     */
+    @GetMapping("/time-management")
+    public List<TimeManagement> getOwnTimeManagement() {
+        log.debug("REST request to filter TimeManagements");
+        return timeManagementService.filterTimeManagement();
+    }
+
+    /**
      * {@code DELETE  /time-managements/:id} : delete the "id" timeManagment.
      *
      * @param id the id of the timeManagment to delete.

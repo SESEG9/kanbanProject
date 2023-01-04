@@ -7,6 +7,7 @@ import at.ac.tuwien.sese.g09.domain.User;
 import at.ac.tuwien.sese.g09.repository.TimeManagementRepository;
 import at.ac.tuwien.sese.g09.repository.TimeSlotRepository;
 import at.ac.tuwien.sese.g09.repository.UserRepository;
+import at.ac.tuwien.sese.g09.security.SecurityUtils;
 import at.ac.tuwien.sese.g09.service.dto.TimeManagementDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.time.LocalDate;
@@ -72,6 +73,17 @@ public class TimeManagementService {
             );
         }
         return newTimeManagement;
+    }
+
+    public List<TimeManagement> filterTimeManagement() {
+        Optional<String> loggedInUserName = SecurityUtils.getCurrentUserLogin();
+        if (loggedInUserName.isPresent()) {
+            Optional<User> user = userRepository.findOneByLogin(loggedInUserName.get());
+            if (user.isPresent()) {
+                return filterTimeManagement(List.of(user.get().getId()), null, null);
+            }
+        }
+        throw new BadRequestAlertException("Logged in user not found!", ENTITY_NAME, "userNotFound");
     }
 
     public List<TimeManagement> filterTimeManagement(List<Long> userIds, List<LocalDate> workdays, List<String> timeSlotNames) {
