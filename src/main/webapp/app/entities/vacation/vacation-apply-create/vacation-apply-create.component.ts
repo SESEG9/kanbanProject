@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'jhi-vacation-apply-create',
@@ -13,6 +14,8 @@ export class VacationApplyCreateComponent implements OnInit {
 
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+
+  faCalendarIcon = faCalendarDays;
 
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
     this.fromDate = calendar.getToday();

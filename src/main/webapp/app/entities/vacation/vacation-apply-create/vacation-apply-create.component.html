@@ -19,7 +19,8 @@
         <hr />
         <div class="vacation-body">
           <p><span class="vacation-label">Neuen Urlaub Beantragen:</span></p>
-          <form class="row row-cols-sm-auto">
+          <form class="row row-cols-sm-auto align-items-center calendar-box">
+            <div>von</div>
             <div class="col-12">
               <div class="dp-hidden position-absolute">
                 <div class="input-group">
@@ -59,9 +60,12 @@
                   [value]="formatter.format(fromDate)"
                   (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
                 />
-                <button class="btn btn-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
+                <button class="btn btn-outline-secondary btn-calendar" (click)="datepicker.toggle()" type="button">
+                  <fa-icon [icon]="faCalendarIcon"></fa-icon>
+                </button>
               </div>
             </div>
+            <div>bis</div>
             <div class="col-12">
               <div class="input-group">
                 <input
@@ -72,14 +76,16 @@
                   [value]="formatter.format(toDate)"
                   (input)="toDate = validateInput(toDate, dpToDate.value)"
                 />
-                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
+                <button class="btn btn-outline-secondary btn-calendar" (click)="datepicker.toggle()" type="button">
+                  <fa-icon [icon]="faCalendarIcon"></fa-icon>
+                </button>
               </div>
             </div>
           </form>
         </div>
-        <hr />
         <div class="vacation-footer">
           <p><span class="vacation-label">Resturlaub:</span> 2 Tage</p>
+          <button class="btn btn-primary">Urlaub beantragen</button>
         </div>
       </div>
     </div>
