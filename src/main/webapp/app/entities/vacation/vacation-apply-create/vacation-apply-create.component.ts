@@ -16,11 +16,13 @@ export class VacationApplyCreateComponent implements OnInit {
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
 
-  availableVacation: number = 10;
+  availableVacation = 0;
 
   choosenDays: number | null;
 
   faCalendarIcon = faCalendarDays;
+
+  vacations: VacationApply[] = [];
 
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
     this.fromDate = null;
@@ -31,6 +33,15 @@ export class VacationApplyCreateComponent implements OnInit {
   ngOnInit(): void {
     // TODO query for free days and current lists
     console.log('TODO');
+
+    this.availableVacation = 10;
+    this.vacations = [
+      {
+        from: new Date(),
+        to: new Date(),
+        state: 'APPLIED',
+      },
+    ];
   }
 
   onDateSelection(date: NgbDate): void {
