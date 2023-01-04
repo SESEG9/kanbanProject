@@ -27,8 +27,21 @@ export class WorkSchedulingService {
     return this.http.delete(this.resourceUrl + '/' + id);
   }
 
-  getMySchedule(): Observable<WorkScheduleResponse[]> {
-    return this.http.get<WorkScheduleResponse[]>(this.applicationConfigService.getEndpointFor('api/time-management'));
+  getMySchedule(workDays: string[], timeSlots: string[]): Observable<WorkScheduleResponse[]> {
+    let params = '';
+    if (timeSlots.length > 0) {
+      params += '?timeSlots=' + timeSlots[0];
+      timeSlots.forEach((timeSlot, index) => (params += index > 0 ? '&timeSlots=' + timeSlot : ''));
+    }
+    if (workDays.length > 0) {
+      if (params.includes('?')) {
+        workDays.forEach(workday => (params += '&workDays=' + workday));
+      } else {
+        params += '?workDays=' + workDays[0];
+        workDays.forEach((id, index) => (params += index > 0 ? '&workDays=' + id : ''));
+      }
+    }
+    return this.http.get<WorkScheduleResponse[]>(this.applicationConfigService.getEndpointFor('api/time-management') + params);
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

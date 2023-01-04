@@ -51,20 +51,38 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
     this.calendarApi.getEvents().forEach(event => event.remove());
   }
 
-  updateEvents(userIds: number[] = []): void {
-    if (!this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
-      this.loadMySchedule();
-    } else if (this.form.valid) {
+  getWorkdays(): string[] {
+    const workDays = [];
+    if (this.calendarApi !== undefined) {
       const dateDiffInDays = this.dateDiffInDays(this.calendarApi.view.currentStart, this.calendarApi.view.currentEnd);
-      const workDays = [];
       const date = this.calendarApi.view.currentStart;
       workDays.push(formatDate(date, 'yyyy-MM-dd', 'en-US'));
       for (let i = 0; i < dateDiffInDays; i++) {
         date.setDate(date.getDate() + 1);
         workDays.push(formatDate(date, 'yyyy-MM-dd', 'en-US'));
       }
+    } else {
+      const date1 = new Date();
+      const date2 = new Date();
+      workDays.push(formatDate(date1, 'yyyy-MM-dd', 'en-US'));
+      for (let i = 0; i < date1.getDay() - 1; i++) {
+        date1.setDate(date1.getDate() - 1);
+        workDays.push(formatDate(date1, 'yyyy-MM-dd', 'en-US'));
+      }
+      for (let i = 0; i < 6 - date2.getDay(); i++) {
+        date2.setDate(date2.getDate() + 1);
+        workDays.push(formatDate(date2, 'yyyy-MM-dd', 'en-US'));
+      }
+    }
+    return workDays;
+  }
+
+  updateEvents(userIds: number[] = []): void {
+    if (!this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
+      this.loadMySchedule();
+    } else if (this.form.valid) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      this.$workSchedulingService.getWorkSchedule(userIds, workDays, []).subscribe(value => {
+      this.$workSchedulingService.getWorkSchedule(userIds, this.getWorkdays(), []).subscribe(value => {
         this.clearCalendar();
         value.forEach(workitem => {
           const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
@@ -115,16 +133,16 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
     this.$workSchedulingService.getEmployees().subscribe(value => {
       this.users = value;
     });
+  }
+  ngAfterViewInit(): void {
+    this.calendarApi = this.calendarComponent!.getApi();
     if (!this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
       this.loadMySchedule();
     }
   }
-  ngAfterViewInit(): void {
-    this.calendarApi = this.calendarComponent!.getApi();
-  }
 
   loadMySchedule(): void {
-    this.$workSchedulingService.getMySchedule().subscribe({
+    this.$workSchedulingService.getMySchedule(this.getWorkdays(), []).subscribe({
       next: value => {
         this.clearCalendar();
         value.forEach(workitem => {
