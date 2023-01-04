@@ -22,5 +22,5 @@ export interface WorkScheduleResponse {
   id: number;
   user: User;
   timeSlot: TimeSlot;
-  workDay: string;
+  workday: string;
 }

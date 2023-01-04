@@ -1,3 +1,11 @@
+<div class="container my-3">
+  <div class="alert alert-danger" *ngIf="error">
+    <strong>Reservierung fehlgeschlagen!</strong>
+    <div>
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>
 <div class="container my-3" *jhiHasAnyAuthority="'ROLE_ADMIN'">
   <form name="form" class="w-100" role="form" (ngSubmit)="createWorkSchedule()" [formGroup]="form">
     <div class="row">
@@ -21,6 +29,7 @@
       <div class="col">
         <label class="form-label" for="employee">Mitarbeiter</label>
         <select class="form-select" id="employee" name="employee" formControlName="employee">
+          <option value="{{ -1 }}"></option>
           <option *ngFor="let user of filterUsersByType()" value="{{ user.id }}">{{ user.login }}</option>
         </select>
       </div>

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -19,7 +21,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
   form = new FormGroup({
     type: new FormControl(''),
     shiftType: new FormControl('', [Validators.required]),
-    employee: new FormControl(null, [Validators.required]),
+    employee: new FormControl(-1, [Validators.required]),
     date: new FormControl(new Date(), [Validators.required]),
   });
 
@@ -38,47 +40,103 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
     allDaySlot: true,
     firstDay: 1,
     locale: 'de-AT',
+    datesSet: () => this.updateEvents(),
   };
 
-  constructor(private $workSchedulingService: WorkSchedulingService, private $accountService: AccountService) {}
+  clearCalendar(): void {
+    this.calendarApi.getEvents().forEach(event => event.remove());
+  }
+
+  updateEvents(userIds: number[] = []): void {
+    if (!this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
+      this.loadMySchedule();
+    } else if (this.form.valid) {
+      const dateDiffInDays = this.dateDiffInDays(this.calendarApi.view.currentStart, this.calendarApi.view.currentEnd);
+      const workDays = [];
+      const date = this.calendarApi.view.currentStart;
+      workDays.push(formatDate(date, 'yyyy-MM-dd', 'en-US'));
+      for (let i = 0; i < dateDiffInDays; i++) {
+        date.setDate(date.getDate() + 1);
+        workDays.push(formatDate(date, 'yyyy-MM-dd', 'en-US'));
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      this.$workSchedulingService.getWorkSchedule(userIds, workDays, []).subscribe(value => {
+        this.clearCalendar();
+        value.forEach(workitem => {
+          const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
+          const end = new Date(workitem.workday + 'T' + workitem.timeSlot.endTime);
+          let allDay = false;
+          if (workitem.timeSlot.name === 'nightShift') {
+            end.setDate(end.getDate() + 1);
+          } else if (workitem.timeSlot.name === 'vacation') {
+            allDay = true;
+          }
+          this.calendarApi.addEvent({
+            title: workitem.user.firstName + ' ' + workitem.user.lastName,
+            start,
+            end,
+            allDay,
+          });
+        });
+      });
+    }
+  }
+
+  constructor(private $workSchedulingService: WorkSchedulingService, private $accountService: AccountService) {
+    this.form.valueChanges.subscribe(() => {
+      if (this.form.valid) {
+        const userIds = this.form.controls['employee'].value !== -1 ? [this.form.controls['employee'].value!] : [];
+        if (this.form.controls['employee'].value === -1 || this.form.controls['employee'].value?.toString() === '-1') {
+          userIds.length = 0;
+        }
+        this.updateEvents(userIds);
+      }
+    });
+  }
+
+  dateDiffInDays(a: Date, b: Date): number {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
 
   ngOnInit(): void {
     this.$workSchedulingService.getEmployees().subscribe(value => {
       this.users = value;
     });
-    if (this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
-      this.$workSchedulingService.getMySchedule().subscribe({
-        next: value => {
-          value.forEach(workitem => {
-            const start = new Date(workitem.workDay);
-            const end = new Date(workitem.workDay);
-            let allDay = false;
-            if (workitem.timeSlot.name === 'nightShift') {
-              end.setDate(end.getDate() + 1);
-            } else if (workitem.timeSlot.name === 'vacation') {
-              allDay = true;
-            }
-            start.setHours(workitem.timeSlot.startTime.hour);
-            start.setMinutes(workitem.timeSlot.startTime.minute);
-            start.setSeconds(workitem.timeSlot.startTime.second);
-            start.setMilliseconds(workitem.timeSlot.startTime.nano);
-            end.setHours(workitem.timeSlot.endTime.hour);
-            end.setMinutes(workitem.timeSlot.endTime.minute);
-            end.setSeconds(workitem.timeSlot.endTime.second);
-            end.setMilliseconds(workitem.timeSlot.endTime.nano);
-            this.calendarApi.addEvent({
-              title: workitem.user.firstName + ' ' + workitem.user.lastName,
-              start,
-              end,
-              allDay,
-            });
-          });
-        },
-      });
+    if (!this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
+      this.loadMySchedule();
     }
   }
   ngAfterViewInit(): void {
     this.calendarApi = this.calendarComponent!.getApi();
+  }
+
+  loadMySchedule(): void {
+    this.$workSchedulingService.getMySchedule().subscribe({
+      next: value => {
+        this.clearCalendar();
+        value.forEach(workitem => {
+          const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
+          const end = new Date(workitem.workday + 'T' + workitem.timeSlot.endTime);
+          let allDay = false;
+          if (workitem.timeSlot.name === 'nightShift') {
+            end.setDate(end.getDate() + 1);
+          } else if (workitem.timeSlot.name === 'vacation') {
+            allDay = true;
+          }
+          this.calendarApi.addEvent({
+            title: workitem.user.firstName + ' ' + workitem.user.lastName,
+            start,
+            end,
+            allDay,
+          });
+        });
+      },
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -120,12 +178,13 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
       this.$workSchedulingService.createWorkSchedule(request).subscribe({
         next: () => {
           const event = {
-            title: this.users.find(user => user.id === parseInt(this.form.controls['employee'].value!, 10))!.name,
+            title: this.users.find(user => user.id === this.form.controls['employee'].value!)!.login,
             start: formatDate(start, 'yyyy-MM-ddTHH:mm:ss', 'en-US'),
             end: formatDate(end, 'yyyy-MM-ddTHH:mm:ss', 'en-US'),
             allDay,
           };
           this.calendarApi.addEvent(event);
+          this.error = false;
         },
         error: error => {
           this.error = true;
