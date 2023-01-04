@@ -4,7 +4,7 @@ import { formatDate } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FullCalendarComponent } from '@fullcalendar/angular';
-import { CalendarOptions, Calendar } from '@fullcalendar/core'; // useful for typechecking
+import { CalendarOptions, Calendar, EventApi, EventClickArg } from '@fullcalendar/core'; // useful for typechecking
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { AccountService } from 'app/core/auth/account.service';
@@ -32,6 +32,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
   errorMessage = '';
 
   users: Employee[] = [];
+  currentEvent?: EventApi;
 
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
@@ -40,7 +41,10 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
     allDaySlot: true,
     firstDay: 1,
     locale: 'de-AT',
+    contentHeight: 'auto',
+    slotDuration: '02:00:00',
     datesSet: () => this.updateEvents(),
+    eventClick: event => this.eventClick(event),
   };
 
   clearCalendar(): void {
@@ -72,10 +76,13 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
             allDay = true;
           }
           this.calendarApi.addEvent({
-            title: workitem.user.firstName + ' ' + workitem.user.lastName,
+            title: workitem.user.firstName + ' ' + workitem.user.lastName + (allDay ? ' Urlaub' : ''),
             start,
             end,
             allDay,
+            extendedProps: {
+              id: workitem.id,
+            },
           });
         });
       });
@@ -83,6 +90,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private $workSchedulingService: WorkSchedulingService, private $accountService: AccountService) {
+    this.form.controls['type'].disable({ emitEvent: false });
     this.form.valueChanges.subscribe(() => {
       if (this.form.valid) {
         const userIds = this.form.controls['employee'].value !== -1 ? [this.form.controls['employee'].value!] : [];
@@ -129,10 +137,13 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
             allDay = true;
           }
           this.calendarApi.addEvent({
-            title: workitem.user.firstName + ' ' + workitem.user.lastName,
+            title: workitem.user.firstName + ' ' + workitem.user.lastName + (allDay ? ' Urlaub' : ''),
             start,
             end,
             allDay,
+            extendedProps: {
+              id: workitem.id,
+            },
           });
         });
       },
@@ -169,7 +180,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
             allDay = true;
           }
           this.calendarApi.addEvent({
-            title: workitem.user.firstName + ' ' + workitem.user.lastName,
+            title: workitem.user.firstName + ' ' + workitem.user.lastName + (allDay ? ' Urlaub' : ''),
             start,
             end,
             allDay,
@@ -193,5 +204,23 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
       default:
         return 'vacation';
     }
+  }
+
+  eventClick(event: EventClickArg): void {
+    if (this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
+      const tmpEvent = event.event;
+      this.currentEvent?.setProp('backgroundColor', tmpEvent.backgroundColor);
+      this.currentEvent = tmpEvent;
+      this.currentEvent?.setProp('backgroundColor', '#aaaaaa');
+    }
+  }
+
+  delete(): void {
+    this.$workSchedulingService.deleteSchedule(this.currentEvent?.extendedProps.id).subscribe({
+      next: () => {
+        this.currentEvent?.remove();
+        this.currentEvent = undefined;
+      },
+    });
   }
 }
