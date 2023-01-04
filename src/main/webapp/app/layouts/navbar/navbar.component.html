@@ -37,6 +37,14 @@
             </span>
           </a>
         </li>
+        <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/work-scheduling" (click)="collapseNavbar()">
+            <span>
+              <span>Arbeitszeiteinteilung</span>
+            </span>
+          </a>
+        </li>
+
         <!-- <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/promotion" (click)="collapseNavbar()">
             <span>
@@ -126,6 +134,18 @@
               >
                 <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
                 <span>Rechnungslegung</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="work-scheduling"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span>Arbeitszeiteinteilung</span>
               </a>
             </li>
 
