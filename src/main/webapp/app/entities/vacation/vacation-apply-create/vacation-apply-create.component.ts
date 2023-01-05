@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 import { VacationApply } from '../vacation.model';
+import { VacationDateService } from '../service/vacation-date.service';
 
 @Component({
   selector: 'jhi-vacation-apply-create',
@@ -29,7 +30,7 @@ export class VacationApplyCreateComponent implements OnInit {
 
   year = new Date().getFullYear();
 
-  constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
+  constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, public vacationDateService: VacationDateService) {
     this.fromDate = null;
     this.toDate = null;
     this.choosenDays = null;
@@ -59,12 +60,8 @@ export class VacationApplyCreateComponent implements OnInit {
     if (this.fromDate && this.toDate) {
       const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
       const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
-      this.choosenDays = this.datediff(fromDateJs, toDateJs);
+      this.choosenDays = this.vacationDateService.getVacationDays(fromDateJs, toDateJs);
     }
-  }
-
-  datediff(first: Date, second: Date): number {
-    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   }
 
   static ngbDateToJsDate(ngbDate: NgbDate): Date {

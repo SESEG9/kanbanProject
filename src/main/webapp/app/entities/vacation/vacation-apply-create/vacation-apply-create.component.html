@@ -103,7 +103,7 @@
         <h2>Ausstehende Anträge</h2>
 
         <div class="applied box" *ngFor="let v of vacations | vacationStatePipe: 'APPLIED'">
-          <h3><fa-icon [icon]="faQuestionIcon"></fa-icon> - {{ datediff(v.from, v.to) }} Tage</h3>
+          <h3><fa-icon [icon]="faQuestionIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.from, v.to) }} Tage</h3>
           <div>{{ v.from | date }} - {{ v.to | date }}</div>
         </div>
       </div>
@@ -111,7 +111,7 @@
         <h2>Angenommene Anträge</h2>
 
         <div class="approved box" *ngFor="let v of vacations | vacationStatePipe: 'APPROVED'">
-          <h3><fa-icon [icon]="faCheckmarkIcon"></fa-icon> - {{ datediff(v.from, v.to) }} Tage</h3>
+          <h3><fa-icon [icon]="faCheckmarkIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.from, v.to) }} Tage</h3>
           <div>{{ v.from | date }} - {{ v.to | date }}</div>
         </div>
       </div>
@@ -119,7 +119,7 @@
         <h2>Abgelehne Anträge</h2>
 
         <div class="rejected box" *ngFor="let v of vacations | vacationStatePipe: 'REJECTED'">
-          <h3><fa-icon [icon]="faCrossIcon"></fa-icon> - {{ datediff(v.from, v.to) }} Tage</h3>
+          <h3><fa-icon [icon]="faCrossIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.from, v.to) }} Tage</h3>
           <div>{{ v.from | date }} - {{ v.to | date }}</div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VacationApply, VacationApplyUser } from '../vacation.model';
+import { VacationDateService } from '../service/vacation-date.service';
 
 @Component({
   selector: 'jhi-vacation-apply-check',
@@ -18,11 +19,7 @@ export class VacationApplyCheckComponent implements OnInit {
 
   overlappings: VacationApplyUser[] = [];
 
-  datediff(first: Date, second: Date): number {
-    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-  }
-
-  constructor() {
+  constructor(public vacationDateService: VacationDateService) {
     this.vacation = {
       from: new Date('2023-02-01'),
       to: new Date('2023-02-04'),

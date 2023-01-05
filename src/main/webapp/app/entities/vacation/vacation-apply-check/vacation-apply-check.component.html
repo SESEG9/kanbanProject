@@ -20,7 +20,7 @@
         </div>
         <div class="applyment-row">
           <div class="appl-label long">Resturlaub:</div>
-          {{ datediff(vacation.from, vacation.to) }} Tage
+          {{ vacationDateService.getVacationDays(vacation.from, vacation.to) }} Tage
         </div>
       </div>
       <div class="applyment-column">

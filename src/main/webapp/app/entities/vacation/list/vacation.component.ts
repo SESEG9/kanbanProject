@@ -9,6 +9,7 @@ import { EntityArrayResponseType, VacationService } from '../service/vacation.se
 import { VacationDeleteDialogComponent } from '../delete/vacation-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
+import { VacationDateService } from '../service/vacation-date.service';
 
 @Component({
   selector: 'jhi-vacation',
@@ -81,7 +82,8 @@ export class VacationComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    public vacationDateService: VacationDateService
   ) {}
 
   trackId = (_index: number, item: IVacation): number => this.vacationService.getVacationIdentifier(item);
@@ -170,9 +172,5 @@ export class VacationComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
-  }
-
-  datediff(first: Date, second: Date): number {
-    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   }
 }
