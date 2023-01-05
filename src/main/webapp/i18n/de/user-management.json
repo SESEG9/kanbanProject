@@ -15,7 +15,7 @@
     "detail": {
       "title": "Mitarbeiter"
     },
-    "login": "Login",
+    "login": "Kürzel/Login",
     "firstName": "Vorname",
     "lastName": "Nachname",
     "email": "Email",
@@ -26,6 +26,28 @@
     "createdBy": "Erstellt von",
     "createdDate": "Erstellt am",
     "lastModifiedBy": "Bearbeitet von",
-    "lastModifiedDate": "Zuletzt bearbeitet"
+    "lastModifiedDate": "Zuletzt bearbeitet",
+    "birthday": "Geburtstag",
+    "gender": "Geschlecht",
+    "type": "Aufgabengebiet",
+    "phone": "Telefonnummer",
+    "ssn": "Sozialversicherungsnummer",
+    "banking": "Bankdaten (IBAN)",
+    "authorities": {
+      "ROLE_ADMIN": "Administrator",
+      "ROLE_USER": "Mitarbeiter"
+    },
+    "genders": {
+      "MALE": "Männlich",
+      "FEMALE": "Weiblich",
+      "DIVERSE": "Divers"
+    },
+    "types": {
+      "RECEPTION": "Rezeption",
+      "KITCHEN": "Küche",
+      "SERVICE": "Service",
+      "CLEANING": "Reinigung",
+      "OTHER": "Sonstiges"
+    }
   }
 }

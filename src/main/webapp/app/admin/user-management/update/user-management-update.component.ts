@@ -1,25 +1,77 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { LANGUAGES } from 'app/config/language.constants';
 import { IUser } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
+import { HumanResourceType } from '../../../entities/enumerations/human-resource-type.model';
+import { Gender } from '../../../entities/enumerations/gender.model';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
-const userTemplate = {} as IUser;
+const userTemplate = { langKey: 'de' } as IUser;
 
 const newUser: IUser = {
   langKey: 'de',
   activated: true,
 } as IUser;
 
+function ngbDateStructToNullableString(date: NgbDateStruct): string | null {
+  if (!date) {
+    return null;
+  }
+  if (date.day < 0 || date.month < 0) {
+    return null;
+  }
+  return ('0000' + date.year).slice(-4) + '-' + ('0' + date.month).slice(-2) + '-' + ('0' + date.day).slice(-2);
+}
+
+function nullableStringToNgbDateStruct(value: string | null): NgbDateStruct {
+  if (!value) {
+    return { year: -1, month: -1, day: -1 };
+  }
+  let parts = value.split('-');
+  if (parts.length != 3) {
+    return { year: -1, month: -1, day: -1 };
+  }
+  return { year: +parts[0], month: +parts[1], day: +parts[2] };
+}
+
+@Injectable()
+export class CustomDateAdapter {
+  fromModel(value: string | null): NgbDateStruct {
+    return nullableStringToNgbDateStruct(value);
+  }
+
+  toModel(date: NgbDateStruct): string | null {
+    return ngbDateStructToNullableString(date);
+  }
+}
+
+@Injectable()
+export class CustomDateParser {
+  parse(value: string | null): NgbDateStruct {
+    return nullableStringToNgbDateStruct(value);
+  }
+
+  format(date: NgbDateStruct): string | null {
+    return ngbDateStructToNullableString(date);
+  }
+}
+
 @Component({
   selector: 'jhi-user-mgmt-update',
   templateUrl: './user-management-update.component.html',
+  providers: [
+    { provide: NgbDateAdapter, useClass: CustomDateAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParser },
+  ],
 })
 export class UserManagementUpdateComponent implements OnInit {
   languages = LANGUAGES;
   authorities: string[] = [];
+  genders: string[] = [];
+  types: string[] = [];
   isSaving = false;
 
   editForm = new FormGroup({
@@ -42,6 +94,12 @@ export class UserManagementUpdateComponent implements OnInit {
     activated: new FormControl(userTemplate.activated, { nonNullable: true }),
     langKey: new FormControl(userTemplate.langKey, { nonNullable: true }),
     authorities: new FormControl(userTemplate.authorities, { nonNullable: true }),
+    gender: new FormControl(userTemplate.gender, { nonNullable: true }),
+    type: new FormControl(userTemplate.type, { nonNullable: true }),
+    birthday: new FormControl(userTemplate.birthday, { nonNullable: true }),
+    phone: new FormControl(userTemplate.phone, { nonNullable: true }),
+    ssn: new FormControl(userTemplate.ssn, { nonNullable: true }),
+    banking: new FormControl(userTemplate.banking, { nonNullable: true }),
   });
 
   constructor(private userService: UserManagementService, private route: ActivatedRoute) {}
@@ -55,6 +113,8 @@ export class UserManagementUpdateComponent implements OnInit {
       }
     });
     this.userService.authorities().subscribe(authorities => (this.authorities = authorities));
+    this.types = Object.keys(HumanResourceType);
+    this.genders = Object.keys(Gender);
   }
 
   previousState(): void {
@@ -63,7 +123,7 @@ export class UserManagementUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const user = this.editForm.getRawValue();
+    let user = this.editForm.getRawValue();
     if (user.id !== null) {
       this.userService.update(user).subscribe({
         next: () => this.onSaveSuccess(),

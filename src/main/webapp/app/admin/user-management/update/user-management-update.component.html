@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">Benutzer erstellen oder bearbeiten</h2>
+      <h2 id="myUserLabel">
+        Mitarbeiter <span *ngIf="!editForm.value.id; else update">erstellen</span><ng-template #update>bearbeiten</ng-template>
+      </h2>
 
       <jhi-alert-error></jhi-alert-error>
 
@@ -11,7 +13,7 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label" jhiTranslate="userManagement.login">Login</label>
+        <label class="form-label" jhiTranslate="userManagement.login">Kürzel/Login</label>
         <input type="text" class="form-control" name="login" formControlName="login" />
 
         <div *ngIf="editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)">
@@ -67,6 +69,13 @@
       </div>
 
       <div class="mb-3">
+        <label jhiTranslate="userManagement.gender">Geschlecht</label>
+        <select class="form-control" name="gender" formControlName="gender">
+          <option *ngFor="let gender of genders" [value]="gender" jhiTranslate="userManagement.genders.{{ gender }}">{{ gender }}</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
         <label class="form-label" jhiTranslate="userManagement.email">Email</label>
         <input type="email" class="form-control" name="email" formControlName="email" />
 
@@ -103,6 +112,43 @@
         </div>
       </div>
 
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.birthday">Geburtstag</label>
+        <input
+          type="text"
+          class="form-control"
+          name="birthday"
+          formControlName="birthday"
+          placeholder="yyyy-mm-dd"
+          ngbDatepicker
+          #datepicker="ngbDatepicker"
+          (click)="datepicker.toggle()"
+          readonly
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.phone">Telefonnummer</label>
+        <input type="text" class="form-control" name="phone" formControlName="phone" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.ssn">Sozialversicherungsnummer</label>
+        <input type="text" class="form-control" name="ssn" formControlName="ssn" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.banking">Kontodaten (IBAN)</label>
+        <input type="text" class="form-control" name="banking" formControlName="banking" />
+      </div>
+
+      <div class="mb-3">
+        <label jhiTranslate="userManagement.type">Aufgabengebiet</label>
+        <select class="form-control" name="type" formControlName="type">
+          <option *ngFor="let type of types" [value]="type" jhiTranslate="userManagement.types.{{ type }}">{{ type }}</option>
+        </select>
+      </div>
+
       <div class="form-check">
         <label class="form-check-label" for="activated">
           <input
@@ -117,17 +163,21 @@
         </label>
       </div>
 
+      <!--
       <div class="mb-3" *ngIf="languages && languages.length > 0">
         <label jhiTranslate="userManagement.langKey">Sprache</label>
         <select class="form-control" id="langKey" name="langKey" formControlName="langKey">
           <option *ngFor="let language of languages" [value]="language">{{ language | findLanguageFromKey }}</option>
         </select>
       </div>
+      -->
 
       <div class="mb-3">
         <label jhiTranslate="userManagement.profiles">Rechte</label>
         <select class="form-control" multiple name="authority" formControlName="authorities">
-          <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>
+          <option *ngFor="let authority of authorities" [value]="authority" jhiTranslate="userManagement.authorities.{{ authority }}">
+            {{ authority }}
+          </option>
         </select>
       </div>
       <button type="button" class="btn btn-secondary" (click)="previousState()">

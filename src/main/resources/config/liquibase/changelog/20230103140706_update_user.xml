@@ -3,9 +3,6 @@
     <changeSet author="Patrik" id="1672754854459">
         <addColumn tableName="jhi_user">
             <column name="type" type="varchar(50)"/>
-            <column name="abbr" type="varchar(50)">
-                <constraints unique="true" uniqueConstraintName="ux_user_abbr"/>
-            </column>
             <column name="birthday" type="date"/>
             <column name="gender" type="varchar(10)"/>
             <column name="ssn" type="varchar(10)"/>
@@ -15,11 +12,9 @@
             <column name="phone" type="varchar(50)"/>
         </addColumn>
         <update tableName="jhi_user">
-            <column name="abbr" valueComputed="login"/>
             <column name="type" value="OTHER" />
             <column name="gender" value="DIVERSE"/>
         </update>
-        <addNotNullConstraint tableName="jhi_user" columnName="abbr"/>
         <addNotNullConstraint tableName="jhi_user" columnName="type"/>
         <addNotNullConstraint tableName="jhi_user" columnName="gender"/>
     </changeSet>

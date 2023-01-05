@@ -42,7 +42,7 @@
         <dd>
           <ul class="list-unstyled">
             <li *ngFor="let authority of user.authorities">
-              <span class="badge bg-info">{{ authority }}</span>
+              <span class="badge bg-info" jhiTranslate="userManagement.authorities.{{ authority }}">{{ authority }}</span>
             </li>
           </ul>
         </dd>

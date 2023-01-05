@@ -105,9 +105,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "type", nullable = false)
     private HumanResourceType type;
 
-    @Column(name = "abbr", nullable = false, unique = true)
-    private String abbr;
-
     @Column(name = "birthday")
     private LocalDate birthday;
 
@@ -136,15 +133,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setType(HumanResourceType type) {
         this.type = type;
-    }
-
-    public String getAbbr() {
-        return this.abbr;
-    }
-
-    public User abbr(String abbr) {
-        this.setAbbr(abbr);
-        return this;
     }
 
     public LocalDate getBirthday() {
@@ -184,10 +172,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public void setAbbr(String abbr) {
-        this.abbr = abbr;
     }
 
     public String getSsn() {
@@ -358,6 +342,12 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
+            ", type='" + type + '\'' +
+            ", gender='" + gender + '\'' +
+            ", birthday=" + birthday +
+            ", phone='" + phone + '\'' +
+            ", ssn='" + ssn + '\'' +
+            ", banking='" + banking + '\'' +
             "}";
     }
 }

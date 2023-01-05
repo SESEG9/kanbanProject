@@ -1,3 +1,6 @@
+import { HumanResourceType } from '../../entities/enumerations/human-resource-type.model';
+import { Gender } from '../../entities/enumerations/gender.model';
+
 export interface IUser {
   id: number | null;
   login?: string;
@@ -11,27 +14,12 @@ export interface IUser {
   createdDate?: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
-  type?: HumanResourceType;
-  abbr?: string;
-  gender?: Gender;
+  type?: string;
+  gender?: string;
   birthday?: Date;
   phone?: string;
   ssn?: string;
   banking?: string;
-}
-
-export enum HumanResourceType {
-  RECEPTION,
-  KITCHEN,
-  SERVICE,
-  CLEANING,
-  OTHER,
-}
-
-export enum Gender {
-  MALE,
-  FEMALE,
-  DIVERSE,
 }
 
 export class User implements IUser {
@@ -48,9 +36,8 @@ export class User implements IUser {
     public createdDate?: Date,
     public lastModifiedBy?: string,
     public lastModifiedDate?: Date,
-    public type?: HumanResourceType,
-    public abbr?: string,
-    public gender?: Gender,
+    public type?: string,
+    public gender?: string,
     public birthday?: Date,
     public phone?: string,
     public ssn?: string,
