@@ -1,41 +1,43 @@
 <div class="base">
   <div class="root">
     <h1>Urlaub Genehmigen:</h1>
-    {{ param | json }}
     <div class="box checking-card">
       <div class="applyment-column">
         <div class="applyment-row">
           <div class="appl-label">Name:</div>
-          {{ user.firstName }} {{ user.lastName }}
+          {{ vacation?.user?.firstName ?? '' }} {{ vacation?.user?.lastName ?? '' }}
         </div>
         <div class="applyment-row">
           <div class="appl-label">Bereich:</div>
-          {{ user.area }}
+          {{ vacation?.user?.area ?? '' }}
         </div>
       </div>
       <div class="applyment-column">
         <div class="applyment-row">
           <div class="appl-label long">Aktueller Urlaub:</div>
-          {{ user.freeVacation }} Tage
+          {{ vacation?.user?.freeVacation ?? '' }} Tage
         </div>
         <div class="applyment-row">
           <div class="appl-label long">Resturlaub:</div>
-          {{ vacationDateService.getVacationDays(vacation.from, vacation.to) }} Tage
+          {{ vacation ? vacationDateService.getVacationDays(vacation.from, vacation.to) : '' }} Tage
         </div>
       </div>
       <div class="applyment-column">
         <div class="applyment-row">
           <div class="appl-label">Von:</div>
-          {{ vacation.from | date }}
+          {{ vacation?.from | date }}
         </div>
         <div class="applyment-row">
           <div class="appl-label">Bis:</div>
-          {{ vacation.to | date }}
+          {{ vacation?.to | date }}
         </div>
       </div>
     </div>
 
-    <div class="vacation-form"><button class="btn btn-danger">Ablehnen</button> <button class="btn btn-success">Genehmigen</button></div>
+    <div class="vacation-form">
+      <button class="btn btn-danger" (click)="reject(vacation)">Ablehnen</button>
+      <button class="btn btn-success" (click)="approve(vacation)">Genehmigen</button>
+    </div>
 
     <hr />
 
