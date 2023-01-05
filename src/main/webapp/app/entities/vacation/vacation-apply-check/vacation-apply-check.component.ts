@@ -76,7 +76,7 @@ export class VacationApplyCheckComponent implements OnInit {
       {
         from: new Date('2023-02-01'),
         to: new Date('2023-02-04'),
-        state: 'APPLIED',
+        state: 'APPROVED',
         id: 15,
         user: {
           firstName: 'Jürgen',
@@ -112,7 +112,7 @@ export class VacationApplyCheckComponent implements OnInit {
       {
         from: new Date('2023-01-25'),
         to: new Date('2023-02-01'),
-        state: 'APPLIED',
+        state: 'APPROVED',
         id: 15,
         user: {
           firstName: 'Annemarie',

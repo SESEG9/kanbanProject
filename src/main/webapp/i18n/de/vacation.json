@@ -8,6 +8,11 @@
         "createOrEditLabel": "Vacation erstellen oder bearbeiten",
         "notFound": "Keine Vacations gefunden"
       },
+      "state": {
+        "approved": "Genehmigt",
+        "rejected": "Abgelehnt",
+        "applied": "Angefragt"
+      },
       "created": "Vacation erstellt mit ID {{ param }}",
       "updated": "Vacation aktualisiert mit ID {{ param }}",
       "deleted": "Vacation gelöscht mit ID {{ param }}",
@@ -21,7 +26,6 @@
       "start": "von",
       "end": "bis",
       "duration": "Dauer",
-      "state": "State",
       "humanResource": "Human Resource"
     }
   }

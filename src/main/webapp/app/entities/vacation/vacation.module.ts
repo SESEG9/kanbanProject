@@ -9,6 +9,7 @@ import { VacationApplyCreateComponent } from './vacation-apply-create/vacation-a
 import { VacationStatePipePipe } from './vacation-apply-create/vacation-state-pipe.pipe';
 import { VacationApplyCheckComponent } from './vacation-apply-check/vacation-apply-check.component';
 import { VacationApproveDialogComponent } from './dialog-approve/vacation-approve-dialog.component';
+import { OverlappingsPipe } from './vacation-apply-check/overlappings.pipe';
 
 @NgModule({
   imports: [SharedModule, VacationRoutingModule],
@@ -21,6 +22,7 @@ import { VacationApproveDialogComponent } from './dialog-approve/vacation-approv
     VacationApplyCreateComponent,
     VacationStatePipePipe,
     VacationApplyCheckComponent,
+    OverlappingsPipe,
   ],
 })
 export class VacationModule {}

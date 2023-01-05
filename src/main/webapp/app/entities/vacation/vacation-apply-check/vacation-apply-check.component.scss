@@ -61,3 +61,24 @@ h3 {
 p {
   margin: 0;
 }
+
+.applied {
+  background-color: #fdfd96 !important;
+}
+
+.applied .ol-state {
+  font-weight: bolder !important;
+}
+
+.rejected {
+  background-color: #faa0a0 !important;
+}
+
+.approved {
+  background-color: #c1e1c1 !important;
+}
+
+.approved .ol-state {
+  font-weight: 600;
+  font-style: italic;
+}
