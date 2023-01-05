@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VacationApply, VacationApplyUser } from '../vacation.model';
 import { VacationDateService } from '../service/vacation-date.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-vacation-apply-check',
@@ -19,7 +20,9 @@ export class VacationApplyCheckComponent implements OnInit {
 
   overlappings: VacationApplyUser[] = [];
 
-  constructor(public vacationDateService: VacationDateService) {
+  param: any = 0;
+
+  constructor(public vacationDateService: VacationDateService, private route: ActivatedRoute) {
     this.vacation = {
       from: new Date('2023-02-01'),
       to: new Date('2023-02-04'),
@@ -28,6 +31,9 @@ export class VacationApplyCheckComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(param => (this.param = +param.id));
+    // TODO use this parameter to load the data from the backend
+
     this.overlappings = [
       {
         from: new Date('2023-02-01'),
