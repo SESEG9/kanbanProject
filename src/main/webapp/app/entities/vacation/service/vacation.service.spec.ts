@@ -3,9 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { DATE_FORMAT } from 'app/config/input.constants';
 import { IVacation } from '../vacation.model';
-import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../vacation.test-samples';
+import { sampleWithFullData, sampleWithNewData, sampleWithPartialData, sampleWithRequiredData } from '../vacation.test-samples';
 
-import { VacationService, RestVacation } from './vacation.service';
+import { RestVacation, VacationService } from './vacation.service';
 
 const requireRestSample: RestVacation = {
   ...sampleWithRequiredData,
@@ -89,7 +89,7 @@ describe('Vacation Service', () => {
       expect(expectedResult).toMatchObject([expected]);
     });
 
-    it('should delete a Vacation', () => {
+    it('should dialog-reject a Vacation', () => {
       const expected = true;
 
       service.delete(123).subscribe(resp => (expectedResult = resp.ok));

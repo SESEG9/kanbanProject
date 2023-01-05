@@ -3,12 +3,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IVacation } from '../vacation.model';
 import { VacationService } from '../service/vacation.service';
-import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
+import { VACATION_APPROVED } from '../vacation.constants';
 
 @Component({
-  templateUrl: './vacation-delete-dialog.component.html',
+  templateUrl: './vacation-approve-dialog.component.html',
+  styleUrls: ['../vacation.dialog.component.scss'],
 })
-export class VacationDeleteDialogComponent {
+export class VacationApproveDialogComponent {
   vacation?: IVacation;
 
   constructor(protected vacationService: VacationService, protected activeModal: NgbActiveModal) {}
@@ -18,8 +19,9 @@ export class VacationDeleteDialogComponent {
   }
 
   confirmDelete(id: number): void {
+    // TODO correct call to backend
     this.vacationService.delete(id).subscribe(() => {
-      this.activeModal.close(ITEM_DELETED_EVENT);
+      this.activeModal.close(VACATION_APPROVED);
     });
   }
 }

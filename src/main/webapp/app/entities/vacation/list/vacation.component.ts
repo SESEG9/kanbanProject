@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IVacation, VacationApplyUser } from '../vacation.model';
 import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, VacationService } from '../service/vacation.service';
-import { VacationDeleteDialogComponent } from '../delete/vacation-delete-dialog.component';
+import { VacationRejectDialogComponent } from '../dialog-reject/vacation-reject-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 import { VacationDateService } from '../service/vacation-date.service';
@@ -92,10 +92,11 @@ export class VacationComponent implements OnInit {
     this.load();
   }
 
-  delete(vacation: IVacation): void {
-    const modalRef = this.modalService.open(VacationDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+  delete(vacation: VacationApplyUser): void {
+    const modalRef = this.modalService.open(VacationRejectDialogComponent, { backdrop: 'static' });
     modalRef.componentInstance.vacation = vacation;
     // unsubscribe not needed because closed completes on modal close
+
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
