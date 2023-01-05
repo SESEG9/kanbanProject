@@ -4,12 +4,14 @@ import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IVacation, VacationApplyUser } from '../vacation.model';
-import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
+import { ASC, DEFAULT_SORT_DATA, DESC, SORT } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, VacationService } from '../service/vacation.service';
 import { VacationRejectDialogComponent } from '../dialog-reject/vacation-reject-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 import { VacationDateService } from '../service/vacation-date.service';
+import { VacationApproveDialogComponent } from '../dialog-approve/vacation-approve-dialog.component';
+import { VACATION_APPROVED, VACATION_REJECTED } from '../vacation.constants';
 
 @Component({
   selector: 'jhi-vacation',
@@ -92,14 +94,31 @@ export class VacationComponent implements OnInit {
     this.load();
   }
 
-  delete(vacation: VacationApplyUser): void {
+  reject(vacation: VacationApplyUser): void {
     const modalRef = this.modalService.open(VacationRejectDialogComponent, { backdrop: 'static' });
     modalRef.componentInstance.vacation = vacation;
     // unsubscribe not needed because closed completes on modal close
 
     modalRef.closed
       .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
+        filter(reason => reason === VACATION_REJECTED),
+        switchMap(() => this.loadFromBackendWithRouteInformations())
+      )
+      .subscribe({
+        next: (res: EntityArrayResponseType) => {
+          this.onResponseSuccess(res);
+        },
+      });
+  }
+
+  approve(vacation: VacationApplyUser): void {
+    const modalRef = this.modalService.open(VacationApproveDialogComponent, { backdrop: 'static' });
+    modalRef.componentInstance.vacation = vacation;
+    // unsubscribe not needed because closed completes on modal close
+
+    modalRef.closed
+      .pipe(
+        filter(reason => reason === VACATION_APPROVED),
         switchMap(() => this.loadFromBackendWithRouteInformations())
       )
       .subscribe({
