@@ -47,17 +47,20 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
 
+    @NotNull
     @Size(max = 50)
-    @Column(name = "first_name", length = 50)
+    @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
 
+    @NotNull
     @Size(max = 50)
-    @Column(name = "last_name", length = 50)
+    @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
 
     @Email
+    @NotNull
     @Size(min = 5, max = 254)
-    @Column(length = 254, unique = true)
+    @Column(length = 254, unique = true, nullable = false)
     private String email;
 
     @NotNull
@@ -121,6 +124,9 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Column(name = "banking", unique = true)
     private String banking;
+
+    @Column(name = "address")
+    private String address;
 
     public HumanResourceType getType() {
         return this.type;
@@ -223,6 +229,14 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getFirstName() {
@@ -344,10 +358,11 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
             ", activationKey='" + activationKey + '\'' +
             ", type='" + type + '\'' +
             ", gender='" + gender + '\'' +
-            ", birthday=" + birthday +
+            ", birthday='" + birthday + '\'' +
             ", phone='" + phone + '\'' +
             ", ssn='" + ssn + '\'' +
             ", banking='" + banking + '\'' +
+            ", address='" + address + '\'' +
             "}";
     }
 }

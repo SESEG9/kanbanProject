@@ -20,6 +20,7 @@ export interface IUser {
   phone?: string;
   ssn?: string;
   banking?: string;
+  address?: string;
 }
 
 export class User implements IUser {
@@ -41,6 +42,7 @@ export class User implements IUser {
     public birthday?: Date,
     public phone?: string,
     public ssn?: string,
-    public banking?: string
+    public banking?: string,
+    public address?: string
   ) {}
 }

@@ -64,6 +64,8 @@ public class AdminUserDTO implements Serializable {
 
     private String banking;
 
+    private String address;
+
     private Set<String> authorities;
 
     public AdminUserDTO() {
@@ -90,6 +92,7 @@ public class AdminUserDTO implements Serializable {
         this.phone = user.getPhone();
         this.ssn = user.getSsn();
         this.banking = user.getBanking();
+        this.address = user.getAddress();
     }
 
     public Long getId() {
@@ -236,6 +239,14 @@ public class AdminUserDTO implements Serializable {
         this.banking = banking;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public Set<String> getAuthorities() {
         return authorities;
     }
@@ -261,10 +272,11 @@ public class AdminUserDTO implements Serializable {
             ", lastModifiedDate=" + lastModifiedDate +
             ", type='" + type + '\'' +
             ", gender='" + gender + '\'' +
-            ", birthday=" + birthday +
+            ", birthday='" + birthday + '\'' +
             ", phone='" + phone + '\'' +
             ", ssn='" + ssn + '\'' +
             ", banking='" + banking + '\'' +
+            ", address='" + address + '\'' +
             ", authorities=" + authorities +
             "}";
     }

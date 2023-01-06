@@ -85,21 +85,35 @@ export class UserManagementUpdateComponent implements OnInit {
         Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
       ],
     }),
-    firstName: new FormControl(userTemplate.firstName, { validators: [Validators.maxLength(50)] }),
-    lastName: new FormControl(userTemplate.lastName, { validators: [Validators.maxLength(50)] }),
+    firstName: new FormControl(userTemplate.firstName, {
+      validators: [Validators.maxLength(50), Validators.required],
+    }),
+    lastName: new FormControl(userTemplate.lastName, {
+      validators: [Validators.maxLength(50), Validators.required],
+    }),
     email: new FormControl(userTemplate.email, {
       nonNullable: true,
-      validators: [Validators.minLength(5), Validators.maxLength(254), Validators.email],
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
     }),
     activated: new FormControl(userTemplate.activated, { nonNullable: true }),
     langKey: new FormControl(userTemplate.langKey, { nonNullable: true }),
-    authorities: new FormControl(userTemplate.authorities, { nonNullable: true }),
-    gender: new FormControl(userTemplate.gender, { nonNullable: true }),
-    type: new FormControl(userTemplate.type, { nonNullable: true }),
+    authorities: new FormControl(userTemplate.authorities, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    gender: new FormControl(userTemplate.gender, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    type: new FormControl(userTemplate.type, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
     birthday: new FormControl(userTemplate.birthday, { nonNullable: true }),
     phone: new FormControl(userTemplate.phone, { nonNullable: true }),
     ssn: new FormControl(userTemplate.ssn, { nonNullable: true }),
     banking: new FormControl(userTemplate.banking, { nonNullable: true }),
+    address: new FormControl(userTemplate.address, { nonNullable: true }),
   });
 
   constructor(private userService: UserManagementService, private route: ActivatedRoute) {}

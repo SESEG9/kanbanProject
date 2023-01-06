@@ -139,6 +139,7 @@ public class UserService {
         newUser.setPhone(userDTO.getPhone());
         newUser.setSsn(userDTO.getSsn());
         newUser.setBanking(userDTO.getBanking());
+        newUser.setAddress(userDTO.getAddress());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
@@ -194,6 +195,7 @@ public class UserService {
         user.setPhone(userDTO.getPhone());
         user.setSsn(userDTO.getSsn());
         user.setBanking(userDTO.getBanking());
+        user.setAddress(userDTO.getAddress());
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
@@ -229,6 +231,7 @@ public class UserService {
                 user.setPhone(userDTO.getPhone());
                 user.setSsn(userDTO.getSsn());
                 user.setBanking(userDTO.getBanking());
+                user.setAddress(userDTO.getAddress());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO

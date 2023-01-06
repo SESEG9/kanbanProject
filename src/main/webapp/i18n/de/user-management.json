@@ -33,6 +33,7 @@
     "phone": "Telefonnummer",
     "ssn": "Sozialversicherungsnummer",
     "banking": "Bankdaten (IBAN)",
+    "address": "Adresse",
     "authorities": {
       "ROLE_ADMIN": "Administrator",
       "ROLE_USER": "Mitarbeiter"

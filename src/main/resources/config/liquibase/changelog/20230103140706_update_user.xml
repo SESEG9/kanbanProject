@@ -10,12 +10,28 @@
                 <constraints unique="true" uniqueConstraintName="ux_user_banking"/>
             </column>
             <column name="phone" type="varchar(50)"/>
+            <column name="address" type="varchar(256)"/>
         </addColumn>
         <update tableName="jhi_user">
             <column name="type" value="OTHER" />
             <column name="gender" value="DIVERSE"/>
         </update>
+        <update tableName="jhi_user">
+            <column name="first_name" valueComputed="login"/>
+            <where>first_name is NULL</where>
+        </update>
+        <update tableName="jhi_user">
+            <column name="last_name" valueComputed="login"/>
+            <where>last_name is NULL</where>
+        </update>
+        <update tableName="jhi_user">
+            <column name="email" valueComputed="login || '@lionhotel.at'"/>
+            <where>email is NULL</where>
+        </update>
         <addNotNullConstraint tableName="jhi_user" columnName="type"/>
         <addNotNullConstraint tableName="jhi_user" columnName="gender"/>
+        <addNotNullConstraint tableName="jhi_user" columnName="first_name"/>
+        <addNotNullConstraint tableName="jhi_user" columnName="last_name"/>
+        <addNotNullConstraint tableName="jhi_user" columnName="email"/>
     </changeSet>
 </databaseChangeLog>
