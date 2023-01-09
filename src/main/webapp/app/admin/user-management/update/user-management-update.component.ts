@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -33,7 +33,7 @@ function nullableStringToNgbDateStruct(value: string | null): NgbDateStruct {
   if (parts.length !== 3) {
     return { year: -1, month: -1, day: -1 };
   }
-  return { year: parseInt(parts[0]), month: parseInt(parts[1]), day: parseInt(parts[2]) };
+  return { year: parseInt(parts[0], 10), month: parseInt(parts[1], 10), day: parseInt(parts[2], 10) };
 }
 
 @Injectable()
