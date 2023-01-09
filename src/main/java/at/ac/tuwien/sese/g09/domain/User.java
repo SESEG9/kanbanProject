@@ -131,6 +131,17 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Vacation> vacations = new HashSet<>();
+
+    public Set<Vacation> getVacations() {
+        return vacations;
+    }
+
+    public void setVacations(Set<Vacation> vacations) {
+        this.vacations = vacations;
+    }
+
     public HumanResourceType getType() {
         return this.type;
     }

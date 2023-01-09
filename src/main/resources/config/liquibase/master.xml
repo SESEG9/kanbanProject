@@ -46,4 +46,5 @@
     <include file="config/liquibase/changelog/20221220100000_create_discount.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230101100000_create_time_management.sql" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230103140706_update_user.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230120800000_create_vacation.sql" relativeToChangelogFile="false"/>
 </databaseChangeLog>
