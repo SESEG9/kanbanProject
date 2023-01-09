@@ -51,7 +51,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
   };
 
   clearCalendar(): void {
-    this.calendarApi.getEvents().forEach(event => event.remove());
+    this.calendarApi?.getEvents().forEach(event => event.remove());
   }
 
   getWorkdays(): string[] {
@@ -85,28 +85,32 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
       this.loadMySchedule();
     } else if (this.form.controls['type'].valid && this.form.controls['employee'].valid) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      this.$workSchedulingService.getWorkSchedule(userIds, this.getWorkdays(), []).subscribe(value => {
-        this.clearCalendar();
-        value.forEach(workitem => {
-          const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
-          const end = new Date(workitem.workday + 'T' + workitem.timeSlot.endTime);
-          let allDay = false;
-          if (workitem.timeSlot.name === 'night_shift') {
-            end.setDate(end.getDate() + 1);
-          } else if (workitem.timeSlot.name === 'vacation') {
-            allDay = true;
-          }
-          this.calendarApi.addEvent({
-            title: workitem.user.firstName + ' ' + workitem.user.lastName + (allDay ? ' Urlaub' : ''),
-            start,
-            end,
-            allDay,
-            extendedProps: {
-              id: workitem.id,
-            },
+      if (userIds.length > 0 || this.form.controls['type'].value === '') {
+        this.$workSchedulingService.getWorkSchedule(userIds, this.getWorkdays(), []).subscribe(value => {
+          this.clearCalendar();
+          value.forEach(workitem => {
+            const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
+            const end = new Date(workitem.workday + 'T' + workitem.timeSlot.endTime);
+            let allDay = false;
+            if (workitem.timeSlot.name === 'night_shift') {
+              end.setDate(end.getDate() + 1);
+            } else if (workitem.timeSlot.name === 'vacation') {
+              allDay = true;
+            }
+            this.calendarApi.addEvent({
+              title: workitem.user.firstName + ' ' + workitem.user.lastName + (allDay ? ' Urlaub' : ''),
+              start,
+              end,
+              allDay,
+              extendedProps: {
+                id: workitem.id,
+              },
+            });
           });
         });
-      });
+      } else {
+        this.clearCalendar();
+      }
     }
   }
 
