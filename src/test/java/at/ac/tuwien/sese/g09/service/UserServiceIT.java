@@ -7,6 +7,8 @@ import at.ac.tuwien.sese.g09.IntegrationTest;
 import at.ac.tuwien.sese.g09.config.Constants;
 import at.ac.tuwien.sese.g09.domain.PersistentToken;
 import at.ac.tuwien.sese.g09.domain.User;
+import at.ac.tuwien.sese.g09.domain.enumeration.Gender;
+import at.ac.tuwien.sese.g09.domain.enumeration.HumanResourceType;
 import at.ac.tuwien.sese.g09.repository.PersistentTokenRepository;
 import at.ac.tuwien.sese.g09.repository.UserRepository;
 import at.ac.tuwien.sese.g09.service.dto.AdminUserDTO;
@@ -47,6 +49,10 @@ class UserServiceIT {
 
     private static final String DEFAULT_LANGKEY = "dummy";
 
+    private static final Gender DEFAULT_GENDER = Gender.DIVERSE;
+
+    private static final HumanResourceType DEFAULT_HUMANRESOURCETYPE = HumanResourceType.OTHER;
+
     @Autowired
     private PersistentTokenRepository persistentTokenRepository;
 
@@ -76,6 +82,8 @@ class UserServiceIT {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+        user.setType(DEFAULT_HUMANRESOURCETYPE);
+        user.setGender(DEFAULT_GENDER);
 
         when(dateTimeProvider.getNow()).thenReturn(Optional.of(LocalDateTime.now()));
         auditingHandler.setDateTimeProvider(dateTimeProvider);

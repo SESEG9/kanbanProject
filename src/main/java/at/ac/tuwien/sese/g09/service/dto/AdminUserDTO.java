@@ -3,8 +3,11 @@ package at.ac.tuwien.sese.g09.service.dto;
 import at.ac.tuwien.sese.g09.config.Constants;
 import at.ac.tuwien.sese.g09.domain.Authority;
 import at.ac.tuwien.sese.g09.domain.User;
+import at.ac.tuwien.sese.g09.domain.enumeration.Gender;
+import at.ac.tuwien.sese.g09.domain.enumeration.HumanResourceType;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.constraints.*;
@@ -49,6 +52,20 @@ public class AdminUserDTO implements Serializable {
 
     private Instant lastModifiedDate;
 
+    private HumanResourceType type;
+
+    private LocalDate birthday;
+
+    private Gender gender;
+
+    private String phone;
+
+    private String ssn;
+
+    private String banking;
+
+    private String address;
+
     private Set<String> authorities;
 
     public AdminUserDTO() {
@@ -69,6 +86,13 @@ public class AdminUserDTO implements Serializable {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        this.type = user.getType();
+        this.birthday = user.getBirthday();
+        this.gender = user.getGender();
+        this.phone = user.getPhone();
+        this.ssn = user.getSsn();
+        this.banking = user.getBanking();
+        this.address = user.getAddress();
     }
 
     public Long getId() {
@@ -167,6 +191,62 @@ public class AdminUserDTO implements Serializable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public HumanResourceType getType() {
+        return type;
+    }
+
+    public void setType(HumanResourceType type) {
+        this.type = type;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
+    public String getBanking() {
+        return banking;
+    }
+
+    public void setBanking(String banking) {
+        this.banking = banking;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public Set<String> getAuthorities() {
         return authorities;
     }
@@ -190,6 +270,13 @@ public class AdminUserDTO implements Serializable {
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
+            ", type='" + type + '\'' +
+            ", gender='" + gender + '\'' +
+            ", birthday='" + birthday + '\'' +
+            ", phone='" + phone + '\'' +
+            ", ssn='" + ssn + '\'' +
+            ", banking='" + banking + '\'' +
+            ", address='" + address + '\'' +
             ", authorities=" + authorities +
             "}";
     }

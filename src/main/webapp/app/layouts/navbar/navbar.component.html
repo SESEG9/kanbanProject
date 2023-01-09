@@ -68,6 +68,12 @@
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-options">
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+              <a class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.userManagement">Mitarbeiterverwaltung</span>
+              </a>
+            </li>
             <li>
               <a
                 class="dropdown-item"
@@ -326,7 +332,7 @@
             <li>
               <a class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.admin.userManagement">Benutzerverwaltung</span>
+                <span jhiTranslate="global.menu.admin.userManagement">Mitarbeiterverwaltung</span>
               </a>
             </li>
             <li>
