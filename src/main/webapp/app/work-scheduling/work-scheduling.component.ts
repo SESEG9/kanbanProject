@@ -8,6 +8,7 @@ import { CalendarOptions, Calendar, EventApi, EventClickArg } from '@fullcalenda
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { AccountService } from 'app/core/auth/account.service';
+import { HumanResourceType } from 'app/entities/enumerations/human-resource-type.model';
 import { Employee } from './types/employee';
 import { WorkSchedule } from './types/work.schedule';
 import { WorkSchedulingService } from './work-scheduling.service';
@@ -30,6 +31,8 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
 
   error = false;
   errorMessage = '';
+
+  types = Object.keys(HumanResourceType);
 
   users: Employee[] = [];
   currentEvent?: EventApi;
@@ -80,7 +83,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
   updateEvents(userIds: number[] = []): void {
     if (!this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
       this.loadMySchedule();
-    } else if (this.form.valid) {
+    } else if (this.form.controls['type'].valid && this.form.controls['employee'].valid) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       this.$workSchedulingService.getWorkSchedule(userIds, this.getWorkdays(), []).subscribe(value => {
         this.clearCalendar();
@@ -108,12 +111,17 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private $workSchedulingService: WorkSchedulingService, private $accountService: AccountService) {
-    this.form.controls['type'].disable({ emitEvent: false });
+    this.form.controls['type'].valueChanges.subscribe(() => this.form.controls['employee'].setValue(-1));
     this.form.valueChanges.subscribe(() => {
-      if (this.form.valid) {
+      if (this.form.controls['type'].valid && this.form.controls['employee'].valid) {
         const userIds = this.form.controls['employee'].value !== -1 ? [this.form.controls['employee'].value!] : [];
         if (this.form.controls['employee'].value === -1 || this.form.controls['employee'].value?.toString() === '-1') {
           userIds.length = 0;
+          this.users.forEach(user => {
+            if (user.type === this.form.controls['type'].value) {
+              userIds.push(user.id);
+            }
+          });
         }
         this.updateEvents(userIds);
       }
@@ -130,9 +138,11 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.$workSchedulingService.getEmployees().subscribe(value => {
-      this.users = value;
-    });
+    if (this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
+      this.$workSchedulingService.getEmployees().subscribe(value => {
+        this.users = value;
+      });
+    }
   }
   ngAfterViewInit(): void {
     this.calendarApi = this.calendarComponent!.getApi();
@@ -192,7 +202,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
           const start = new Date(workitem.workday + 'T' + workitem.timeSlot.startTime);
           const end = new Date(workitem.workday + 'T' + workitem.timeSlot.endTime);
           let allDay = false;
-          if (workitem.timeSlot.name === 'nightShift') {
+          if (workitem.timeSlot.name === 'night_shift') {
             end.setDate(end.getDate() + 1);
           } else if (workitem.timeSlot.name === 'vacation') {
             allDay = true;
@@ -202,6 +212,9 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
             start,
             end,
             allDay,
+            extendedProps: {
+              id: workitem.id,
+            },
           });
           this.error = false;
         },

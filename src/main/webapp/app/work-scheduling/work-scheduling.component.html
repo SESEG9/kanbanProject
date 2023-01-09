@@ -12,8 +12,9 @@
       <div class="col">
         <label class="form-label" for="type">Mitarbeiterkategorie</label>
         <select class="form-select" id="type" name="type" formControlName="type">
-          <option value="reception">Rezeption</option>
-          <option value="cleaning">Reinigungskraft</option>
+          <option *ngFor="let type of types" [value]="type">
+            {{ 'userManagement.types.' + type | translate }}
+          </option>
         </select>
       </div>
       <div class="col">

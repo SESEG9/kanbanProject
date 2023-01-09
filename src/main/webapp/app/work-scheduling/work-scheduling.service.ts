@@ -16,7 +16,7 @@ export class WorkSchedulingService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.applicationConfigService.getEndpointFor('api/users'));
+    return this.http.get<Employee[]>(this.applicationConfigService.getEndpointFor('api/admin/users'));
   }
 
   createWorkSchedule(workSchedule: WorkSchedule): Observable<WorkScheduleResponse> {
