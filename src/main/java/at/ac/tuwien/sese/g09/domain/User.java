@@ -35,6 +35,9 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @OneToMany(mappedBy = "user")
+    private Set<TimeManagement> timeManagements = new HashSet<>();
+
     @NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)

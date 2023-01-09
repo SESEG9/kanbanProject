@@ -45,6 +45,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule),
         },
         {
+          path: 'work-scheduling',
+          loadChildren: () => import('./work-scheduling/work-scheduling.module').then(m => m.WorkSchedulingModule),
+        },
+        {
           path: 'contact',
           loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule),
         },

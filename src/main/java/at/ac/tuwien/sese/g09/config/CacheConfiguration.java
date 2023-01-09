@@ -65,7 +65,6 @@ public class CacheConfiguration {
             createCache(cm, at.ac.tuwien.sese.g09.domain.GlobalSettings.class.getName());
             createCache(cm, at.ac.tuwien.sese.g09.domain.Deficit.class.getName());
             createCache(cm, at.ac.tuwien.sese.g09.domain.HumanResource.class.getName());
-            createCache(cm, at.ac.tuwien.sese.g09.domain.WorkPackage.class.getName());
             createCache(cm, at.ac.tuwien.sese.g09.domain.Vacation.class.getName());
             createCache(cm, at.ac.tuwien.sese.g09.domain.BulkLetterTemplate.class.getName());
             createCache(cm, at.ac.tuwien.sese.g09.domain.BulkLetterTemplate.class.getName() + ".images");
