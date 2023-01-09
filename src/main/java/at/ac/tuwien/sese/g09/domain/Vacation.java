@@ -24,10 +24,10 @@ public class Vacation implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "start")
+    @Column(name = "start_date")
     private LocalDate start;
 
-    @Column(name = "jhi_end")
+    @Column(name = "end_date")
     private LocalDate end;
 
     @Enumerated(EnumType.STRING)
@@ -35,7 +35,8 @@ public class Vacation implements Serializable {
     private VacationState state;
 
     @ManyToOne
-    private HumanResource humanResource;
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -91,20 +92,13 @@ public class Vacation implements Serializable {
         this.state = state;
     }
 
-    public HumanResource getHumanResource() {
-        return this.humanResource;
+    public User getUser() {
+        return user;
     }
 
-    public void setHumanResource(HumanResource humanResource) {
-        this.humanResource = humanResource;
+    public void setUser(User user) {
+        this.user = user;
     }
-
-    public Vacation humanResource(HumanResource humanResource) {
-        this.setHumanResource(humanResource);
-        return this;
-    }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

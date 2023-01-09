@@ -12,6 +12,8 @@ import at.ac.tuwien.sese.g09.IntegrationTest;
 import at.ac.tuwien.sese.g09.config.Constants;
 import at.ac.tuwien.sese.g09.domain.PersistentToken;
 import at.ac.tuwien.sese.g09.domain.User;
+import at.ac.tuwien.sese.g09.domain.enumeration.Gender;
+import at.ac.tuwien.sese.g09.domain.enumeration.HumanResourceType;
 import at.ac.tuwien.sese.g09.repository.AuthorityRepository;
 import at.ac.tuwien.sese.g09.repository.PersistentTokenRepository;
 import at.ac.tuwien.sese.g09.repository.UserRepository;
@@ -100,6 +102,8 @@ class AccountResourceIT {
         user.setImageUrl("http://placehold.it/50x50");
         user.setLangKey("en");
         user.setAuthorities(authorities);
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
         userService.createUser(user);
 
         restAccountMockMvc
@@ -112,7 +116,9 @@ class AccountResourceIT {
             .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
             .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
             .andExpect(jsonPath("$.langKey").value("en"))
-            .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
+            .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN))
+            .andExpect(jsonPath("$.gender").value(Gender.DIVERSE.toString()))
+            .andExpect(jsonPath("$.type").value(HumanResourceType.OTHER.toString()));
     }
 
     @Test
@@ -134,6 +140,8 @@ class AccountResourceIT {
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        validUser.setGender(Gender.DIVERSE);
+        validUser.setType(HumanResourceType.OTHER);
         assertThat(userRepository.findOneByLogin("test-register-valid")).isEmpty();
 
         restAccountMockMvc
@@ -161,6 +169,8 @@ class AccountResourceIT {
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        invalidUser.setGender(Gender.DIVERSE);
+        invalidUser.setType(HumanResourceType.OTHER);
 
         restAccountMockMvc
             .perform(
@@ -188,6 +198,8 @@ class AccountResourceIT {
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        invalidUser.setGender(Gender.DIVERSE);
+        invalidUser.setType(HumanResourceType.OTHER);
 
         restAccountMockMvc
             .perform(
@@ -215,6 +227,8 @@ class AccountResourceIT {
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        invalidUser.setGender(Gender.DIVERSE);
+        invalidUser.setType(HumanResourceType.OTHER);
 
         restAccountMockMvc
             .perform(
@@ -242,6 +256,8 @@ class AccountResourceIT {
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        invalidUser.setGender(Gender.DIVERSE);
+        invalidUser.setType(HumanResourceType.OTHER);
 
         restAccountMockMvc
             .perform(
@@ -269,6 +285,8 @@ class AccountResourceIT {
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        firstUser.setGender(Gender.DIVERSE);
+        firstUser.setType(HumanResourceType.OTHER);
 
         // Duplicate login, different email
         ManagedUserVM secondUser = new ManagedUserVM();
@@ -284,6 +302,8 @@ class AccountResourceIT {
         secondUser.setLastModifiedBy(firstUser.getLastModifiedBy());
         secondUser.setLastModifiedDate(firstUser.getLastModifiedDate());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+        secondUser.setGender(firstUser.getGender());
+        secondUser.setType(firstUser.getType());
 
         // First user
         restAccountMockMvc
@@ -334,6 +354,8 @@ class AccountResourceIT {
         firstUser.setImageUrl("http://placehold.it/50x50");
         firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
+        firstUser.setGender(Gender.DIVERSE);
+        firstUser.setType(HumanResourceType.OTHER);
 
         // Register first user
         restAccountMockMvc
@@ -358,6 +380,8 @@ class AccountResourceIT {
         secondUser.setImageUrl(firstUser.getImageUrl());
         secondUser.setLangKey(firstUser.getLangKey());
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+        secondUser.setGender(Gender.DIVERSE);
+        secondUser.setType(HumanResourceType.OTHER);
 
         // Register second (non activated) user
         restAccountMockMvc
@@ -386,6 +410,8 @@ class AccountResourceIT {
         userWithUpperCaseEmail.setImageUrl(firstUser.getImageUrl());
         userWithUpperCaseEmail.setLangKey(firstUser.getLangKey());
         userWithUpperCaseEmail.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
+        userWithUpperCaseEmail.setGender(firstUser.getGender());
+        userWithUpperCaseEmail.setType(firstUser.getType());
 
         // Register third (not activated) user
         restAccountMockMvc
@@ -428,6 +454,8 @@ class AccountResourceIT {
         validUser.setImageUrl("http://placehold.it/50x50");
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
+        validUser.setGender(Gender.DIVERSE);
+        validUser.setType(HumanResourceType.OTHER);
 
         restAccountMockMvc
             .perform(
@@ -455,7 +483,10 @@ class AccountResourceIT {
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(false);
         user.setActivationKey(activationKey);
-
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc.perform(get("/api/activate?key={activationKey}", activationKey)).andExpect(status().isOk());
@@ -479,6 +510,10 @@ class AccountResourceIT {
         user.setEmail("save-account@example.com");
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(true);
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         AdminUserDTO userDTO = new AdminUserDTO();
@@ -489,6 +524,8 @@ class AccountResourceIT {
         userDTO.setActivated(false);
         userDTO.setImageUrl("http://placehold.it/50x50");
         userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
+        userDTO.setGender(Gender.DIVERSE);
+        userDTO.setType(HumanResourceType.OTHER);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restAccountMockMvc
@@ -520,6 +557,10 @@ class AccountResourceIT {
         user.setEmail("save-invalid-email@example.com");
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(true);
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
 
         userRepository.saveAndFlush(user);
 
@@ -531,6 +572,8 @@ class AccountResourceIT {
         userDTO.setActivated(false);
         userDTO.setImageUrl("http://placehold.it/50x50");
         userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
+        userDTO.setGender(Gender.DIVERSE);
+        userDTO.setType(HumanResourceType.OTHER);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restAccountMockMvc
@@ -554,6 +597,10 @@ class AccountResourceIT {
         user.setEmail("save-existing-email@example.com");
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(true);
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
@@ -561,7 +608,10 @@ class AccountResourceIT {
         anotherUser.setEmail("save-existing-email2@example.com");
         anotherUser.setPassword(RandomStringUtils.randomAlphanumeric(60));
         anotherUser.setActivated(true);
-
+        anotherUser.setGender(Gender.DIVERSE);
+        anotherUser.setType(HumanResourceType.OTHER);
+        anotherUser.setFirstName("test");
+        anotherUser.setLastName("user");
         userRepository.saveAndFlush(anotherUser);
 
         AdminUserDTO userDTO = new AdminUserDTO();
@@ -572,6 +622,8 @@ class AccountResourceIT {
         userDTO.setActivated(false);
         userDTO.setImageUrl("http://placehold.it/50x50");
         userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
+        userDTO.setGender(Gender.DIVERSE);
+        userDTO.setType(HumanResourceType.OTHER);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restAccountMockMvc
@@ -596,6 +648,10 @@ class AccountResourceIT {
         user.setEmail("save-existing-email-and-login@example.com");
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(true);
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         AdminUserDTO userDTO = new AdminUserDTO();
@@ -606,6 +662,8 @@ class AccountResourceIT {
         userDTO.setActivated(false);
         userDTO.setImageUrl("http://placehold.it/50x50");
         userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
+        userDTO.setGender(Gender.DIVERSE);
+        userDTO.setType(HumanResourceType.OTHER);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restAccountMockMvc
@@ -630,6 +688,10 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-wrong-existing-password");
         user.setEmail("change-password-wrong-existing-password@example.com");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -655,6 +717,10 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password");
         user.setEmail("change-password@example.com");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -679,6 +745,10 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-too-small");
         user.setEmail("change-password-too-small@example.com");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         String newPassword = RandomStringUtils.random(ManagedUserVM.PASSWORD_MIN_LENGTH - 1);
@@ -705,6 +775,10 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-too-long");
         user.setEmail("change-password-too-long@example.com");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         String newPassword = RandomStringUtils.random(ManagedUserVM.PASSWORD_MAX_LENGTH + 1);
@@ -731,6 +805,10 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-empty");
         user.setEmail("change-password-empty@example.com");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -754,6 +832,10 @@ class AccountResourceIT {
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setLogin("current-sessions");
         user.setEmail("current-sessions@example.com");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         PersistentToken token = new PersistentToken();
@@ -783,6 +865,10 @@ class AccountResourceIT {
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setLogin("invalidate-session");
         user.setEmail("invalidate-session@example.com");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         PersistentToken token = new PersistentToken();
@@ -810,6 +896,10 @@ class AccountResourceIT {
         user.setLogin("password-reset");
         user.setEmail("password-reset@example.com");
         user.setLangKey("en");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -826,6 +916,10 @@ class AccountResourceIT {
         user.setLogin("password-reset-upper-case");
         user.setEmail("password-reset-upper-case@example.com");
         user.setLangKey("en");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -849,6 +943,10 @@ class AccountResourceIT {
         user.setEmail("finish-password-reset@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
@@ -877,6 +975,10 @@ class AccountResourceIT {
         user.setEmail("finish-password-reset-too-small@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key too small");
+        user.setGender(Gender.DIVERSE);
+        user.setType(HumanResourceType.OTHER);
+        user.setFirstName("test");
+        user.setLastName("user");
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();

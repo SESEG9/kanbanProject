@@ -1,31 +1,54 @@
 {
   "userManagement": {
     "home": {
-      "title": "Benutzer",
+      "title": "Mitarbeiter",
       "refreshListLabel": "Refresh list",
-      "createLabel": "Neuen Benutzer erstellen",
-      "createOrEditLabel": "Benutzer erstellen oder bearbeiten"
+      "createLabel": "Neuen Mitarbeiter erstellen",
+      "createOrEditLabel": "Mitarbeiter erstellen oder bearbeiten"
     },
-    "created": "Ein neuer Benutzer wurde mit ID {{ param }} erstellt",
-    "updated": "Ein Benutzer mit ID {{ param }} wurde geändert",
-    "deleted": "Ein Benutzer mit ID {{ param }} wurde gelöscht",
+    "created": "Ein neuer Mitarbeiter wurde mit ID {{ param }} erstellt",
+    "updated": "Ein Mitarbeiter mit ID {{ param }} wurde geändert",
+    "deleted": "Ein Mitarbeiter mit ID {{ param }} wurde gelöscht",
     "delete": {
-      "question": "Sind Sie sicher, dass Sie den Benutzer {{ login }} löschen möchten?"
+      "question": "Sind Sie sicher, dass Sie den Mitarbeiter {{ login }} löschen möchten?"
     },
     "detail": {
-      "title": "Benutzer"
+      "title": "Mitarbeiter"
     },
-    "login": "Login",
+    "login": "Kürzel/Login",
     "firstName": "Vorname",
     "lastName": "Nachname",
     "email": "Email",
     "activated": "Aktiv",
     "deactivated": "Deaktiviert",
-    "profiles": "Profile",
+    "profiles": "Rechte",
     "langKey": "Sprache",
     "createdBy": "Erstellt von",
     "createdDate": "Erstellt am",
     "lastModifiedBy": "Bearbeitet von",
-    "lastModifiedDate": "Zuletzt bearbeitet"
+    "lastModifiedDate": "Zuletzt bearbeitet",
+    "birthday": "Geburtstag",
+    "gender": "Geschlecht",
+    "type": "Aufgabengebiet",
+    "phone": "Telefonnummer",
+    "ssn": "Sozialversicherungsnummer",
+    "banking": "Bankdaten (IBAN)",
+    "address": "Adresse",
+    "authorities": {
+      "ROLE_ADMIN": "Administrator",
+      "ROLE_USER": "Mitarbeiter"
+    },
+    "genders": {
+      "MALE": "Männlich",
+      "FEMALE": "Weiblich",
+      "DIVERSE": "Divers"
+    },
+    "types": {
+      "RECEPTION": "Rezeption",
+      "KITCHEN": "Küche",
+      "SERVICE": "Service",
+      "CLEANING": "Reinigung",
+      "OTHER": "Sonstiges"
+    }
   }
 }

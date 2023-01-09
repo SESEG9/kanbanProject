@@ -1,11 +1,18 @@
 package at.ac.tuwien.sese.g09.web.rest;
 
 import at.ac.tuwien.sese.g09.domain.Vacation;
+import at.ac.tuwien.sese.g09.domain.enumeration.VacationState;
 import at.ac.tuwien.sese.g09.repository.VacationRepository;
+import at.ac.tuwien.sese.g09.service.VacationService;
+import at.ac.tuwien.sese.g09.service.dto.RemainingDaysResponseDTO;
+import at.ac.tuwien.sese.g09.service.dto.VacationApplicationDTO;
+import at.ac.tuwien.sese.g09.service.dto.VacationUpdateDTO;
 import at.ac.tuwien.sese.g09.service.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -13,15 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -40,37 +39,33 @@ public class VacationResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final VacationRepository vacationRepository;
+    private final VacationService vacationService;
 
-    public VacationResource(VacationRepository vacationRepository) {
-        this.vacationRepository = vacationRepository;
+    public VacationResource(VacationService vacationService) {
+        this.vacationService = vacationService;
     }
 
     /**
-     * {@code POST  /vacations} : Create a new vacation.
+     * {@code POST  /vacations} : Apply for a vacation.
      *
-     * @param vacation the vacation to create.
+     * @param application the vacation application.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new vacation, or with status {@code 400 (Bad Request)} if the vacation has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/vacations")
-    public ResponseEntity<Vacation> createVacation(@RequestBody Vacation vacation) throws URISyntaxException {
-        log.debug("REST request to save Vacation : {}", vacation);
-        if (vacation.getId() != null) {
-            throw new BadRequestAlertException("A new vacation cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Vacation result = vacationRepository.save(vacation);
+    @PostMapping("/vacations/apply")
+    public ResponseEntity<Vacation> createVacation(@RequestBody VacationApplicationDTO application) throws URISyntaxException {
+        Vacation result = vacationService.applyForVacation(application);
         return ResponseEntity
-            .created(new URI("/api/vacations/" + result.getId()))
+            .created(new URI("/api/vacations/apply" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /vacations/:id} : Updates an existing vacation.
+     * {@code PUT  /vacations/:id} : Set state of a Vacation
      *
      * @param id the id of the vacation to save.
-     * @param vacation the vacation to update.
+     * @param vacationUpdateDTO updated state.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vacation,
      * or with status {@code 400 (Bad Request)} if the vacation is not valid,
      * or with status {@code 500 (Internal Server Error)} if the vacation couldn't be updated.
@@ -79,76 +74,13 @@ public class VacationResource {
     @PutMapping("/vacations/{id}")
     public ResponseEntity<Vacation> updateVacation(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody Vacation vacation
+        @RequestBody VacationUpdateDTO vacationUpdateDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Vacation : {}, {}", id, vacation);
-        if (vacation.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, vacation.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!vacationRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Vacation result = vacationRepository.save(vacation);
+        Vacation result = vacationService.setState(id, vacationUpdateDTO.getState());
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vacation.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
-    }
-
-    /**
-     * {@code PATCH  /vacations/:id} : Partial updates given fields of an existing vacation, field will ignore if it is null
-     *
-     * @param id the id of the vacation to save.
-     * @param vacation the vacation to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vacation,
-     * or with status {@code 400 (Bad Request)} if the vacation is not valid,
-     * or with status {@code 404 (Not Found)} if the vacation is not found,
-     * or with status {@code 500 (Internal Server Error)} if the vacation couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/vacations/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Vacation> partialUpdateVacation(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody Vacation vacation
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Vacation partially : {}, {}", id, vacation);
-        if (vacation.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, vacation.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!vacationRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<Vacation> result = vacationRepository
-            .findById(vacation.getId())
-            .map(existingVacation -> {
-                if (vacation.getStart() != null) {
-                    existingVacation.setStart(vacation.getStart());
-                }
-                if (vacation.getEnd() != null) {
-                    existingVacation.setEnd(vacation.getEnd());
-                }
-                if (vacation.getState() != null) {
-                    existingVacation.setState(vacation.getState());
-                }
-
-                return existingVacation;
-            })
-            .map(vacationRepository::save);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vacation.getId().toString())
-        );
     }
 
     /**
@@ -157,9 +89,13 @@ public class VacationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vacations in body.
      */
     @GetMapping("/vacations")
-    public List<Vacation> getAllVacations() {
-        log.debug("REST request to get all Vacations");
-        return vacationRepository.findAll();
+    public List<Vacation> getAllVacations(
+        @RequestParam(required = false) LocalDate start,
+        @RequestParam(required = false) LocalDate end,
+        @RequestParam(required = false) VacationState state,
+        @RequestParam(required = false) Boolean currentUserOnly
+    ) {
+        return vacationService.filterVacations(start, end, state, currentUserOnly);
     }
 
     /**
@@ -171,23 +107,23 @@ public class VacationResource {
     @GetMapping("/vacations/{id}")
     public ResponseEntity<Vacation> getVacation(@PathVariable Long id) {
         log.debug("REST request to get Vacation : {}", id);
-        Optional<Vacation> vacation = vacationRepository.findById(id);
+        Optional<Vacation> vacation = vacationService.findById(id);
         return ResponseUtil.wrapOrNotFound(vacation);
     }
 
     /**
-     * {@code DELETE  /vacations/:id} : delete the "id" vacation.
-     *
-     * @param id the id of the vacation to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     Get the remaining vacation days of the current user
      */
-    @DeleteMapping("/vacations/{id}")
-    public ResponseEntity<Void> deleteVacation(@PathVariable Long id) {
-        log.debug("REST request to delete Vacation : {}", id);
-        vacationRepository.deleteById(id);
-        return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+    @GetMapping("/vacations/remaining")
+    public RemainingDaysResponseDTO getVacation(
+        @RequestParam(required = true) int year,
+        @RequestParam(required = true, defaultValue = "false") boolean includeRequested
+    ) {
+        RemainingDaysResponseDTO response = new RemainingDaysResponseDTO();
+        LocalDate start = LocalDate.of(year, 1, 1);
+        LocalDate end = LocalDate.of(year, 12, 31);
+        int days = vacationService.getRemainingVacationDays(start, end, includeRequested);
+        response.setRemainingDays(days);
+        return response;
     }
 }

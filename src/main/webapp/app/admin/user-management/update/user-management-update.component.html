@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">Benutzer erstellen oder bearbeiten</h2>
+      <h2 id="myUserLabel">
+        Mitarbeiter <span *ngIf="!editForm.value.id; else update">erstellen</span><ng-template #update>bearbeiten</ng-template>
+      </h2>
 
       <jhi-alert-error></jhi-alert-error>
 
@@ -11,12 +13,12 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label" jhiTranslate="userManagement.login">Login</label>
+        <label class="form-label" jhiTranslate="userManagement.login">Kürzel/Login</label>
         <input type="text" class="form-control" name="login" formControlName="login" />
 
         <div *ngIf="editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)">
           <small class="form-text text-danger" *ngIf="editForm.get('login')?.errors?.required" jhiTranslate="entity.validation.required">
-            Dieses Feld wird benötigt.
+            Ein Kürzel wird benötigt.
           </small>
 
           <small
@@ -25,11 +27,11 @@
             jhiTranslate="entity.validation.maxlength"
             [translateValues]="{ max: 50 }"
           >
-            Dieses Feld darf max. 50 Zeichen lang sein.
+            Das Kürzel darf max. 50 Zeichen lang sein.
           </small>
 
           <small class="form-text text-danger" *ngIf="editForm.get('login')?.errors?.pattern" jhiTranslate="entity.validation.patternLogin">
-            This field can only contain letters, digits and e-mail addresses.
+            Das Kürzel kann nur Zahlen, Buchstaben oder E-Mails beinhalten.
           </small>
         </div>
       </div>
@@ -41,11 +43,19 @@
         <div *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)">
           <small
             class="form-text text-danger"
+            *ngIf="editForm.get('firstName')?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Ein Vorname wird benötigt.
+          </small>
+
+          <small
+            class="form-text text-danger"
             *ngIf="editForm.get('firstName')?.errors?.maxlength"
             jhiTranslate="entity.validation.maxlength"
             [translateValues]="{ max: 50 }"
           >
-            Dieses Feld darf max. 50 Zeichen lang sein.
+            Der Vorname darf max. 50 Zeichen lang sein.
           </small>
         </div>
       </div>
@@ -55,13 +65,30 @@
         <input type="text" class="form-control" name="lastName" formControlName="lastName" />
 
         <div *ngIf="editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('lastName')?.errors?.required" jhiTranslate="entity.validation.required">
+            Ein Nachname wird benötigt.
+          </small>
+
           <small
             class="form-text text-danger"
             *ngIf="editForm.get('lastName')?.errors?.maxlength"
             jhiTranslate="entity.validation.maxlength"
             [translateValues]="{ max: 50 }"
           >
-            Dieses Feld darf max. 50 Zeichen lang sein.
+            Der Nachname darf max. 50 Zeichen lang sein.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label jhiTranslate="userManagement.gender">Geschlecht</label>
+        <select class="form-control" name="gender" formControlName="gender">
+          <option *ngFor="let gender of genders" [value]="gender" jhiTranslate="userManagement.genders.{{ gender }}">{{ gender }}</option>
+        </select>
+
+        <div *ngIf="editForm.get('gender')!.invalid && (editForm.get('gender')!.dirty || editForm.get('gender')!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('gender')?.errors?.required" jhiTranslate="entity.validation.required">
+            Ein Geschlecht wird benötigt.
           </small>
         </div>
       </div>
@@ -72,7 +99,7 @@
 
         <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
           <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.required" jhiTranslate="entity.validation.required">
-            Dieses Feld wird benötigt.
+            Eine Email wird benötigt.
           </small>
 
           <small
@@ -81,7 +108,7 @@
             jhiTranslate="entity.validation.maxlength"
             [translateValues]="{ max: 100 }"
           >
-            Dieses Feld darf max. 100 Zeichen lang sein.
+            Die Email darf max. 100 Zeichen lang sein.
           </small>
 
           <small
@@ -90,7 +117,7 @@
             jhiTranslate="entity.validation.minlength"
             [translateValues]="{ min: 5 }"
           >
-            Dieses Feld muss mind. 5 Zeichen lang sein.
+            Die Email muss mind. 5 Zeichen lang sein.
           </small>
 
           <small
@@ -98,16 +125,63 @@
             *ngIf="editForm.get('email')?.errors?.email"
             jhiTranslate="global.messages.validate.email.invalid"
           >
-            Ihre Email Adresse ist ungültig.
+            Die Email ist ungültig.
           </small>
         </div>
       </div>
 
-      <div class="form-check">
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.birthday">Geburtstag</label>
+        <input
+          type="text"
+          class="form-control"
+          name="birthday"
+          formControlName="birthday"
+          placeholder="optional"
+          ngbDatepicker
+          #datepicker="ngbDatepicker"
+          (click)="datepicker.toggle()"
+          readonly
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.address">Adresse</label>
+        <input type="text" class="form-control" name="address" formControlName="address" placeholder="optional" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.phone">Telefonnummer</label>
+        <input type="text" class="form-control" name="phone" formControlName="phone" placeholder="optional" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.ssn">Sozialversicherungsnummer</label>
+        <input type="text" class="form-control" name="ssn" formControlName="ssn" placeholder="optional" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="userManagement.banking">Kontodaten (IBAN)</label>
+        <input type="text" class="form-control" name="banking" formControlName="banking" placeholder="optional" />
+      </div>
+
+      <div class="mb-3">
+        <label jhiTranslate="userManagement.type">Aufgabengebiet</label>
+        <select class="form-control" name="type" formControlName="type">
+          <option *ngFor="let type of types" [value]="type" jhiTranslate="userManagement.types.{{ type }}">{{ type }}</option>
+        </select>
+        <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
+            Ein Aufgabengebiet wird benötigt.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-check" [hidden]="!editForm.value.id">
         <label class="form-check-label" for="activated">
           <input
             class="form-check-input"
-            [attr.disabled]="editForm.value.id === undefined ? 'disabled' : null"
+            [disabled]="!editForm.value.id"
             type="checkbox"
             id="activated"
             name="activated"
@@ -117,18 +191,31 @@
         </label>
       </div>
 
+      <!--
       <div class="mb-3" *ngIf="languages && languages.length > 0">
         <label jhiTranslate="userManagement.langKey">Sprache</label>
         <select class="form-control" id="langKey" name="langKey" formControlName="langKey">
           <option *ngFor="let language of languages" [value]="language">{{ language | findLanguageFromKey }}</option>
         </select>
       </div>
+      -->
 
       <div class="mb-3">
-        <label jhiTranslate="userManagement.profiles">Profile</label>
+        <label jhiTranslate="userManagement.profiles">Rechte</label>
         <select class="form-control" multiple name="authority" formControlName="authorities">
-          <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>
+          <option *ngFor="let authority of authorities" [value]="authority" jhiTranslate="userManagement.authorities.{{ authority }}">
+            {{ authority }}
+          </option>
         </select>
+        <div *ngIf="editForm.get('authorities')!.invalid && (editForm.get('authorities')!.dirty || editForm.get('authorities')!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('authorities')?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Mindestens ein Recht wird benötigt.
+          </small>
+        </div>
       </div>
       <button type="button" class="btn btn-secondary" (click)="previousState()">
         <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>

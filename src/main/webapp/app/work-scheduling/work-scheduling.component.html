@@ -1,0 +1,55 @@
+<div class="container my-3">
+  <div class="alert alert-danger" *ngIf="error">
+    <strong>Reservierung fehlgeschlagen!</strong>
+    <div>
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>
+<div class="container my-3" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+  <form name="form" class="w-100" role="form" (ngSubmit)="createWorkSchedule()" [formGroup]="form">
+    <div class="row">
+      <div class="col">
+        <label class="form-label" for="type">Mitarbeiterkategorie</label>
+        <select class="form-select" id="type" name="type" formControlName="type">
+          <option *ngFor="let type of types" [value]="type">
+            {{ 'userManagement.types.' + type | translate }}
+          </option>
+        </select>
+      </div>
+      <div class="col">
+        <label class="form-label" for="shiftType">Schicht</label>
+        <select class="form-select" id="shiftType" name="shiftType" formControlName="shiftType">
+          <option value="dayShift">Tagschicht</option>
+          <option value="nightShift">Nachtschicht</option>
+          <option value="vacation">Urlaub</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label" for="employee">Mitarbeiter</label>
+        <select class="form-select" id="employee" name="employee" formControlName="employee">
+          <option value="{{ -1 }}"></option>
+          <option *ngFor="let user of filterUsersByType()" value="{{ user.id }}">{{ user.login }}</option>
+        </select>
+      </div>
+      <div class="col">
+        <label class="form-label" for="date">Datum</label>
+        <input type="date" class="form-control" id="date" name="date" placeholder="Datum" formControlName="date" />
+        <div *ngIf="form.controls['date'].invalid && (form.controls['date'].dirty || form.controls['date'].touched)">
+          <small class="form-text text-danger" *ngIf="form.controls['date'].errors?.required">
+            Ein Datum wird für die Arbeitseinteilung benötigt.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex w-100 justify-content-between">
+      <button type="button" [disabled]="currentEvent === undefined" class="btn btn-danger mt-3" (click)="delete()">Löschen</button>
+      <button type="submit" [disabled]="form.invalid" class="btn btn-primary mt-3">Arbeitseinteilung hinzufügen</button>
+    </div>
+  </form>
+</div>
+<div class="container">
+  <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+</div>

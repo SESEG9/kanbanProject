@@ -1,3 +1,6 @@
+import { HumanResourceType } from '../../entities/enumerations/human-resource-type.model';
+import { Gender } from '../../entities/enumerations/gender.model';
+
 export interface IUser {
   id: number | null;
   login?: string;
@@ -11,6 +14,13 @@ export interface IUser {
   createdDate?: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
+  type?: string;
+  gender?: string;
+  birthday?: Date;
+  phone?: string;
+  ssn?: string;
+  banking?: string;
+  address?: string;
 }
 
 export class User implements IUser {
@@ -26,6 +36,13 @@ export class User implements IUser {
     public createdBy?: string,
     public createdDate?: Date,
     public lastModifiedBy?: string,
-    public lastModifiedDate?: Date
+    public lastModifiedDate?: Date,
+    public type?: string,
+    public gender?: string,
+    public birthday?: Date,
+    public phone?: string,
+    public ssn?: string,
+    public banking?: string,
+    public address?: string
   ) {}
 }
