@@ -19,18 +19,23 @@ type RestOf<T extends IVacation | NewVacation> = Omit<T, 'start' | 'end'> & {
 
 export type RestVacation = RestOf<IVacation>;
 
-export type NewRestVacation = RestOf<NewVacation>;
-
-export type PartialUpdateRestVacation = RestOf<PartialUpdateVacation>;
-
 export type EntityResponseType = HttpResponse<IVacation>;
 export type EntityArrayResponseType = HttpResponse<IVacation[]>;
+
+export type Remaining = { remainingDays: number };
 
 @Injectable({ providedIn: 'root' })
 export class VacationService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/vacations');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
+  remaining(): Observable<HttpResponse<Remaining>> {
+    return this.http.get<Remaining>(`${this.resourceUrl}/remaining`, {
+      observe: 'response',
+      params: { year: 2023, includeRequested: true },
+    });
+  }
 
   apply(vacation: VacationApply): Observable<EntityResponseType> {
     const url = this.applicationConfigService.getEndpointFor('api/vacations/apply');

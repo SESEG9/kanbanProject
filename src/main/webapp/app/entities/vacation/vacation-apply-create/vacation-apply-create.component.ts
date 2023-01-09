@@ -3,7 +3,7 @@ import { NgbCalendar, NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-b
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 import { IVacation, VacationApply } from '../vacation.model';
 import { VacationDateService } from '../service/vacation-date.service';
-import { VacationService } from '../service/vacation.service';
+import { Remaining, VacationService } from '../service/vacation.service';
 import { VacationState } from '../../enumerations/vacation-state.model';
 
 @Component({
@@ -47,7 +47,6 @@ export class VacationApplyCreateComponent implements OnInit {
 
   ngOnInit(): void {
     // TODO query for free days and current lists
-    this.availableVacation = 10;
     this.loadVacations();
   }
 
@@ -117,12 +116,24 @@ export class VacationApplyCreateComponent implements OnInit {
       currentUserOnly: true,
     };
     this.vacationService.query(query).subscribe({ next: res => this.onDataFetched(res.body) });
+
+    this.vacationService.remaining().subscribe({
+      next: res => {
+        this.onRemainingFetched(res.body);
+      },
+    });
   }
 
   private onDataFetched(vacations: IVacation[] | null) {
     console.log(vacations);
     if (vacations != null) {
       this.vacations = vacations;
+    }
+  }
+
+  private onRemainingFetched(remaining?: Remaining | null) {
+    if (remaining) {
+      this.availableVacation = remaining.remainingDays;
     }
   }
 }
