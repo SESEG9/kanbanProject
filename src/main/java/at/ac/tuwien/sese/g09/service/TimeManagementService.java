@@ -148,5 +148,12 @@ public class TimeManagementService {
 
     public void deleteTimeManagement(Long id) {
         timeManagementRepository.deleteById(id);
+        timeManagementRepository.flush();
+    }
+
+    public void setVacation(TimeManagement tm) {
+        TimeSlot vacationTimeSlot = timeSlotRepository.getReferenceById("vacation");
+        tm.setTimeSlot(vacationTimeSlot);
+        timeManagementRepository.save(tm);
     }
 }
