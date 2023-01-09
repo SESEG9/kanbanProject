@@ -1,0 +1,3 @@
+set TF_VAR_db_admin_user=YourDatabaseAdminUser
+set TF_VAR_db_admin_password=YourDatabaseAdminPassword
+set TF_VAR_mail_password=YourMailAccountPassword

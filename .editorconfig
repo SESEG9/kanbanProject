@@ -19,5 +19,8 @@ indent_size = 4
 [*.{json,css,scss,yml,html,vue,ts}]
 indent_size = 2
 
+[*.tf]
+indent_size = 2
+
 [*.md]
 trim_trailing_whitespace = false
