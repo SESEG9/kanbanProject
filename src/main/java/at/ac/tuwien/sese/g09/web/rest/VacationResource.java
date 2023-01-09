@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -89,8 +90,8 @@ public class VacationResource {
      */
     @GetMapping("/vacations")
     public List<Vacation> getAllVacations(
-        @RequestParam(required = true) LocalDate start,
-        @RequestParam(required = true) LocalDate end,
+        @RequestParam(required = false) LocalDate start,
+        @RequestParam(required = false) LocalDate end,
         @RequestParam(required = false) VacationState state,
         @RequestParam(required = false) Boolean currentUserOnly
     ) {
@@ -115,11 +116,12 @@ public class VacationResource {
      */
     @GetMapping("/vacations/remaining")
     public RemainingDaysResponseDTO getVacation(
-        @RequestParam(required = true) LocalDate start,
-        @RequestParam(required = true) LocalDate end,
+        @RequestParam(required = true) int year,
         @RequestParam(required = true, defaultValue = "false") boolean includeRequested
     ) {
         RemainingDaysResponseDTO response = new RemainingDaysResponseDTO();
+        LocalDate start = LocalDate.of(year, 1, 1);
+        LocalDate end = LocalDate.of(year, 12, 31);
         int days = vacationService.getRemainingVacationDays(start, end, includeRequested);
         response.setRemainingDays(days);
         return response;
