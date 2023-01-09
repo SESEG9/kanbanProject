@@ -117,12 +117,13 @@ public class VacationResource {
     @GetMapping("/vacations/remaining")
     public RemainingDaysResponseDTO getVacation(
         @RequestParam(required = true) int year,
+        @RequestParam(required = false) Long userId,
         @RequestParam(required = true, defaultValue = "false") boolean includeRequested
     ) {
         RemainingDaysResponseDTO response = new RemainingDaysResponseDTO();
         LocalDate start = LocalDate.of(year, 1, 1);
         LocalDate end = LocalDate.of(year, 12, 31);
-        int days = vacationService.getRemainingVacationDays(start, end, includeRequested);
+        int days = vacationService.getRemainingVacationDays(start, end, includeRequested, userId);
         response.setRemainingDays(days);
         return response;
     }

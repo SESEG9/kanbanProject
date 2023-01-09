@@ -87,8 +87,23 @@ public class VacationService {
         return vacationRepository.save(newVacation);
     }
 
-    public int getRemainingVacationDays(LocalDate start, LocalDate end, boolean includeRequested) {
-        User user = getCurrentUser();
+    public int getRemainingVacationDays(LocalDate start, LocalDate end, boolean includeRequested, Long userId) {
+        // Determine User, either by id or the currently signed-in user
+        User user;
+        if (userId != null) {
+            Optional<User> foundUser = userRepository.findById(userId);
+            if (foundUser.isEmpty()) {
+                throw new BadRequestAlertException(
+                    "Remaining vacation days could not be determined. User with id " + userId + " not found.",
+                    ENTITY_NAME,
+                    "userNotFound"
+                );
+            }
+            user = foundUser.get();
+        } else {
+            user = getCurrentUser();
+        }
+
         List<Vacation> vacations = vacationRepository.findAllVacationsOverlappingWithStateAndUser(start, end, VacationState.ACCEPTED, user);
         if (includeRequested) {
             vacations.addAll(vacationRepository.findAllVacationsOverlappingWithStateAndUser(start, end, VacationState.REQUESTED, user));
