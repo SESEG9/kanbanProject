@@ -13,7 +13,10 @@ export class VacationDateService {
    * @param end The end date of the vacation
    * @return The number of days the vacation occupied
    */
-  getVacationDays(start: Date, end: Date): number {
+  getVacationDays(start?: Date | null, end?: Date | null): number {
+    if (!start || !end) {
+      return 0;
+    }
     return Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   }
 }

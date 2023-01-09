@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
-import { VacationApply } from '../vacation.model';
+import { IVacation, VacationApply } from '../vacation.model';
 import { VacationDateService } from '../service/vacation-date.service';
 import { VacationService } from '../service/vacation.service';
+import { VacationState } from '../../enumerations/vacation-state.model';
 
 @Component({
   selector: 'jhi-vacation-apply-create',
@@ -27,7 +28,9 @@ export class VacationApplyCreateComponent implements OnInit {
   faCheckmarkIcon = FontAwesome.faCheck;
   faCrossIcon = FontAwesome.faXmark;
 
-  vacations: VacationApply[] = [];
+  vacations: IVacation[] = [];
+
+  VacationState = VacationState;
 
   year = new Date().getFullYear();
 
@@ -108,32 +111,18 @@ export class VacationApplyCreateComponent implements OnInit {
   }
 
   loadVacations(): void {
-    this.vacations = [
-      {
-        start: new Date('2023-01-01'),
-        end: new Date('2023-01-05'),
-        state: 'APPROVED',
-      },
-      {
-        start: new Date('2023-01-17'),
-        end: new Date('2023-01-23'),
-        state: 'APPROVED',
-      },
-      {
-        start: new Date('2023-02-01'),
-        end: new Date('2023-02-14'),
-        state: 'REJECTED',
-      },
-      {
-        start: new Date('2023-03-15'),
-        end: new Date('2023-03-18'),
-        state: 'APPLIED',
-      },
-      {
-        start: new Date('2023-05-21'),
-        end: new Date('2023-06-03'),
-        state: 'APPLIED',
-      },
-    ];
+    const query = {
+      start: `${this.year}-01-01`,
+      end: `${this.year + 1}-01-01`,
+      currentUserOnly: true,
+    };
+    this.vacationService.query(query).subscribe({ next: res => this.onDataFetched(res.body) });
+  }
+
+  private onDataFetched(vacations: IVacation[] | null) {
+    console.log(vacations);
+    if (vacations != null) {
+      this.vacations = vacations;
+    }
   }
 }
