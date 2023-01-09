@@ -9,17 +9,18 @@
         </div>
         <div class="applyment-row">
           <div class="appl-label">Bereich:</div>
-          {{ vacation?.user?.area ?? '' }}
+          {{ vacation?.user?.type ?? '' }}
         </div>
       </div>
       <div class="applyment-column">
         <div class="applyment-row">
           <div class="appl-label long">Aktueller Urlaub:</div>
-          {{ vacation?.user?.freeVacation ?? '' }} Tage
+          {{ vacation?.user?.id ?? '' }} Tage
+          <!-- TODO: get free days not including applied vacation -->
         </div>
         <div class="applyment-row">
           <div class="appl-label long">Resturlaub:</div>
-          {{ vacation ? vacationDateService.getVacationDays(vacation.start, vacation.end) : '' }} Tage
+          {{ vacation ? (vacation?.user?.id ?? 0) - vacationDateService.getVacationDays(vacation.start, vacation.end) : '' }} Tage
         </div>
       </div>
       <div class="applyment-column">

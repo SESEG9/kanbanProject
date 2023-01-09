@@ -6,7 +6,7 @@ export interface IVacation {
   start?: Date | null;
   end?: Date | null;
   state?: VacationState | null;
-  user?: Pick<IUser, 'id'> | IUser | null;
+  user?: IUser | null;
 }
 
 export type NewVacation = Omit<IVacation, 'id'> & { id: null };

@@ -103,7 +103,7 @@ export class VacationApplyCreateComponent implements OnInit {
 
       this.vacationService.apply(vacationApply).subscribe({
         next: res => {
-          console.log(res);
+          this.loadVacations();
         },
       });
     }

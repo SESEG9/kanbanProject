@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { VacationApplyUser } from '../vacation.model';
+import { IVacation, VacationApplyUser } from '../vacation.model';
 import { VacationDateService } from '../service/vacation-date.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VacationRejectDialogComponent } from '../dialog-reject/vacation-reject-dialog.component';
 import { filter } from 'rxjs';
 import { VACATION_APPROVED, VACATION_REJECTED } from '../vacation.constants';
-import { EntityArrayResponseType } from '../service/vacation.service';
+import { EntityArrayResponseType, VacationService } from '../service/vacation.service';
 import { VacationApproveDialogComponent } from '../dialog-approve/vacation-approve-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,7 +15,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./vacation-apply-check.component.scss', '../../room/room.global.scss'],
 })
 export class VacationApplyCheckComponent implements OnInit {
-  vacation: VacationApplyUser | null = null;
+  vacation: IVacation | null = null;
 
   overlappings: VacationApplyUser[] = [];
 
@@ -23,10 +23,11 @@ export class VacationApplyCheckComponent implements OnInit {
     public vacationDateService: VacationDateService,
     private route: ActivatedRoute,
     protected modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private vacationService: VacationService
   ) {}
 
-  reject(vacation: VacationApplyUser | null): void {
+  reject(vacation: IVacation | null): void {
     if (vacation != null) {
       const modalRef = this.modalService.open(VacationRejectDialogComponent, { backdrop: 'static' });
       modalRef.componentInstance.vacation = vacation;
@@ -40,7 +41,7 @@ export class VacationApplyCheckComponent implements OnInit {
     }
   }
 
-  approve(vacation: VacationApplyUser | null): void {
+  approve(vacation: IVacation | null): void {
     if (vacation != null) {
       const modalRef = this.modalService.open(VacationApproveDialogComponent, { backdrop: 'static' });
       modalRef.componentInstance.vacation = vacation;
@@ -55,20 +56,12 @@ export class VacationApplyCheckComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      param =>
-        (this.vacation = {
-          start: new Date('2023-02-01'),
-          end: new Date('2023-02-04'),
-          state: 'APPLIED',
-          user: {
-            firstName: 'Hans',
-            lastName: 'Meier',
-            area: 'Administration',
-            freeVacation: 10,
-          },
-          id: +param.id,
-        })
+    this.route.params.subscribe(param =>
+      this.vacationService.find(+param.id).subscribe({
+        next: res => {
+          this.vacation = res.body;
+        },
+      })
     );
     // TODO use this parameter to load the data from the backend
 
