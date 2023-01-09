@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import at.ac.tuwien.sese.g09.IntegrationTest;
 import at.ac.tuwien.sese.g09.domain.Authority;
 import at.ac.tuwien.sese.g09.domain.User;
+import at.ac.tuwien.sese.g09.domain.enumeration.Gender;
+import at.ac.tuwien.sese.g09.domain.enumeration.HumanResourceType;
 import at.ac.tuwien.sese.g09.repository.UserRepository;
 import at.ac.tuwien.sese.g09.security.AuthoritiesConstants;
 import at.ac.tuwien.sese.g09.service.dto.AdminUserDTO;
@@ -60,6 +62,10 @@ class UserResourceIT {
     private static final String DEFAULT_LANGKEY = "en";
     private static final String UPDATED_LANGKEY = "fr";
 
+    private static final Gender DEFAULT_GENDER = Gender.DIVERSE;
+
+    private static final HumanResourceType DEFAULT_HUMANRESOURCETYPE = HumanResourceType.OTHER;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -99,6 +105,8 @@ class UserResourceIT {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+        user.setGender(DEFAULT_GENDER);
+        user.setType(DEFAULT_HUMANRESOURCETYPE);
         return user;
     }
 
@@ -110,6 +118,10 @@ class UserResourceIT {
         User user = createEntity(em);
         user.setLogin(DEFAULT_LOGIN);
         user.setEmail(DEFAULT_EMAIL);
+        user.setFirstName(DEFAULT_FIRSTNAME);
+        user.setLastName(DEFAULT_LASTNAME);
+        user.setGender(DEFAULT_GENDER);
+        user.setType(DEFAULT_HUMANRESOURCETYPE);
         return user;
     }
 
@@ -133,6 +145,8 @@ class UserResourceIT {
         managedUserVM.setActivated(true);
         managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
+        managedUserVM.setGender(DEFAULT_GENDER);
+        managedUserVM.setType(DEFAULT_HUMANRESOURCETYPE);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
@@ -172,6 +186,8 @@ class UserResourceIT {
         managedUserVM.setActivated(true);
         managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
+        managedUserVM.setGender(DEFAULT_GENDER);
+        managedUserVM.setType(DEFAULT_HUMANRESOURCETYPE);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         // An entity with an existing ID cannot be created, so this API call must fail
@@ -204,6 +220,8 @@ class UserResourceIT {
         managedUserVM.setActivated(true);
         managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
+        managedUserVM.setGender(DEFAULT_GENDER);
+        managedUserVM.setType(DEFAULT_HUMANRESOURCETYPE);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         // Create the User
@@ -236,6 +254,8 @@ class UserResourceIT {
         managedUserVM.setActivated(true);
         managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
         managedUserVM.setLangKey(DEFAULT_LANGKEY);
+        managedUserVM.setGender(DEFAULT_GENDER);
+        managedUserVM.setType(DEFAULT_HUMANRESOURCETYPE);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         // Create the User
@@ -324,6 +344,8 @@ class UserResourceIT {
         managedUserVM.setCreatedDate(updatedUser.getCreatedDate());
         managedUserVM.setLastModifiedBy(updatedUser.getLastModifiedBy());
         managedUserVM.setLastModifiedDate(updatedUser.getLastModifiedDate());
+        managedUserVM.setGender(DEFAULT_GENDER);
+        managedUserVM.setType(DEFAULT_HUMANRESOURCETYPE);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
@@ -371,6 +393,8 @@ class UserResourceIT {
         managedUserVM.setCreatedDate(updatedUser.getCreatedDate());
         managedUserVM.setLastModifiedBy(updatedUser.getLastModifiedBy());
         managedUserVM.setLastModifiedDate(updatedUser.getLastModifiedDate());
+        managedUserVM.setGender(DEFAULT_GENDER);
+        managedUserVM.setType(DEFAULT_HUMANRESOURCETYPE);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
@@ -410,6 +434,8 @@ class UserResourceIT {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setGender(DEFAULT_GENDER);
+        anotherUser.setType(DEFAULT_HUMANRESOURCETYPE);
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
@@ -429,6 +455,8 @@ class UserResourceIT {
         managedUserVM.setCreatedDate(updatedUser.getCreatedDate());
         managedUserVM.setLastModifiedBy(updatedUser.getLastModifiedBy());
         managedUserVM.setLastModifiedDate(updatedUser.getLastModifiedDate());
+        managedUserVM.setGender(DEFAULT_GENDER);
+        managedUserVM.setType(DEFAULT_HUMANRESOURCETYPE);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
@@ -456,6 +484,8 @@ class UserResourceIT {
         anotherUser.setLastName("hipster");
         anotherUser.setImageUrl("");
         anotherUser.setLangKey("en");
+        anotherUser.setGender(DEFAULT_GENDER);
+        anotherUser.setType(DEFAULT_HUMANRESOURCETYPE);
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
@@ -475,6 +505,8 @@ class UserResourceIT {
         managedUserVM.setCreatedDate(updatedUser.getCreatedDate());
         managedUserVM.setLastModifiedBy(updatedUser.getLastModifiedBy());
         managedUserVM.setLastModifiedDate(updatedUser.getLastModifiedDate());
+        managedUserVM.setGender(DEFAULT_GENDER);
+        managedUserVM.setType(DEFAULT_HUMANRESOURCETYPE);
         managedUserVM.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         restUserMockMvc
@@ -532,6 +564,8 @@ class UserResourceIT {
         userDTO.setLangKey(DEFAULT_LANGKEY);
         userDTO.setCreatedBy(DEFAULT_LOGIN);
         userDTO.setLastModifiedBy(DEFAULT_LOGIN);
+        userDTO.setGender(DEFAULT_GENDER);
+        userDTO.setType(DEFAULT_HUMANRESOURCETYPE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         User user = userMapper.userDTOToUser(userDTO);
@@ -562,6 +596,8 @@ class UserResourceIT {
         authority.setName(AuthoritiesConstants.USER);
         authorities.add(authority);
         user.setAuthorities(authorities);
+        user.setGender(DEFAULT_GENDER);
+        user.setType(DEFAULT_HUMANRESOURCETYPE);
 
         AdminUserDTO userDTO = userMapper.userToAdminUserDTO(user);
 

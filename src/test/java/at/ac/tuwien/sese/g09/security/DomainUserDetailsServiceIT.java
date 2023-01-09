@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import at.ac.tuwien.sese.g09.IntegrationTest;
 import at.ac.tuwien.sese.g09.domain.User;
+import at.ac.tuwien.sese.g09.domain.enumeration.Gender;
+import at.ac.tuwien.sese.g09.domain.enumeration.HumanResourceType;
 import at.ac.tuwien.sese.g09.repository.UserRepository;
 import java.util.Locale;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -47,6 +49,8 @@ class DomainUserDetailsServiceIT {
         userOne.setFirstName("userOne");
         userOne.setLastName("doe");
         userOne.setLangKey("en");
+        userOne.setGender(Gender.DIVERSE);
+        userOne.setType(HumanResourceType.OTHER);
         userRepository.save(userOne);
 
         User userTwo = new User();
@@ -57,6 +61,8 @@ class DomainUserDetailsServiceIT {
         userTwo.setFirstName("userTwo");
         userTwo.setLastName("doe");
         userTwo.setLangKey("en");
+        userTwo.setGender(Gender.DIVERSE);
+        userTwo.setType(HumanResourceType.OTHER);
         userRepository.save(userTwo);
 
         User userThree = new User();
@@ -67,6 +73,8 @@ class DomainUserDetailsServiceIT {
         userThree.setFirstName("userThree");
         userThree.setLastName("doe");
         userThree.setLangKey("en");
+        userThree.setType(HumanResourceType.OTHER);
+        userThree.setGender(Gender.DIVERSE);
         userRepository.save(userThree);
     }
 

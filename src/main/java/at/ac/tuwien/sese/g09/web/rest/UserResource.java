@@ -72,7 +72,13 @@ public class UserResource {
             "createdBy",
             "createdDate",
             "lastModifiedBy",
-            "lastModifiedDate"
+            "lastModifiedDate",
+            "type",
+            "gender",
+            "birthday",
+            "phone",
+            "ssn",
+            "banking"
         )
     );
 
