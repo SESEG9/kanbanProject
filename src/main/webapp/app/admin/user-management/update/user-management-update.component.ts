@@ -17,24 +17,23 @@ const newUser: IUser = {
 } as IUser;
 
 function ngbDateStructToNullableString(date: NgbDateStruct): string | null {
-  if (!date) {
+  if (date.day < 0 || date.month < 0 || date.year < 0) {
     return null;
   }
-  if (date.day < 0 || date.month < 0) {
-    return null;
-  }
-  return ('0000' + date.year).slice(-4) + '-' + ('0' + date.month).slice(-2) + '-' + ('0' + date.day).slice(-2);
+  return (
+    ('0000' + date.year.toString()).slice(-4) + '-' + ('0' + date.month.toString()).slice(-2) + '-' + ('0' + date.day.toString()).slice(-2)
+  );
 }
 
 function nullableStringToNgbDateStruct(value: string | null): NgbDateStruct {
   if (!value) {
     return { year: -1, month: -1, day: -1 };
   }
-  let parts = value.split('-');
-  if (parts.length != 3) {
+  const parts = value.split('-');
+  if (parts.length !== 3) {
     return { year: -1, month: -1, day: -1 };
   }
-  return { year: +parts[0], month: +parts[1], day: +parts[2] };
+  return { year: parseInt(parts[0]), month: parseInt(parts[1]), day: parseInt(parts[2]) };
 }
 
 @Injectable()
@@ -137,7 +136,7 @@ export class UserManagementUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    let user = this.editForm.getRawValue();
+    const user = this.editForm.getRawValue();
     if (user.id !== null) {
       this.userService.update(user).subscribe({
         next: () => this.onSaveSuccess(),
