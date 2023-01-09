@@ -8,7 +8,7 @@ import { isPresent } from 'app/core/util/operators';
 import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IVacation, NewVacation } from '../vacation.model';
+import { IVacation, NewVacation, VacationApply } from '../vacation.model';
 
 export type PartialUpdateVacation = Partial<IVacation> & Pick<IVacation, 'id'>;
 
@@ -31,6 +31,11 @@ export class VacationService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/vacations');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
+  apply(vacation: VacationApply): Observable<EntityResponseType> {
+    const url = this.applicationConfigService.getEndpointFor('api/vacations/apply');
+    return this.http.post<RestVacation>(url, vacation, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
+  }
 
   create(vacation: NewVacation): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(vacation);
@@ -101,16 +106,16 @@ export class VacationService {
   protected convertDateFromClient<T extends IVacation | NewVacation | PartialUpdateVacation>(vacation: T): RestOf<T> {
     return {
       ...vacation,
-      start: vacation.start?.format(DATE_FORMAT) ?? null,
-      end: vacation.end?.format(DATE_FORMAT) ?? null,
+      start: dayjs(vacation.start)?.format(DATE_FORMAT) ?? null,
+      end: dayjs(vacation.end)?.format(DATE_FORMAT) ?? null,
     };
   }
 
   protected convertDateFromServer(restVacation: RestVacation): IVacation {
     return {
       ...restVacation,
-      start: restVacation.start ? dayjs(restVacation.start) : undefined,
-      end: restVacation.end ? dayjs(restVacation.end) : undefined,
+      start: restVacation.start ? dayjs(restVacation.start).toDate() : undefined,
+      end: restVacation.end ? dayjs(restVacation.end).toDate() : undefined,
     };
   }
 

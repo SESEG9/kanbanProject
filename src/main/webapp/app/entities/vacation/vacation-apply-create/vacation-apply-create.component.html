@@ -103,24 +103,24 @@
         <h2>Ausstehende Anträge</h2>
 
         <div class="applied box" *ngFor="let v of vacations | vacationStatePipe: 'APPLIED'">
-          <h3><fa-icon [icon]="faQuestionIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.from, v.to) }} Tage</h3>
-          <div>{{ v.from | date }} - {{ v.to | date }}</div>
+          <h3><fa-icon [icon]="faQuestionIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.start, v.end) }} Tage</h3>
+          <div>{{ v.start | date }} - {{ v.end | date }}</div>
         </div>
       </div>
       <div class="vacation-list-card box">
         <h2>Angenommene Anträge</h2>
 
         <div class="approved box" *ngFor="let v of vacations | vacationStatePipe: 'APPROVED'">
-          <h3><fa-icon [icon]="faCheckmarkIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.from, v.to) }} Tage</h3>
-          <div>{{ v.from | date }} - {{ v.to | date }}</div>
+          <h3><fa-icon [icon]="faCheckmarkIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.start, v.end) }} Tage</h3>
+          <div>{{ v.start | date }} - {{ v.end | date }}</div>
         </div>
       </div>
       <div class="vacation-list-card box">
         <h2>Abgelehne Anträge</h2>
 
         <div class="rejected box" *ngFor="let v of vacations | vacationStatePipe: 'REJECTED'">
-          <h3><fa-icon [icon]="faCrossIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.from, v.to) }} Tage</h3>
-          <div>{{ v.from | date }} - {{ v.to | date }}</div>
+          <h3><fa-icon [icon]="faCrossIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.start, v.end) }} Tage</h3>
+          <div>{{ v.start | date }} - {{ v.end | date }}</div>
         </div>
       </div>
     </div>

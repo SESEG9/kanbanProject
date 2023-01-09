@@ -58,8 +58,8 @@ export class VacationApplyCheckComponent implements OnInit {
     this.route.params.subscribe(
       param =>
         (this.vacation = {
-          from: new Date('2023-02-01'),
-          to: new Date('2023-02-04'),
+          start: new Date('2023-02-01'),
+          end: new Date('2023-02-04'),
           state: 'APPLIED',
           user: {
             firstName: 'Hans',
@@ -74,8 +74,8 @@ export class VacationApplyCheckComponent implements OnInit {
 
     this.overlappings = [
       {
-        from: new Date('2023-02-01'),
-        to: new Date('2023-02-04'),
+        start: new Date('2023-02-01'),
+        end: new Date('2023-02-04'),
         state: 'APPROVED',
         id: 15,
         user: {
@@ -86,8 +86,8 @@ export class VacationApplyCheckComponent implements OnInit {
         },
       },
       {
-        from: new Date('2023-02-01'),
-        to: new Date('2023-02-15'),
+        start: new Date('2023-02-01'),
+        end: new Date('2023-02-15'),
         state: 'APPLIED',
         id: 15,
         user: {
@@ -98,8 +98,8 @@ export class VacationApplyCheckComponent implements OnInit {
         },
       },
       {
-        from: new Date('2023-01-30'),
-        to: new Date('2023-02-06'),
+        start: new Date('2023-01-30'),
+        end: new Date('2023-02-06'),
         state: 'APPLIED',
         id: 15,
         user: {
@@ -110,8 +110,8 @@ export class VacationApplyCheckComponent implements OnInit {
         },
       },
       {
-        from: new Date('2023-01-25'),
-        to: new Date('2023-02-01'),
+        start: new Date('2023-01-25'),
+        end: new Date('2023-02-01'),
         state: 'APPROVED',
         id: 15,
         user: {

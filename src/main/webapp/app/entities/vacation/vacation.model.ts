@@ -1,20 +1,19 @@
-import dayjs from 'dayjs/esm';
-import { IHumanResource } from 'app/entities/human-resource/human-resource.model';
 import { VacationState } from 'app/entities/enumerations/vacation-state.model';
+import { IUser } from '../user/user.model';
 
 export interface IVacation {
   id: number;
-  start?: dayjs.Dayjs | null;
-  end?: dayjs.Dayjs | null;
+  start?: Date | null;
+  end?: Date | null;
   state?: VacationState | null;
-  humanResource?: Pick<IHumanResource, 'id'> | null;
+  user?: Pick<IUser, 'id'> | IUser | null;
 }
 
 export type NewVacation = Omit<IVacation, 'id'> & { id: null };
 
 export interface VacationApply {
-  from: Date;
-  to: Date;
+  start: Date;
+  end: Date;
   state: VacationApplyState;
 }
 

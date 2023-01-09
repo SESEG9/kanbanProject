@@ -3,6 +3,7 @@ import { NgbCalendar, NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-b
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 import { VacationApply } from '../vacation.model';
 import { VacationDateService } from '../service/vacation-date.service';
+import { VacationService } from '../service/vacation.service';
 
 @Component({
   selector: 'jhi-vacation-apply-create',
@@ -30,7 +31,12 @@ export class VacationApplyCreateComponent implements OnInit {
 
   year = new Date().getFullYear();
 
-  constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, public vacationDateService: VacationDateService) {
+  constructor(
+    private calendar: NgbCalendar,
+    public formatter: NgbDateParserFormatter,
+    public vacationDateService: VacationDateService,
+    private vacationService: VacationService
+  ) {
     this.fromDate = null;
     this.toDate = null;
     this.choosenDays = null;
@@ -88,38 +94,44 @@ export class VacationApplyCreateComponent implements OnInit {
   applyVacation(): void {
     if (this.fromDate && this.toDate) {
       const vacationApply: VacationApply = {
-        from: VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate),
-        to: VacationApplyCreateComponent.ngbDateToJsDate(this.toDate),
+        start: VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate),
+        end: VacationApplyCreateComponent.ngbDateToJsDate(this.toDate),
         state: 'APPLIED',
       };
+
+      this.vacationService.apply(vacationApply).subscribe({
+        next: res => {
+          console.log(res);
+        },
+      });
     }
   }
 
   loadVacations(): void {
     this.vacations = [
       {
-        from: new Date('2023-01-01'),
-        to: new Date('2023-01-05'),
+        start: new Date('2023-01-01'),
+        end: new Date('2023-01-05'),
         state: 'APPROVED',
       },
       {
-        from: new Date('2023-01-17'),
-        to: new Date('2023-01-23'),
+        start: new Date('2023-01-17'),
+        end: new Date('2023-01-23'),
         state: 'APPROVED',
       },
       {
-        from: new Date('2023-02-01'),
-        to: new Date('2023-02-14'),
+        start: new Date('2023-02-01'),
+        end: new Date('2023-02-14'),
         state: 'REJECTED',
       },
       {
-        from: new Date('2023-03-15'),
-        to: new Date('2023-03-18'),
+        start: new Date('2023-03-15'),
+        end: new Date('2023-03-18'),
         state: 'APPLIED',
       },
       {
-        from: new Date('2023-05-21'),
-        to: new Date('2023-06-03'),
+        start: new Date('2023-05-21'),
+        end: new Date('2023-06-03'),
         state: 'APPLIED',
       },
     ];

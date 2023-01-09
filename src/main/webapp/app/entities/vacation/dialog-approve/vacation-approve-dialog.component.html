@@ -18,7 +18,10 @@
     <div class="vcf-vacation-box">
       <div class="vcf-label">Urlaubsantrag:</div>
       <div class="vcf-date">
-        {{ vacation.from | date }} - {{ vacation.to | date }} ({{ vacationDateService.getVacationDays(vacation.from, vacation.to) }} Tage)
+        {{ vacation.start | date }} - {{ vacation.end | date }} ({{
+          vacationDateService.getVacationDays(vacation.start, vacation.end)
+        }}
+        Tage)
       </div>
     </div>
   </div>

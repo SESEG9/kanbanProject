@@ -15,11 +15,11 @@
 
     <jhi-alert></jhi-alert>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="vacations?.length === 0">
+    <div class="alert alert-warning" id="no-result" *ngIf="vacationApply?.length === 0">
       <span jhiTranslate="lionhotelApp.vacation.home.notFound">Keine Vacations gefunden</span>
     </div>
 
-    <div class="table-responsive table-entities" id="entities" *ngIf="vacations && vacations.length > 0">
+    <div class="table-responsive table-entities" id="entities" *ngIf="vacationApply && vacationApply.length > 0">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
@@ -58,15 +58,15 @@
         <tbody>
           <tr *ngFor="let vacation of vacationApply" data-cy="entityTable">
             <td>
-              <b>{{ vacation.user.firstName }} {{ vacation.user.lastName }}</b>
+              <b>{{ $any(vacation.user).firstName }} {{ $any(vacation.user).lastName }}</b>
               <!--a [routerLink]="['/vacation', vacation.id, 'view']">{{ vacation.id }}</a-->
             </td>
             <td>
-              <i>{{ vacation.user.area }}</i>
+              <i>{{ $any(vacation.user).type }}</i>
             </td>
-            <td>{{ vacation.from | date }}</td>
-            <td>{{ vacation.to | date }}</td>
-            <td>{{ vacation.from && vacation.to ? vacationDateService.getVacationDays(vacation.from, vacation.to) : '' }} Tage</td>
+            <td>{{ vacation.start | date }}</td>
+            <td>{{ vacation.end | date }}</td>
+            <td>{{ vacation.start && vacation.end ? vacationDateService.getVacationDays(vacation.start, vacation.end) : '' }} Tage</td>
             <td></td>
             <td class="text-end">
               <div class="buttom-group">

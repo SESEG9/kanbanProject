@@ -6,6 +6,6 @@ import { VacationApply, VacationApplyState } from '../vacation.model';
 })
 export class VacationStatePipePipe implements PipeTransform {
   transform(items: VacationApply[], state: VacationApplyState): VacationApply[] {
-    return items.filter(item => item.state === state).sort((a, b) => a.from.getTime() - b.from.getTime());
+    return items.filter(item => item.state === state).sort((a, b) => a.start.getTime() - b.start.getTime());
   }
 }
