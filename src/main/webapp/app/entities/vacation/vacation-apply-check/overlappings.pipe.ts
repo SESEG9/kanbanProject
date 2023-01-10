@@ -10,10 +10,10 @@ export class OverlappingsPipe implements PipeTransform {
     return items
       .filter(item => item.state && filter.states.includes(item.state))
       .filter(item => item.id !== filter.thisVacationId)
-      .sort((a, b) => this.stateToNumber(a.state) - this.stateToNumber(b.state));
+      .sort((a, b) => OverlappingsPipe.stateToNumber(a.state) - OverlappingsPipe.stateToNumber(b.state));
   }
 
-  private stateToNumber(state?: VacationState | null) {
+  private static stateToNumber(state?: VacationState | null): number {
     switch (state) {
       case VacationState.ACCEPTED:
         return 1;
