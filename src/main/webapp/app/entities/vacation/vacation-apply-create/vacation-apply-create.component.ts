@@ -78,7 +78,7 @@ export class VacationApplyCreateComponent implements OnInit {
     }
   }
 
-  private updateAdditionalRemainingDays(fromDate: NgbDate, toDate: NgbDate) {
+  private updateAdditionalRemainingDays(fromDate: NgbDate, toDate: NgbDate): void {
     this.startYear = null;
     this.endYear = null;
     this.vacationService.remaining({ year: fromDate.year, includeRequested: true }).subscribe(res => {
@@ -141,21 +141,20 @@ export class VacationApplyCreateComponent implements OnInit {
     });
   }
 
-  private onDataFetched(vacations: IVacation[] | null) {
-    console.log(vacations);
+  private onDataFetched(vacations: IVacation[] | null): void {
     if (vacations != null) {
       this.vacations = this.fixedVacationService.vacationsToFixedVacations(vacations);
     }
   }
 
-  private onRemainingFetched(remaining?: Remaining | null) {
+  private onRemainingFetched(remaining?: Remaining | null): void {
     if (remaining) {
       this.availableVacation = remaining.remainingDays;
     }
   }
 
   showStartModal(): boolean {
-    return this?.startYear?.year !== this.year;
+    return this.startYear?.year !== this.year;
   }
 
   showEndModal() {
@@ -163,10 +162,10 @@ export class VacationApplyCreateComponent implements OnInit {
   }
 
   getThisYearRemainingDays(): number {
-    if (this.fromDate && this.toDate && this.fromDate.year == this.year) {
+    if (this.fromDate && this.toDate && this.fromDate.year === this.year) {
       const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
       const toDateJs =
-        this.toDate.year == this.year ? VacationApplyCreateComponent.ngbDateToJsDate(this.toDate) : new Date(Date.UTC(this.year, 11, 31));
+        this.toDate.year === this.year ? VacationApplyCreateComponent.ngbDateToJsDate(this.toDate) : new Date(Date.UTC(this.year, 11, 31));
 
       return this.availableVacation - this.vacationDateService.getVacationDays(fromDateJs, toDateJs);
     } else {
@@ -175,14 +174,10 @@ export class VacationApplyCreateComponent implements OnInit {
   }
 
   getStartYearRemainingDays(): number | null {
-    if (this.startYear && this.fromDate && this.toDate && this.fromDate.year == this.startYear.year) {
+    if (this.startYear && this.fromDate && this.toDate && this.fromDate.year === this.startYear.year) {
       const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
-      const toDateJs =
-        this.toDate.year == this.startYear.year
-          ? VacationApplyCreateComponent.ngbDateToJsDate(this.toDate)
-          : new Date(Date.UTC(this.startYear.year, 11, 31));
-
-      return this.startYear.remaining - this.vacationDateService.getVacationDays(fromDateJs, toDateJs);
+      const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
+      return this.vacationDateService.getRemainingDaysForStartYear(fromDateJs, toDateJs, this.startYear.remaining);
     } else {
       return this.startYear?.remaining ?? 0;
     }
@@ -190,9 +185,8 @@ export class VacationApplyCreateComponent implements OnInit {
 
   getEndYearRemainingDays() {
     if (this.endYear && this.fromDate && this.toDate && this.toDate.year == this.endYear.year) {
-      const fromDateJs = new Date(Date.UTC(this.toDate.year, 0, 1));
       const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
-      return this.endYear.remaining - this.vacationDateService.getVacationDays(fromDateJs, toDateJs);
+      return this.vacationDateService.getRemainingDaysForEndYear(toDateJs, this.endYear.remaining);
     } else {
       return this.endYear?.remaining ?? 0;
     }
