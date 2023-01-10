@@ -4,8 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class VacationDateService {
-  constructor() {}
-
   /**
    * Get the vacation days for a vacation between the two provided dates
    *
@@ -20,14 +18,14 @@ export class VacationDateService {
     return Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   }
 
-  getRemainingDaysForStartYear(start: Date, end: Date, remaining: number) {
-    const startYear = start?.getFullYear();
-    const endDate = end.getFullYear() == startYear ? end : new Date(Date.UTC(startYear, 11, 31));
+  getRemainingDaysForStartYear(start: Date, end: Date, remaining: number): number {
+    const startYear = start.getFullYear();
+    const endDate = end.getFullYear() === startYear ? end : new Date(Date.UTC(startYear, 11, 31));
 
     return remaining - this.getVacationDays(start, endDate);
   }
 
-  getRemainingDaysForEndYear(end: Date, remaining: number) {
+  getRemainingDaysForEndYear(end: Date, remaining: number): number {
     const start = new Date(Date.UTC(end.getFullYear(), 0, 1));
     return remaining - this.getVacationDays(start, end);
   }
