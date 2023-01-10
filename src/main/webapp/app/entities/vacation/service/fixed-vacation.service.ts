@@ -8,8 +8,6 @@ export type FixedVacation = Omit<IVacation, 'start' | 'end'> & { start: dayjs.Da
   providedIn: 'root',
 })
 export class FixedVacationService {
-  constructor() {}
-
   vacationsToFixedVacations(vacations: IVacation[]): FixedVacation[] {
     return vacations
       .map(vacation => this.vacationToFixedVacation(vacation))
@@ -21,6 +19,6 @@ export class FixedVacationService {
     const start = vacation.start;
     const end = vacation.end;
 
-    return start != null && end != null ? { ...vacation, start: start, end: end } : null;
+    return start != null && end != null ? { ...vacation, start, end } : null;
   }
 }
