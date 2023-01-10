@@ -12,6 +12,7 @@ import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 import { VacationDateService } from '../service/vacation-date.service';
 import { VacationApproveDialogComponent } from '../dialog-approve/vacation-approve-dialog.component';
 import { VACATION_APPROVED, VACATION_REJECTED } from '../vacation.constants';
+import { FixedVacation, FixedVacationService } from '../service/fixed-vacation.service';
 
 @Component({
   selector: 'jhi-vacation',
@@ -21,7 +22,7 @@ import { VACATION_APPROVED, VACATION_REJECTED } from '../vacation.constants';
 export class VacationComponent implements OnInit {
   ICONS = FontAwesome;
 
-  vacationApply: IVacation[] = [];
+  vacationApply: FixedVacation[] = [];
 
   isLoading = false;
 
@@ -34,7 +35,8 @@ export class VacationComponent implements OnInit {
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
-    public vacationDateService: VacationDateService
+    public vacationDateService: VacationDateService,
+    private fixedVacationService: FixedVacationService
   ) {}
 
   trackId = (_index: number, item: IVacation): number => this.vacationService.getVacationIdentifier(item);
@@ -103,11 +105,11 @@ export class VacationComponent implements OnInit {
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
+    const dataFromBody = this.fixedVacationService.vacationsToFixedVacations(this.fillComponentAttributesFromResponseBody(response.body));
     this.vacationApply = this.refineData(dataFromBody);
   }
 
-  protected refineData(data: IVacation[]): IVacation[] {
+  protected refineData(data: FixedVacation[]): FixedVacation[] {
     return data.sort(this.sortService.startSort(this.predicate, this.ascending ? 1 : -1));
   }
 

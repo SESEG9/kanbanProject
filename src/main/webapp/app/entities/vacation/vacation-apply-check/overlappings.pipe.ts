@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IVacation } from '../vacation.model';
 import { VacationState } from '../../enumerations/vacation-state.model';
+import { FixedVacation } from '../service/fixed-vacation.service';
 
 @Pipe({
   name: 'overlappings',
 })
 export class OverlappingsPipe implements PipeTransform {
-  transform(items: IVacation[], filter: { states: VacationState[] }): IVacation[] {
+  transform(items: FixedVacation[], filter: { states: VacationState[] }): FixedVacation[] {
     return items
       .filter(item => item.state && filter.states.includes(item.state))
       .sort((a, b) => this.stateToNumber(a.state) - this.stateToNumber(b.state));

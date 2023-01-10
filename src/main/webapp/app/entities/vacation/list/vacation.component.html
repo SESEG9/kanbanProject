@@ -64,9 +64,14 @@
             <td>
               <i>{{ $any(vacation.user).type }}</i>
             </td>
-            <td>{{ vacation.start | date }}</td>
-            <td>{{ vacation.end | date }}</td>
-            <td>{{ vacation.start && vacation.end ? vacationDateService.getVacationDays(vacation.start, vacation.end) : '' }} Tage</td>
+            <td>{{ vacation.start.toDate() | date }}</td>
+            <td>{{ vacation.end.toDate() | date }}</td>
+            <td>
+              {{
+                vacation.start && vacation.end ? vacationDateService.getVacationDays(vacation.start.toDate(), vacation.end.toDate()) : ''
+              }}
+              Tage
+            </td>
             <td></td>
             <td class="text-end">
               <div class="buttom-group">

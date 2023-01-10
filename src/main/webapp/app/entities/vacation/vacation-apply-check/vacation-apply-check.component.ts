@@ -10,6 +10,7 @@ import { VacationApproveDialogComponent } from '../dialog-approve/vacation-appro
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VacationState } from '../../enumerations/vacation-state.model';
 import dayjs from 'dayjs';
+import { FixedVacation, FixedVacationService } from '../service/fixed-vacation.service';
 
 @Component({
   selector: 'jhi-vacation-apply-check',
@@ -19,7 +20,7 @@ import dayjs from 'dayjs';
 export class VacationApplyCheckComponent implements OnInit {
   vacation: IVacation | null = null;
 
-  overlappings: IVacation[] = [];
+  overlappings: FixedVacation[] = [];
   VacationState = VacationState;
 
   constructor(
@@ -27,7 +28,8 @@ export class VacationApplyCheckComponent implements OnInit {
     private route: ActivatedRoute,
     protected modalService: NgbModal,
     private router: Router,
-    private vacationService: VacationService
+    private vacationService: VacationService,
+    private fixedVacationService: FixedVacationService
   ) {}
 
   reject(vacation: IVacation | null): void {
@@ -81,7 +83,7 @@ export class VacationApplyCheckComponent implements OnInit {
 
   private onOverlappingsLoaded(overlappings: IVacation[] | null) {
     if (overlappings) {
-      this.overlappings = overlappings;
+      this.overlappings = this.fixedVacationService.vacationsToFixedVacations(overlappings);
     }
   }
 }

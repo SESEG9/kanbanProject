@@ -5,6 +5,7 @@ import { IVacation, VacationApply } from '../vacation.model';
 import { VacationDateService } from '../service/vacation-date.service';
 import { Remaining, VacationService } from '../service/vacation.service';
 import { VacationState } from '../../enumerations/vacation-state.model';
+import { FixedVacation, FixedVacationService } from '../service/fixed-vacation.service';
 
 @Component({
   selector: 'jhi-vacation-apply-create',
@@ -28,7 +29,7 @@ export class VacationApplyCreateComponent implements OnInit {
   faCheckmarkIcon = FontAwesome.faCheck;
   faCrossIcon = FontAwesome.faXmark;
 
-  vacations: IVacation[] = [];
+  vacations: FixedVacation[] = [];
 
   VacationState = VacationState;
 
@@ -38,7 +39,8 @@ export class VacationApplyCreateComponent implements OnInit {
     private calendar: NgbCalendar,
     public formatter: NgbDateParserFormatter,
     public vacationDateService: VacationDateService,
-    private vacationService: VacationService
+    private vacationService: VacationService,
+    private fixedVacationService: FixedVacationService
   ) {
     this.fromDate = null;
     this.toDate = null;
@@ -127,7 +129,7 @@ export class VacationApplyCreateComponent implements OnInit {
   private onDataFetched(vacations: IVacation[] | null) {
     console.log(vacations);
     if (vacations != null) {
-      this.vacations = vacations;
+      this.vacations = this.fixedVacationService.vacationsToFixedVacations(vacations);
     }
   }
 

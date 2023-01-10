@@ -1,10 +1,11 @@
 import { VacationState } from 'app/entities/enumerations/vacation-state.model';
 import { IUser } from '../user/user.model';
+import dayjs from 'dayjs';
 
 export interface IVacation {
   id: number;
-  start?: Date | null;
-  end?: Date | null;
+  start?: dayjs.Dayjs | null;
+  end?: dayjs.Dayjs | null;
   state?: VacationState | null;
   user?: IUser | null;
 }

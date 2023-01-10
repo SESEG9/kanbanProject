@@ -111,16 +111,16 @@ export class VacationService {
   protected convertDateFromClient<T extends IVacation | NewVacation | PartialUpdateVacation>(vacation: T): RestOf<T> {
     return {
       ...vacation,
-      start: dayjs(vacation.start)?.format(DATE_FORMAT) ?? null,
-      end: dayjs(vacation.end)?.format(DATE_FORMAT) ?? null,
+      start: vacation.start?.format(DATE_FORMAT) ?? null,
+      end: vacation.end?.format(DATE_FORMAT) ?? null,
     };
   }
 
   protected convertDateFromServer(restVacation: RestVacation): IVacation {
     return {
       ...restVacation,
-      start: restVacation.start ? dayjs(restVacation.start).toDate() : undefined,
-      end: restVacation.end ? dayjs(restVacation.end).toDate() : undefined,
+      start: dayjs(restVacation.start),
+      end: dayjs(restVacation.end),
     };
   }
 
