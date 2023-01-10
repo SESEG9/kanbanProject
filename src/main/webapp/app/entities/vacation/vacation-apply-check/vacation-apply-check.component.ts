@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IVacation, VacationApplyUser } from '../vacation.model';
+import { IVacation } from '../vacation.model';
 import { VacationDateService } from '../service/vacation-date.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VacationRejectDialogComponent } from '../dialog-reject/vacation-reject-dialog.component';
@@ -8,6 +8,8 @@ import { VACATION_APPROVED, VACATION_REJECTED } from '../vacation.constants';
 import { EntityArrayResponseType, VacationService } from '../service/vacation.service';
 import { VacationApproveDialogComponent } from '../dialog-approve/vacation-approve-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { VacationState } from '../../enumerations/vacation-state.model';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'jhi-vacation-apply-check',
@@ -17,7 +19,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class VacationApplyCheckComponent implements OnInit {
   vacation: IVacation | null = null;
 
-  overlappings: VacationApplyUser[] = [];
+  overlappings: IVacation[] = [];
+  VacationState = VacationState;
 
   constructor(
     public vacationDateService: VacationDateService,
@@ -60,60 +63,25 @@ export class VacationApplyCheckComponent implements OnInit {
       this.vacationService.find(+param.id).subscribe({
         next: res => {
           this.vacation = res.body;
+          this.loadOverlappings();
         },
       })
     );
     // TODO use this parameter to load the data from the backend
+  }
 
-    this.overlappings = [
-      {
-        start: new Date('2023-02-01'),
-        end: new Date('2023-02-04'),
-        state: 'APPROVED',
-        id: 15,
-        user: {
-          firstName: 'Jürgen',
-          lastName: 'Müller',
-          area: 'Rezeption',
-          freeVacation: 10,
-        },
-      },
-      {
-        start: new Date('2023-02-01'),
-        end: new Date('2023-02-15'),
-        state: 'APPLIED',
-        id: 15,
-        user: {
-          firstName: 'Sandra',
-          lastName: 'Kegler',
-          area: 'Technik',
-          freeVacation: 10,
-        },
-      },
-      {
-        start: new Date('2023-01-30'),
-        end: new Date('2023-02-06'),
-        state: 'APPLIED',
-        id: 15,
-        user: {
-          firstName: 'Anja',
-          lastName: 'Löwe',
-          area: 'Rezeption',
-          freeVacation: 10,
-        },
-      },
-      {
-        start: new Date('2023-01-25'),
-        end: new Date('2023-02-01'),
-        state: 'APPROVED',
-        id: 15,
-        user: {
-          firstName: 'Annemarie',
-          lastName: 'Stöger',
-          area: 'Cleaning',
-          freeVacation: 10,
-        },
-      },
-    ];
+  private loadOverlappings() {
+    const query = {
+      start: dayjs(this.vacation?.start).format('yyyy-MM-dd'),
+      end: dayjs(this.vacation?.end).format('yyyy-MM-dd'),
+      currentUserOnly: false,
+    };
+    this.vacationService.query(query).subscribe({ next: res => this.onOverlappingsLoaded(res.body) });
+  }
+
+  private onOverlappingsLoaded(overlappings: IVacation[] | null) {
+    if (overlappings) {
+      this.overlappings = overlappings;
+    }
   }
 }

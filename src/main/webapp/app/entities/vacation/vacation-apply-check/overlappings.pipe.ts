@@ -1,23 +1,26 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { VacationApplyState, VacationApplyUser } from '../vacation.model';
+import { IVacation } from '../vacation.model';
+import { VacationState } from '../../enumerations/vacation-state.model';
 
 @Pipe({
   name: 'overlappings',
 })
 export class OverlappingsPipe implements PipeTransform {
-  transform(items: VacationApplyUser[], filter: { states: VacationApplyState[] }): VacationApplyUser[] {
+  transform(items: IVacation[], filter: { states: VacationState[] }): IVacation[] {
     return items
-      .filter(item => filter.states.includes(item.state))
+      .filter(item => item.state && filter.states.includes(item.state))
       .sort((a, b) => this.stateToNumber(a.state) - this.stateToNumber(b.state));
   }
 
-  private stateToNumber(state: VacationApplyState) {
+  private stateToNumber(state?: VacationState | null) {
     switch (state) {
-      case 'APPROVED':
+      case VacationState.ACCEPTED:
         return 1;
-      case 'APPLIED':
+      case VacationState.REQUESTED:
         return 2;
-      case 'REJECTED':
+      case null:
+      case undefined:
+      case VacationState.DECLINED:
         return 3;
     }
   }
