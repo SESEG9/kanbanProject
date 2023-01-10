@@ -157,7 +157,7 @@ export class VacationApplyCreateComponent implements OnInit {
     return this.startYear?.year !== this.year;
   }
 
-  showEndModal() {
+  showEndModal(): boolean {
     return this.endYear?.year !== this.year && this.startYear?.year !== this.endYear?.year;
   }
 
@@ -173,7 +173,7 @@ export class VacationApplyCreateComponent implements OnInit {
     }
   }
 
-  getStartYearRemainingDays(): number | null {
+  getStartYearRemainingDays(): number {
     if (this.startYear && this.fromDate && this.toDate && this.fromDate.year === this.startYear.year) {
       const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
       const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
@@ -183,7 +183,7 @@ export class VacationApplyCreateComponent implements OnInit {
     }
   }
 
-  getEndYearRemainingDays() {
+  getEndYearRemainingDays(): number {
     if (this.endYear && this.fromDate && this.toDate && this.toDate.year == this.endYear.year) {
       const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
       return this.vacationDateService.getRemainingDaysForEndYear(toDateJs, this.endYear.remaining);
