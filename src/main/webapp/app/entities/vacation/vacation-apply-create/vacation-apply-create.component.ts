@@ -131,6 +131,10 @@ export class VacationApplyCreateComponent implements OnInit {
               timeout: 2000,
             });
             this.loadVacations();
+            this.toDate = null;
+            this.fromDate = null;
+            this.startYear = null;
+            this.endYear = null;
           },
         });
       }
@@ -163,7 +167,11 @@ export class VacationApplyCreateComponent implements OnInit {
         .filter(item => item.state !== VacationState.DECLINED)
         .some(item => VacationApplyCreateComponent.overlapps(vacationApply, item))
     ) {
-      this.alertService.addAlert({ type: 'danger', message: 'Urlaub überschneidet sich mit existierendem Eintrag!', timeout: 5000 });
+      this.alertService.addAlert({
+        type: 'danger',
+        message: 'Urlaub überschneidet sich mit existierendem Eintrag!',
+        timeout: 5000,
+      });
       return false;
     }
     return true;
