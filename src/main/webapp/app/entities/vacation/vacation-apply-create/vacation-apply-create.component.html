@@ -4,7 +4,11 @@
 
     <div class="current-vacation-header box">
       <div class="vacation-header">
-        <p><span class="vacation-label">Verfügbarer Urlaub:</span> {{ availableVacation }} Tage</p>
+        <p>
+          <span class="vacation-label">Verfügbarer Urlaub {{ year }}:</span> {{ availableVacation }} Tage
+          <span class="remCard" *ngIf="startYear && showStartModal()">({{ startYear.year }}: {{ startYear.remaining }} Tage)</span>
+          <span class="remCard" *ngIf="endYear && showEndModal()">({{ endYear.year }}: {{ endYear.remaining }} Tage)</span>
+        </p>
         <button
           type="button"
           class="btn btn-secondary add-button"
@@ -85,7 +89,13 @@
           </form>
         </div>
         <div class="vacation-footer">
-          <p><span class="vacation-label">Resturlaub:</span> {{ availableVacation - (choosenDays ?? 0) }} Tage</p>
+          <p>
+            <span class="vacation-label">Resturlaub {{ year }}:</span> {{ getThisYearRemainingDays() }} Tage
+            <span class="remCard" *ngIf="startYear && showStartModal()"
+              >({{ startYear.year }}: {{ getStartYearRemainingDays() }} Tage)</span
+            >
+            <span class="remCard" *ngIf="endYear && showEndModal()">({{ endYear.year }}: {{ getEndYearRemainingDays() }} Tage)</span>
+          </p>
           <button class="btn btn-primary" (click)="applyVacation()">Urlaub beantragen</button>
         </div>
       </div>

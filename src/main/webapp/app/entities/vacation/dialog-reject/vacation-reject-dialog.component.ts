@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { VacationApplyUser } from '../vacation.model';
 import { VacationService } from '../service/vacation.service';
 import { VACATION_REJECTED } from '../vacation.constants';
 import { VacationDateService } from '../service/vacation-date.service';
+import { FixedVacation } from '../service/fixed-vacation.service';
 
 @Component({
   templateUrl: './vacation-reject-dialog.component.html',
   styleUrls: ['../vacation.dialog.component.scss'],
 })
 export class VacationRejectDialogComponent {
-  vacation?: VacationApplyUser;
+  vacation?: FixedVacation;
 
   constructor(
     protected vacationService: VacationService,

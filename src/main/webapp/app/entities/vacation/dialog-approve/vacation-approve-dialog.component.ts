@@ -1,18 +1,17 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { VacationApplyUser } from '../vacation.model';
 import { VacationService } from '../service/vacation.service';
 import { VACATION_APPROVED } from '../vacation.constants';
 import { VacationDateService } from '../service/vacation-date.service';
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
+import { FixedVacation } from '../service/fixed-vacation.service';
 
 @Component({
   templateUrl: './vacation-approve-dialog.component.html',
   styleUrls: ['../vacation.dialog.component.scss'],
 })
 export class VacationApproveDialogComponent {
-  vacation?: VacationApplyUser;
+  vacation?: FixedVacation;
   ICONS = FontAwesome;
 
   constructor(

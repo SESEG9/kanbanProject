@@ -35,6 +35,9 @@ export class VacationApplyCreateComponent implements OnInit {
 
   year = new Date().getFullYear();
 
+  startYear: { year: number; remaining: number } | null = null;
+  endYear: { year: number; remaining: number } | null = null;
+
   constructor(
     private calendar: NgbCalendar,
     public formatter: NgbDateParserFormatter,
@@ -68,14 +71,26 @@ export class VacationApplyCreateComponent implements OnInit {
 
   updateChosenDays(): void {
     if (this.fromDate && this.toDate) {
+      this.updateAdditionalRemainingDays(this.fromDate, this.toDate);
       const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
       const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
       this.choosenDays = this.vacationDateService.getVacationDays(fromDateJs, toDateJs);
     }
   }
 
+  private updateAdditionalRemainingDays(fromDate: NgbDate, toDate: NgbDate) {
+    this.startYear = null;
+    this.endYear = null;
+    this.vacationService.remaining({ year: fromDate.year }).subscribe(res => {
+      this.startYear = { year: fromDate.year, remaining: res.body?.remainingDays ?? 0 };
+    });
+    this.vacationService.remaining({ year: toDate.year }).subscribe(res => {
+      this.endYear = { year: toDate.year, remaining: res.body?.remainingDays ?? 0 };
+    });
+  }
+
   static ngbDateToJsDate(ngbDate: NgbDate): Date {
-    return new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+    return new Date(Date.UTC(ngbDate.year, ngbDate.month - 1, ngbDate.day));
   }
 
   isHovered(date: NgbDate): boolean | null {
@@ -119,7 +134,7 @@ export class VacationApplyCreateComponent implements OnInit {
     };
     this.vacationService.query(query).subscribe({ next: res => this.onDataFetched(res.body) });
 
-    this.vacationService.remaining().subscribe({
+    this.vacationService.remaining({ year: new Date().getFullYear() }).subscribe({
       next: res => {
         this.onRemainingFetched(res.body);
       },
@@ -136,6 +151,50 @@ export class VacationApplyCreateComponent implements OnInit {
   private onRemainingFetched(remaining?: Remaining | null) {
     if (remaining) {
       this.availableVacation = remaining.remainingDays;
+    }
+  }
+
+  showStartModal(): boolean {
+    return this?.startYear?.year !== this.year;
+  }
+
+  showEndModal() {
+    return this.endYear?.year !== this.year && this.startYear?.year !== this.endYear?.year;
+  }
+
+  getThisYearRemainingDays(): number {
+    if (this.fromDate && this.toDate && this.fromDate.year == this.year) {
+      const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
+      const toDateJs =
+        this.toDate.year == this.year ? VacationApplyCreateComponent.ngbDateToJsDate(this.toDate) : new Date(Date.UTC(this.year, 11, 31));
+
+      return this.availableVacation - this.vacationDateService.getVacationDays(fromDateJs, toDateJs);
+    } else {
+      return this.availableVacation;
+    }
+  }
+
+  getStartYearRemainingDays(): number | null {
+    if (this.startYear && this.fromDate && this.toDate && this.fromDate.year == this.startYear.year) {
+      const fromDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.fromDate);
+      const toDateJs =
+        this.toDate.year == this.startYear.year
+          ? VacationApplyCreateComponent.ngbDateToJsDate(this.toDate)
+          : new Date(Date.UTC(this.startYear.year, 11, 31));
+
+      return this.startYear.remaining - this.vacationDateService.getVacationDays(fromDateJs, toDateJs);
+    } else {
+      return this.startYear?.remaining ?? 0;
+    }
+  }
+
+  getEndYearRemainingDays() {
+    if (this.endYear && this.fromDate && this.toDate && this.toDate.year == this.endYear.year) {
+      const fromDateJs = new Date(Date.UTC(this.toDate.year, 0, 1));
+      const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
+      return this.endYear.remaining - this.vacationDateService.getVacationDays(fromDateJs, toDateJs);
+    } else {
+      return this.endYear?.remaining ?? 0;
     }
   }
 }

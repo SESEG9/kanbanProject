@@ -30,10 +30,10 @@ export class VacationService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  remaining(): Observable<HttpResponse<Remaining>> {
+  remaining(params: { year: number; user?: number }): Observable<HttpResponse<Remaining>> {
     return this.http.get<Remaining>(`${this.resourceUrl}/remaining`, {
       observe: 'response',
-      params: { year: 2023, includeRequested: true },
+      params: { ...params, includeRequested: true },
     });
   }
 
