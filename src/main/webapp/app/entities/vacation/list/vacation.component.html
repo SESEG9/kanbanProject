@@ -62,7 +62,7 @@
               <!--a [routerLink]="['/vacation', vacation.id, 'view']">{{ vacation.id }}</a-->
             </td>
             <td>
-              <i>{{ $any(vacation.user).type }}</i>
+              <i [jhiTranslate]="'lionhotelApp.HumanResourceType.' + $any(vacation.user).type">{{ $any(vacation.user).type }}</i>
             </td>
             <td>{{ vacation.start.toDate() | date }}</td>
             <td>{{ vacation.end.toDate() | date }}</td>

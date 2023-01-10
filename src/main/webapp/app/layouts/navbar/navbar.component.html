@@ -54,7 +54,12 @@
           </a>
         </li>
 
-        <li class="nav-item d-flex align-items-center" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li
+          class="nav-item d-flex align-items-center"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngSwitchCase="true"
+        >
           <a class="nav-link" routerLink="/vacation/apply" (click)="collapseNavbar()">
             <span>
               <button class="btn btn-secondary">Urlaub</button>
@@ -82,6 +87,12 @@
               <a class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.admin.userManagement">Mitarbeiterverwaltung</span>
+              </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+              <a class="dropdown-item" routerLink="vacation" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.vacationManagement">Urlaubsverwaltung</span>
               </a>
             </li>
             <li>

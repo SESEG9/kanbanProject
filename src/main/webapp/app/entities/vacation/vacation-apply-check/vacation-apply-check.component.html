@@ -9,7 +9,7 @@
         </div>
         <div class="applyment-row">
           <div class="appl-label">Bereich:</div>
-          {{ vacation?.user?.type ?? '' }}
+          <span [jhiTranslate]="'lionhotelApp.HumanResourceType.' + $any(vacation?.user)?.type">{{ vacation?.user?.type ?? '' }}</span>
         </div>
       </div>
       <div class="applyment-column">
