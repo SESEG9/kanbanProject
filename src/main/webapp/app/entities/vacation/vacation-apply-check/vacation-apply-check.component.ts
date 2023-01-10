@@ -77,8 +77,8 @@ export class VacationApplyCheckComponent implements OnInit {
     // TODO use this parameter to load the data from the backend
   }
 
-  private loadRemainingVacation() {
-    if (this.vacation && this.vacation.start && this.vacation.end) {
+  private loadRemainingVacation(): void {
+    if (this.vacation?.start && this.vacation?.end) {
       this.startYear = null;
       this.endYear = null;
 
@@ -89,7 +89,7 @@ export class VacationApplyCheckComponent implements OnInit {
         next: res => (this.startYear = { year: start, remaining: res.body?.remainingDays ?? 0 }),
       });
 
-      if (start != end) {
+      if (start !== end) {
         this.vacationService.remaining({ year: end, userId: this.vacation.user?.id, includeRequested: false }).subscribe({
           next: res => (this.endYear = { year: end, remaining: res.body?.remainingDays ?? 0 }),
         });
@@ -97,7 +97,7 @@ export class VacationApplyCheckComponent implements OnInit {
     }
   }
 
-  private loadOverlappings() {
+  private loadOverlappings(): void {
     const query = {
       start: dayjs(this.vacation?.start).format('YYYY-MM-DD'),
       end: dayjs(this.vacation?.end).format('YYYY-MM-DD'),
@@ -106,14 +106,14 @@ export class VacationApplyCheckComponent implements OnInit {
     this.vacationService.query(query).subscribe({ next: res => this.onOverlappingsLoaded(res.body) });
   }
 
-  private onOverlappingsLoaded(overlappings: IVacation[] | null) {
+  private onOverlappingsLoaded(overlappings: IVacation[] | null): void {
     if (overlappings) {
       this.overlappings = this.fixedVacationService.vacationsToFixedVacations(overlappings);
     }
   }
 
   getStartYearRemaining(): number {
-    if (this.vacation && this.vacation.start && this.vacation.end && this.startYear) {
+    if (this.vacation?.start && this.vacation?.end && this.startYear) {
       return this.vacationDateService.getRemainingDaysForStartYear(
         this.vacation.start.toDate(),
         this.vacation.end.toDate(),
@@ -125,7 +125,7 @@ export class VacationApplyCheckComponent implements OnInit {
   }
 
   getEndYearRemaining(): number {
-    if (this.vacation && this.vacation.start && this.vacation.end && this.startYear) {
+    if (this.vacation?.start && this.vacation?.end && this.startYear) {
       return this.vacationDateService.getRemainingDaysForEndYear(this.vacation.end.toDate(), this.startYear.remaining);
     } else {
       return this.endYear?.remaining ?? 0;
