@@ -27,7 +27,7 @@ export class VacationApproveDialogComponent {
 
   confirmDelete(id: number): void {
     // TODO correct call to backend
-    this.vacationService.update({ id: id, state: VacationState.ACCEPTED }).subscribe(() => {
+    this.vacationService.update({ id, state: VacationState.ACCEPTED }).subscribe(() => {
       this.activeModal.close(VACATION_APPROVED);
     });
   }

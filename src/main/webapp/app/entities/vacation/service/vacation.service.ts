@@ -33,7 +33,7 @@ export class VacationService {
   remaining(params: { year: number; userId?: number; includeRequested: boolean }): Observable<HttpResponse<Remaining>> {
     return this.http.get<Remaining>(`${this.resourceUrl}/remaining`, {
       observe: 'response',
-      params: params,
+      params,
     });
   }
 
