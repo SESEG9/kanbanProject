@@ -23,6 +23,9 @@ export class VacationApplyCheckComponent implements OnInit {
   overlappings: FixedVacation[] = [];
   VacationState = VacationState;
 
+  startYear: { year: number; remaining: number } | null = null;
+  endYear: { year: number; remaining: number } | null = null;
+
   constructor(
     public vacationDateService: VacationDateService,
     private route: ActivatedRoute,
@@ -66,16 +69,38 @@ export class VacationApplyCheckComponent implements OnInit {
         next: res => {
           this.vacation = res.body;
           this.loadOverlappings();
+          this.loadRemainingVacation();
         },
       })
     );
+
     // TODO use this parameter to load the data from the backend
+  }
+
+  private loadRemainingVacation() {
+    if (this.vacation && this.vacation.start && this.vacation.end) {
+      this.startYear = null;
+      this.endYear = null;
+
+      const start = this.vacation.start.year();
+      const end = this.vacation.end.year();
+
+      this.vacationService.remaining({ year: start, userId: this.vacation.user?.id, includeRequested: false }).subscribe({
+        next: res => (this.startYear = { year: start, remaining: res.body?.remainingDays ?? 0 }),
+      });
+
+      if (start != end) {
+        this.vacationService.remaining({ year: end, userId: this.vacation.user?.id, includeRequested: false }).subscribe({
+          next: res => (this.endYear = { year: end, remaining: res.body?.remainingDays ?? 0 }),
+        });
+      }
+    }
   }
 
   private loadOverlappings() {
     const query = {
-      start: dayjs(this.vacation?.start).format('yyyy-MM-dd'),
-      end: dayjs(this.vacation?.end).format('yyyy-MM-dd'),
+      start: dayjs(this.vacation?.start).format('YYYY-MM-DD'),
+      end: dayjs(this.vacation?.end).format('YYYY-MM-DD'),
       currentUserOnly: false,
     };
     this.vacationService.query(query).subscribe({ next: res => this.onOverlappingsLoaded(res.body) });
@@ -84,6 +109,26 @@ export class VacationApplyCheckComponent implements OnInit {
   private onOverlappingsLoaded(overlappings: IVacation[] | null) {
     if (overlappings) {
       this.overlappings = this.fixedVacationService.vacationsToFixedVacations(overlappings);
+    }
+  }
+
+  getStartYearRemaining(): number {
+    if (this.vacation && this.vacation.start && this.vacation.end && this.startYear) {
+      return this.vacationDateService.getRemainingDaysForStartYear(
+        this.vacation.start.toDate(),
+        this.vacation.end.toDate(),
+        this.startYear.remaining
+      );
+    } else {
+      return this.startYear?.remaining ?? 0;
+    }
+  }
+
+  getEndYearRemaining(): number {
+    if (this.vacation && this.vacation.start && this.vacation.end && this.startYear) {
+      return this.vacationDateService.getRemainingDaysForEndYear(this.vacation.end.toDate(), this.startYear.remaining);
+    } else {
+      return this.endYear?.remaining ?? 0;
     }
   }
 }

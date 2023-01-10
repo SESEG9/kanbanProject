@@ -9,9 +9,9 @@
         "notFound": "Keine Vacations gefunden"
       },
       "state": {
-        "approved": "Genehmigt",
-        "rejected": "Abgelehnt",
-        "applied": "Angefragt"
+        "ACCEPTED": "Genehmigt",
+        "DECLINED": "Abgelehnt",
+        "REQUESTED": "Angefragt"
       },
       "created": "Vacation erstellt mit ID {{ param }}",
       "updated": "Vacation aktualisiert mit ID {{ param }}",

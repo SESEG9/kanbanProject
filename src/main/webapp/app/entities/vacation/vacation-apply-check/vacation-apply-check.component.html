@@ -15,17 +15,20 @@
       <div class="applyment-column">
         <div class="applyment-row">
           <div class="appl-label long">Aktueller Urlaub:</div>
-          {{ vacation?.user?.id ?? '' }} Tage
+
+          <span *ngIf="endYear == null">{{ startYear?.remaining ?? '' }} Tage</span>
+          <span *ngIf="endYear !== null"
+            >{{ startYear?.year ?? '' }}: {{ startYear?.remaining ?? '' }} / {{ endYear.year }}: {{ endYear.remaining }}</span
+          >
+
           <!-- TODO: get free days not including applied vacation -->
         </div>
         <div class="applyment-row">
           <div class="appl-label long">Resturlaub:</div>
-          {{
-            vacation
-              ? (vacation?.user?.id ?? 0) - vacationDateService.getVacationDays(vacation?.start?.toDate(), vacation?.end?.toDate())
-              : ''
-          }}
-          Tage
+          <span *ngIf="endYear == null">{{ getStartYearRemaining() }} Tage</span>
+          <span *ngIf="endYear !== null"
+            >{{ startYear?.year ?? '' }}: {{ getStartYearRemaining() }} / {{ endYear.year }}: {{ getEndYearRemaining() }}</span
+          >
         </div>
       </div>
       <div class="applyment-column">
@@ -52,7 +55,9 @@
     <div class="overlapping-list">
       <div
         [class]="['box', 'overlapping-list-card', ('' + v.state).toLowerCase()]"
-        *ngFor="let v of overlappings | overlappings: { states: [VacationState.ACCEPTED, VacationState.REQUESTED] }"
+        *ngFor="
+          let v of overlappings | overlappings: { states: [VacationState.ACCEPTED, VacationState.REQUESTED], thisVacationId: vacation?.id }
+        "
       >
         <h3>{{ v?.user?.firstName ?? '' }} {{ v?.user?.lastName ?? '' }}</h3>
         <p class="ol-area">{{ v?.user?.type ?? '' }}</p>

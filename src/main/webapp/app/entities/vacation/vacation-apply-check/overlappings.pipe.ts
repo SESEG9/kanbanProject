@@ -6,9 +6,10 @@ import { FixedVacation } from '../service/fixed-vacation.service';
   name: 'overlappings',
 })
 export class OverlappingsPipe implements PipeTransform {
-  transform(items: FixedVacation[], filter: { states: VacationState[] }): FixedVacation[] {
+  transform(items: FixedVacation[], filter: { states: VacationState[]; thisVacationId?: number | null }): FixedVacation[] {
     return items
       .filter(item => item.state && filter.states.includes(item.state))
+      .filter(item => item.id !== filter.thisVacationId)
       .sort((a, b) => this.stateToNumber(a.state) - this.stateToNumber(b.state));
   }
 

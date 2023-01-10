@@ -81,10 +81,10 @@ export class VacationApplyCreateComponent implements OnInit {
   private updateAdditionalRemainingDays(fromDate: NgbDate, toDate: NgbDate) {
     this.startYear = null;
     this.endYear = null;
-    this.vacationService.remaining({ year: fromDate.year }).subscribe(res => {
+    this.vacationService.remaining({ year: fromDate.year, includeRequested: true }).subscribe(res => {
       this.startYear = { year: fromDate.year, remaining: res.body?.remainingDays ?? 0 };
     });
-    this.vacationService.remaining({ year: toDate.year }).subscribe(res => {
+    this.vacationService.remaining({ year: toDate.year, includeRequested: true }).subscribe(res => {
       this.endYear = { year: toDate.year, remaining: res.body?.remainingDays ?? 0 };
     });
   }
@@ -134,7 +134,7 @@ export class VacationApplyCreateComponent implements OnInit {
     };
     this.vacationService.query(query).subscribe({ next: res => this.onDataFetched(res.body) });
 
-    this.vacationService.remaining({ year: new Date().getFullYear() }).subscribe({
+    this.vacationService.remaining({ year: new Date().getFullYear(), includeRequested: true }).subscribe({
       next: res => {
         this.onRemainingFetched(res.body);
       },

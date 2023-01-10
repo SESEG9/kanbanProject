@@ -62,23 +62,23 @@ p {
   margin: 0;
 }
 
-.applied {
+.requested {
   background-color: #fdfd96 !important;
 }
 
-.applied .ol-state {
+.requested .ol-state {
   font-weight: bolder !important;
 }
 
-.rejected {
+.declined {
   background-color: #faa0a0 !important;
 }
 
-.approved {
+.accepted {
   background-color: #c1e1c1 !important;
 }
 
-.approved .ol-state {
+.accepted .ol-state {
   font-weight: 600;
   font-style: italic;
 }
