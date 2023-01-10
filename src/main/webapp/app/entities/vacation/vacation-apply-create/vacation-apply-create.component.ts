@@ -169,13 +169,13 @@ export class VacationApplyCreateComponent implements OnInit {
     return true;
   }
 
-  private static getYesterday() {
+  private static getYesterday(): Date {
     const date = new Date();
     date.setDate(date.getDate() - 1);
     return date;
   }
 
-  private static overlapps(vacationApply: VacationApply, fixVacation: FixedVacation) {
+  private static overlapps(vacationApply: VacationApply, fixVacation: FixedVacation): boolean {
     return (
       this.liesInBetween(vacationApply.start, fixVacation.start.toDate(), fixVacation.end.toDate()) ||
       this.liesInBetween(vacationApply.end, fixVacation.start.toDate(), fixVacation.end.toDate()) ||
@@ -184,7 +184,7 @@ export class VacationApplyCreateComponent implements OnInit {
     );
   }
 
-  private static liesInBetween(checkDate: Date, start: Date, end: Date) {
+  private static liesInBetween(checkDate: Date, start: Date, end: Date): boolean {
     return start.getTime() < checkDate.getTime() && checkDate.getTime() < end.getTime();
   }
 
