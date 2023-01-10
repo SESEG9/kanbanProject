@@ -6,6 +6,7 @@ import { VacationDateService } from '../service/vacation-date.service';
 import { Remaining, VacationService } from '../service/vacation.service';
 import { VacationState } from '../../enumerations/vacation-state.model';
 import { FixedVacation, FixedVacationService } from '../service/fixed-vacation.service';
+import { AlertService } from '../../../core/util/alert.service';
 
 @Component({
   selector: 'jhi-vacation-apply-create',
@@ -43,7 +44,8 @@ export class VacationApplyCreateComponent implements OnInit {
     public formatter: NgbDateParserFormatter,
     public vacationDateService: VacationDateService,
     private vacationService: VacationService,
-    private fixedVacationService: FixedVacationService
+    private fixedVacationService: FixedVacationService,
+    private alertService: AlertService
   ) {
     this.fromDate = null;
     this.toDate = null;
@@ -118,12 +120,72 @@ export class VacationApplyCreateComponent implements OnInit {
         state: 'APPLIED',
       };
 
-      this.vacationService.apply(vacationApply).subscribe({
-        next: res => {
-          this.loadVacations();
-        },
-      });
+      if (this.validate(vacationApply)) {
+        this.vacationService.apply(vacationApply).subscribe({
+          next: res => {
+            this.alertService.addAlert({
+              type: 'success',
+              message: `Urlaub von ${new Intl.DateTimeFormat('de-AT').format(vacationApply.start)} bis ${new Intl.DateTimeFormat(
+                'de-AT'
+              ).format(vacationApply.end)}`,
+              timeout: 2000,
+            });
+            this.loadVacations();
+          },
+        });
+      }
     }
+  }
+
+  private validate(vacationApply: VacationApply): boolean {
+    if (vacationApply.start.getTime() < VacationApplyCreateComponent.getYesterday().getTime()) {
+      this.alertService.addAlert({
+        type: 'danger',
+        message: 'Startdatum liegt in der Vergangenheit!',
+        timeout: 5000,
+      });
+      return false;
+    }
+    if (vacationApply.end.getTime() < vacationApply.start.getTime()) {
+      this.alertService.addAlert({ type: 'danger', message: 'Startdatum liegt vor Enddatum!', timeout: 5000 });
+      return false;
+    }
+    if (
+      this.getStartYearRemainingDays() < 0 ||
+      (this.startYear && this.showStartModal() && this.getStartYearRemainingDays() < 0) ||
+      (this.endYear && this.showEndModal() && this.getEndYearRemainingDays() < 0)
+    ) {
+      this.alertService.addAlert({ type: 'danger', message: 'Nicht genug Resturlaub vorhanden!', timeout: 5000 });
+      return false;
+    }
+    if (
+      this.vacations
+        .filter(item => item.state !== VacationState.DECLINED)
+        .some(item => VacationApplyCreateComponent.overlapps(vacationApply, item))
+    ) {
+      this.alertService.addAlert({ type: 'danger', message: 'Urlaub überschneidet sich mit existierendem Eintrag!', timeout: 5000 });
+      return false;
+    }
+    return true;
+  }
+
+  private static getYesterday() {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date;
+  }
+
+  private static overlapps(vacationApply: VacationApply, fixVacation: FixedVacation) {
+    return (
+      this.liesInBetween(vacationApply.start, fixVacation.start.toDate(), fixVacation.end.toDate()) ||
+      this.liesInBetween(vacationApply.end, fixVacation.start.toDate(), fixVacation.end.toDate()) ||
+      this.liesInBetween(fixVacation.start.toDate(), vacationApply.start, vacationApply.end) ||
+      this.liesInBetween(fixVacation.end.toDate(), vacationApply.start, vacationApply.end)
+    );
+  }
+
+  private static liesInBetween(checkDate: Date, start: Date, end: Date) {
+    return start.getTime() < checkDate.getTime() && checkDate.getTime() < end.getTime();
   }
 
   loadVacations(): void {
