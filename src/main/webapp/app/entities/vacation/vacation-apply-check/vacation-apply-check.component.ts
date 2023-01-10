@@ -78,7 +78,7 @@ export class VacationApplyCheckComponent implements OnInit {
   }
 
   private loadRemainingVacation(): void {
-    if (this.vacation?.start && this.vacation?.end) {
+    if (this.vacation?.start && this.vacation.end) {
       this.startYear = null;
       this.endYear = null;
 
@@ -113,7 +113,7 @@ export class VacationApplyCheckComponent implements OnInit {
   }
 
   getStartYearRemaining(): number {
-    if (this.vacation?.start && this.vacation?.end && this.startYear) {
+    if (this.vacation?.start && this.vacation.end && this.startYear) {
       return this.vacationDateService.getRemainingDaysForStartYear(
         this.vacation.start.toDate(),
         this.vacation.end.toDate(),
@@ -125,7 +125,7 @@ export class VacationApplyCheckComponent implements OnInit {
   }
 
   getEndYearRemaining(): number {
-    if (this.vacation?.start && this.vacation?.end && this.startYear) {
+    if (this.vacation?.start && this.vacation.end && this.startYear) {
       return this.vacationDateService.getRemainingDaysForEndYear(this.vacation.end.toDate(), this.startYear.remaining);
     } else {
       return this.endYear?.remaining ?? 0;

@@ -184,7 +184,7 @@ export class VacationApplyCreateComponent implements OnInit {
   }
 
   getEndYearRemainingDays(): number {
-    if (this.endYear && this.fromDate && this.toDate && this.toDate.year == this.endYear.year) {
+    if (this.endYear && this.fromDate && this.toDate && this.toDate.year === this.endYear.year) {
       const toDateJs = VacationApplyCreateComponent.ngbDateToJsDate(this.toDate);
       return this.vacationDateService.getRemainingDaysForEndYear(toDateJs, this.endYear.remaining);
     } else {
