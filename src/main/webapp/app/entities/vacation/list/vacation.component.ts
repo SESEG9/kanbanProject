@@ -13,6 +13,7 @@ import { VacationDateService } from '../service/vacation-date.service';
 import { VacationApproveDialogComponent } from '../dialog-approve/vacation-approve-dialog.component';
 import { VACATION_APPROVED, VACATION_REJECTED } from '../vacation.constants';
 import { FixedVacation, FixedVacationService } from '../service/fixed-vacation.service';
+import { VacationState } from '../../enumerations/vacation-state.model';
 
 @Component({
   selector: 'jhi-vacation',
@@ -121,6 +122,7 @@ export class VacationComponent implements OnInit {
     this.isLoading = true;
     const queryObject = {
       sort: this.getSortQueryParam(predicate, ascending),
+      state: VacationState.REQUESTED,
     };
     return this.vacationService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }

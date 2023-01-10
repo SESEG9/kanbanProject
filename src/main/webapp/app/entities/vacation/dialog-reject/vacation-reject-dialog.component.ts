@@ -4,6 +4,7 @@ import { VacationService } from '../service/vacation.service';
 import { VACATION_REJECTED } from '../vacation.constants';
 import { VacationDateService } from '../service/vacation-date.service';
 import { FixedVacation } from '../service/fixed-vacation.service';
+import { VacationState } from '../../enumerations/vacation-state.model';
 
 @Component({
   templateUrl: './vacation-reject-dialog.component.html',
@@ -24,7 +25,7 @@ export class VacationRejectDialogComponent {
 
   confirmDelete(id: number): void {
     // TODO correct call to backend
-    this.vacationService.delete(id).subscribe(() => {
+    this.vacationService.update({ id: id, state: VacationState.DECLINED }).subscribe(() => {
       this.activeModal.close(VACATION_REJECTED);
     });
   }

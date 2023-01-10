@@ -5,6 +5,7 @@ import { VACATION_APPROVED } from '../vacation.constants';
 import { VacationDateService } from '../service/vacation-date.service';
 import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
 import { FixedVacation } from '../service/fixed-vacation.service';
+import { VacationState } from '../../enumerations/vacation-state.model';
 
 @Component({
   templateUrl: './vacation-approve-dialog.component.html',
@@ -26,7 +27,7 @@ export class VacationApproveDialogComponent {
 
   confirmDelete(id: number): void {
     // TODO correct call to backend
-    this.vacationService.delete(id).subscribe(() => {
+    this.vacationService.update({ id: id, state: VacationState.ACCEPTED }).subscribe(() => {
       this.activeModal.close(VACATION_APPROVED);
     });
   }
