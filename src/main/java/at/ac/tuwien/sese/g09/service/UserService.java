@@ -132,6 +132,14 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
+        // new users gets employee information
+        newUser.setType(userDTO.getType());
+        newUser.setGender(userDTO.getGender());
+        newUser.setBirthday(userDTO.getBirthday());
+        newUser.setPhone(userDTO.getPhone());
+        newUser.setSsn(userDTO.getSsn());
+        newUser.setBanking(userDTO.getBanking());
+        newUser.setAddress(userDTO.getAddress());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
@@ -180,6 +188,14 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
+        // user has employee information
+        user.setType(userDTO.getType());
+        user.setGender(userDTO.getGender());
+        user.setBirthday(userDTO.getBirthday());
+        user.setPhone(userDTO.getPhone());
+        user.setSsn(userDTO.getSsn());
+        user.setBanking(userDTO.getBanking());
+        user.setAddress(userDTO.getAddress());
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
@@ -208,6 +224,14 @@ public class UserService {
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
+                // user has employee information
+                user.setType(userDTO.getType());
+                user.setGender(userDTO.getGender());
+                user.setBirthday(userDTO.getBirthday());
+                user.setPhone(userDTO.getPhone());
+                user.setSsn(userDTO.getSsn());
+                user.setBanking(userDTO.getBanking());
+                user.setAddress(userDTO.getAddress());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO

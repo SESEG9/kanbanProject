@@ -1,0 +1,84 @@
+.checking-card {
+  margin-top: 1rem;
+  display: flex;
+  font-size: 1.2rem;
+}
+
+.applyment-column {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.applyment-row {
+  display: flex;
+}
+
+.appl-label {
+  font-weight: bold;
+  width: 5em;
+}
+
+.appl-label.long {
+  width: 9em;
+}
+
+.vacation-form {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+}
+
+.overlapping-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 1rem;
+}
+
+.overlapping-list-card {
+  width: 18rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+}
+
+.ol-area {
+  font-style: italic;
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: bolder;
+  margin-bottom: 0.25rem;
+}
+
+p {
+  margin: 0;
+}
+
+.requested {
+  background-color: #fdfd96 !important;
+}
+
+.requested .ol-state {
+  font-weight: bolder !important;
+}
+
+.declined {
+  background-color: #faa0a0 !important;
+}
+
+.accepted {
+  background-color: #c1e1c1 !important;
+}
+
+.accepted .ol-state {
+  font-weight: 600;
+  font-style: italic;
+}

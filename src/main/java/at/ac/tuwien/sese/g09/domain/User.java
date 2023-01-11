@@ -1,9 +1,12 @@
 package at.ac.tuwien.sese.g09.domain;
 
 import at.ac.tuwien.sese.g09.config.Constants;
+import at.ac.tuwien.sese.g09.domain.enumeration.Gender;
+import at.ac.tuwien.sese.g09.domain.enumeration.HumanResourceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -32,6 +35,9 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @OneToMany(mappedBy = "user")
+    private Set<TimeManagement> timeManagements = new HashSet<>();
+
     @NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
@@ -44,17 +50,20 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
 
+    @NotNull
     @Size(max = 50)
-    @Column(name = "first_name", length = 50)
+    @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
 
+    @NotNull
     @Size(max = 50)
-    @Column(name = "last_name", length = 50)
+    @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
 
     @Email
+    @NotNull
     @Size(min = 5, max = 254)
-    @Column(length = 254, unique = true)
+    @Column(length = 254, unique = true, nullable = false)
     private String email;
 
     @NotNull
@@ -98,6 +107,119 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<PersistentToken> persistentTokens = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private HumanResourceType type;
+
+    @Column(name = "birthday")
+    private LocalDate birthday;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "ssn")
+    private String ssn;
+
+    @Column(name = "banking", unique = true)
+    private String banking;
+
+    @Column(name = "address")
+    private String address;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Vacation> vacations = new HashSet<>();
+
+    public Set<Vacation> getVacations() {
+        return vacations;
+    }
+
+    public void setVacations(Set<Vacation> vacations) {
+        this.vacations = vacations;
+    }
+
+    public HumanResourceType getType() {
+        return this.type;
+    }
+
+    public User type(HumanResourceType type) {
+        this.setType(type);
+        return this;
+    }
+
+    public void setType(HumanResourceType type) {
+        this.type = type;
+    }
+
+    public LocalDate getBirthday() {
+        return this.birthday;
+    }
+
+    public User birthday(LocalDate birthday) {
+        this.setBirthday(birthday);
+        return this;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public Gender getGender() {
+        return this.gender;
+    }
+
+    public User gender(Gender gender) {
+        this.setGender(gender);
+        return this;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public User phone(String phone) {
+        this.setPhone(phone);
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSsn() {
+        return this.ssn;
+    }
+
+    public User ssn(String ssn) {
+        this.setSsn(ssn);
+        return this;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
+    public String getBanking() {
+        return this.banking;
+    }
+
+    public User banking(String banking) {
+        this.setBanking(banking);
+        return this;
+    }
+
+    public void setBanking(String banking) {
+        this.banking = banking;
+    }
+
     public Long getId() {
         return id;
     }
@@ -121,6 +243,14 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getFirstName() {
@@ -240,6 +370,13 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
+            ", type='" + type + '\'' +
+            ", gender='" + gender + '\'' +
+            ", birthday='" + birthday + '\'' +
+            ", phone='" + phone + '\'' +
+            ", ssn='" + ssn + '\'' +
+            ", banking='" + banking + '\'' +
+            ", address='" + address + '\'' +
             "}";
     }
 }

@@ -39,15 +39,16 @@
       },
       "admin": {
         "main": "Administration",
-        "userManagement": "Benutzerverwaltung",
-        "tracker": "Benutzer Aktivitäten",
+        "userManagement": "Mitarbeiterverwaltung",
+        "tracker": "Mitarbeiter Aktivitäten",
         "metrics": "Metriken",
         "health": "Status",
         "configuration": "Konfiguration",
         "logs": "Protokoll",
         "apidocs": "API",
         "database": "Datenbank",
-        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)",
+        "vacationManagement": "Urlaubsverwaltung"
       },
       "language": "Sprache"
     },
@@ -68,7 +69,7 @@
         "authenticated": {
           "prefix": "Wenn Sie sich ",
           "link": "anmelden",
-          "suffix": " möchten, versuchen Sie es mit <br/>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br/>- Benutzer (Name=\"user\" und Passwort=\"user\")."
+          "suffix": " möchten, versuchen Sie es mit <br/>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br/>- Mitarbeiter (Name=\"user\" und Passwort=\"user\")."
         },
         "register": {
           "noaccount": "Sie haben noch keinen Zugang?",

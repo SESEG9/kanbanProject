@@ -1,0 +1,4 @@
+**/.terraform/
+*.lock.hcl
+*.tfstate*
+set_env_vars.bat

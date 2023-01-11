@@ -1,4 +1,4 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/de';
@@ -26,6 +26,7 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { HomeOldModule } from './home-old/home-old.module';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { HomeOldModule } from './home-old/home-old.module';
     HttpClientModule,
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
+    FullCalendarModule,
   ],
   providers: [
     Title,
@@ -49,6 +51,7 @@ import { HomeOldModule } from './home-old/home-old.module';
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   bootstrap: [MainComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

@@ -27,7 +27,7 @@
             <option [ngValue]="null" disabled>Buchung auswählen</option>
             <option *ngFor="let booking of bookings" [ngValue]="booking">
               {{ booking.id }}
-              | {{ booking.billingCustomer?.name || 'Kein Name hinterlegt' }} | {{ booking.startDate }} | {{ booking.bookingCode }}
+              | {{ booking.billingCustomer.name || 'Kein Name hinterlegt' }} | {{ booking.startDate }} | {{ booking.bookingCode }}
             </option>
           </select>
         </div>
@@ -66,6 +66,7 @@
             data-cy="discount"
             formControlName="discount"
             step="0.01"
+            readonly
           />
         </div>
 

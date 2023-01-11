@@ -21,14 +21,19 @@
     <table class="table table-striped" aria-describedby="user-management-page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col"></th>
-          <th scope="col" jhiSortBy="langKey">
-            <span jhiTranslate="userManagement.langKey">Sprache</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col" jhiSortBy="firstName">
+            <span jhiTranslate="userManagement.firstName">Vorname</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col"><span jhiTranslate="userManagement.profiles">Profile</span></th>
+          <th scope="col" jhiSortBy="lastName">
+            <span jhiTranslate="userManagement.lastName">Nachname</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="type">
+            <span jhiTranslate="userManagement.type">Aufgabengebiet</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"><span jhiTranslate="userManagement.profiles">Rechte</span></th>
+          <th scope="col"></th>
           <th scope="col" jhiSortBy="createdDate">
             <span jhiTranslate="userManagement.createdDate">Erstellt am</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -43,11 +48,16 @@
       </thead>
       <tbody *ngIf="users">
         <tr *ngFor="let user of users; trackBy: trackIdentity">
-          <td>
-            <a [routerLink]="['./', user.login, 'view']">{{ user.id }}</a>
-          </td>
           <td>{{ user.login }}</td>
           <td>{{ user.email }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td jhiTranslate="userManagement.types.{{ user.type }}">{{ user.type }}</td>
+          <td>
+            <div *ngFor="let authority of user.authorities">
+              <span class="badge bg-info" jhiTranslate="userManagement.authorities.{{ authority }}">{{ authority }}</span>
+            </div>
+          </td>
           <td>
             <button
               class="btn btn-danger btn-sm"
@@ -67,15 +77,9 @@
               Aktiv
             </button>
           </td>
-          <td>{{ user.langKey }}</td>
-          <td>
-            <div *ngFor="let authority of user.authorities">
-              <span class="badge bg-info">{{ authority }}</span>
-            </div>
-          </td>
-          <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>{{ user.createdDate | date: 'yyyy-MM-dd HH:mm' }}</td>
           <td>{{ user.lastModifiedBy }}</td>
-          <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>{{ user.lastModifiedDate | date: 'yyyy-MM-dd HH:mm' }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">
@@ -88,6 +92,7 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
               </button>
 
+              <!--
               <button
                 type="button"
                 (click)="deleteUser(user)"
@@ -97,6 +102,7 @@
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
               </button>
+              -->
             </div>
           </td>
         </tr>

@@ -4,17 +4,27 @@ import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IVacation } from '../vacation.model';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { ASC, DEFAULT_SORT_DATA, DESC, SORT } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, VacationService } from '../service/vacation.service';
-import { VacationDeleteDialogComponent } from '../delete/vacation-delete-dialog.component';
+import { VacationRejectDialogComponent } from '../dialog-reject/vacation-reject-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
+import * as FontAwesome from '@fortawesome/free-solid-svg-icons';
+import { VacationDateService } from '../service/vacation-date.service';
+import { VacationApproveDialogComponent } from '../dialog-approve/vacation-approve-dialog.component';
+import { VACATION_APPROVED, VACATION_REJECTED } from '../vacation.constants';
+import { FixedVacation, FixedVacationService } from '../service/fixed-vacation.service';
+import { VacationState } from '../../enumerations/vacation-state.model';
 
 @Component({
   selector: 'jhi-vacation',
   templateUrl: './vacation.component.html',
+  styleUrls: ['../../room/room.global.scss', './vacation.component.scss'],
 })
 export class VacationComponent implements OnInit {
-  vacations?: IVacation[];
+  ICONS = FontAwesome;
+
+  vacationApply: FixedVacation[] = [];
+
   isLoading = false;
 
   predicate = 'id';
@@ -25,7 +35,9 @@ export class VacationComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    public vacationDateService: VacationDateService,
+    private fixedVacationService: FixedVacationService
   ) {}
 
   trackId = (_index: number, item: IVacation): number => this.vacationService.getVacationIdentifier(item);
@@ -34,13 +46,31 @@ export class VacationComponent implements OnInit {
     this.load();
   }
 
-  delete(vacation: IVacation): void {
-    const modalRef = this.modalService.open(VacationDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+  reject(vacation: IVacation): void {
+    const modalRef = this.modalService.open(VacationRejectDialogComponent, { backdrop: 'static' });
     modalRef.componentInstance.vacation = vacation;
     // unsubscribe not needed because closed completes on modal close
+
     modalRef.closed
       .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
+        filter(reason => reason === VACATION_REJECTED),
+        switchMap(() => this.loadFromBackendWithRouteInformations())
+      )
+      .subscribe({
+        next: (res: EntityArrayResponseType) => {
+          this.onResponseSuccess(res);
+        },
+      });
+  }
+
+  approve(vacation: IVacation): void {
+    const modalRef = this.modalService.open(VacationApproveDialogComponent, { backdrop: 'static' });
+    modalRef.componentInstance.vacation = vacation;
+    // unsubscribe not needed because closed completes on modal close
+
+    modalRef.closed
+      .pipe(
+        filter(reason => reason === VACATION_APPROVED),
         switchMap(() => this.loadFromBackendWithRouteInformations())
       )
       .subscribe({
@@ -76,11 +106,11 @@ export class VacationComponent implements OnInit {
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.vacations = this.refineData(dataFromBody);
+    const dataFromBody = this.fixedVacationService.vacationsToFixedVacations(this.fillComponentAttributesFromResponseBody(response.body));
+    this.vacationApply = this.refineData(dataFromBody);
   }
 
-  protected refineData(data: IVacation[]): IVacation[] {
+  protected refineData(data: FixedVacation[]): FixedVacation[] {
     return data.sort(this.sortService.startSort(this.predicate, this.ascending ? 1 : -1));
   }
 
@@ -92,6 +122,7 @@ export class VacationComponent implements OnInit {
     this.isLoading = true;
     const queryObject = {
       sort: this.getSortQueryParam(predicate, ascending),
+      state: VacationState.REQUESTED,
     };
     return this.vacationService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
