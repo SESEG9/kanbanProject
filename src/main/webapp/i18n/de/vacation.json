@@ -2,11 +2,16 @@
   "lionhotelApp": {
     "vacation": {
       "home": {
-        "title": "Vacations",
-        "refreshListLabel": "Liste aktualisieren",
+        "title": "Urlaubsanträge",
+        "refreshListLabel": "aktualisieren",
         "createLabel": "Vacation erstellen",
         "createOrEditLabel": "Vacation erstellen oder bearbeiten",
         "notFound": "Keine Vacations gefunden"
+      },
+      "state": {
+        "ACCEPTED": "Genehmigt",
+        "DECLINED": "Abgelehnt",
+        "REQUESTED": "Angefragt"
       },
       "created": "Vacation erstellt mit ID {{ param }}",
       "updated": "Vacation aktualisiert mit ID {{ param }}",
@@ -18,9 +23,9 @@
         "title": "Vacation"
       },
       "id": "ID",
-      "start": "Start",
-      "end": "End",
-      "state": "State",
+      "start": "von",
+      "end": "bis",
+      "duration": "Dauer",
       "humanResource": "Human Resource"
     }
   }

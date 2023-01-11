@@ -1,0 +1,71 @@
+<div class="base">
+  <div class="root">
+    <h1>Urlaub Genehmigen:</h1>
+    <div class="box checking-card">
+      <div class="applyment-column">
+        <div class="applyment-row">
+          <div class="appl-label">Name:</div>
+          {{ vacation?.user?.firstName ?? '' }} {{ vacation?.user?.lastName ?? '' }}
+        </div>
+        <div class="applyment-row">
+          <div class="appl-label">Bereich:</div>
+          <span [jhiTranslate]="'lionhotelApp.HumanResourceType.' + $any(vacation?.user)?.type">{{ vacation?.user?.type ?? '' }}</span>
+        </div>
+      </div>
+      <div class="applyment-column">
+        <div class="applyment-row">
+          <div class="appl-label long">Aktueller Urlaub:</div>
+
+          <span *ngIf="endYear == null">{{ startYear?.remaining ?? '' }} Tage</span>
+          <span *ngIf="endYear !== null"
+            >{{ startYear?.year ?? '' }}: {{ startYear?.remaining ?? '' }} / {{ endYear.year }}: {{ endYear.remaining }}</span
+          >
+
+          <!-- TODO: get free days not including applied vacation -->
+        </div>
+        <div class="applyment-row">
+          <div class="appl-label long">Resturlaub:</div>
+          <span *ngIf="endYear == null">{{ getStartYearRemaining() }} Tage</span>
+          <span *ngIf="endYear !== null"
+            >{{ startYear?.year ?? '' }}: {{ getStartYearRemaining() }} / {{ endYear.year }}: {{ getEndYearRemaining() }}</span
+          >
+        </div>
+      </div>
+      <div class="applyment-column">
+        <div class="applyment-row">
+          <div class="appl-label">Von:</div>
+          {{ vacation?.start?.toDate() | date }}
+        </div>
+        <div class="applyment-row">
+          <div class="appl-label">Bis:</div>
+          {{ vacation?.end?.toDate() | date }}
+        </div>
+      </div>
+    </div>
+
+    <div class="vacation-form">
+      <button class="btn btn-danger" (click)="reject(vacation)">Ablehnen</button>
+      <button class="btn btn-success" (click)="approve(vacation)">Genehmigen</button>
+    </div>
+
+    <hr />
+
+    <h2>Überschneidungen:</h2>
+
+    <div class="overlapping-list">
+      <div
+        [class]="['box', 'overlapping-list-card', ('' + v.state).toLowerCase()]"
+        *ngFor="
+          let v of overlappings | overlappings: { states: [VacationState.ACCEPTED, VacationState.REQUESTED], thisVacationId: vacation?.id }
+        "
+      >
+        <h3>{{ v?.user?.firstName ?? '' }} {{ v?.user?.lastName ?? '' }}</h3>
+        <p class="ol-area">{{ v?.user?.type ?? '' }}</p>
+        <p>{{ v.start.toDate() | date }} - {{ v.end.toDate() | date }}</p>
+        <p class="ol-state">
+          <span [jhiTranslate]="'lionhotelApp.vacation.state.' + v.state">{{ v.state }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

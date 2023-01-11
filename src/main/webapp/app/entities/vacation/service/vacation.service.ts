@@ -8,7 +8,7 @@ import { isPresent } from 'app/core/util/operators';
 import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IVacation, NewVacation } from '../vacation.model';
+import { IVacation, NewVacation, VacationApply } from '../vacation.model';
 
 export type PartialUpdateVacation = Partial<IVacation> & Pick<IVacation, 'id'>;
 
@@ -19,18 +19,28 @@ type RestOf<T extends IVacation | NewVacation> = Omit<T, 'start' | 'end'> & {
 
 export type RestVacation = RestOf<IVacation>;
 
-export type NewRestVacation = RestOf<NewVacation>;
-
-export type PartialUpdateRestVacation = RestOf<PartialUpdateVacation>;
-
 export type EntityResponseType = HttpResponse<IVacation>;
 export type EntityArrayResponseType = HttpResponse<IVacation[]>;
+
+export type Remaining = { remainingDays: number };
 
 @Injectable({ providedIn: 'root' })
 export class VacationService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/vacations');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
+  remaining(params: { year: number; userId?: number; includeRequested: boolean }): Observable<HttpResponse<Remaining>> {
+    return this.http.get<Remaining>(`${this.resourceUrl}/remaining`, {
+      observe: 'response',
+      params,
+    });
+  }
+
+  apply(vacation: VacationApply): Observable<EntityResponseType> {
+    const url = this.applicationConfigService.getEndpointFor('api/vacations/apply');
+    return this.http.post<RestVacation>(url, vacation, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
+  }
 
   create(vacation: NewVacation): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(vacation);
@@ -109,8 +119,8 @@ export class VacationService {
   protected convertDateFromServer(restVacation: RestVacation): IVacation {
     return {
       ...restVacation,
-      start: restVacation.start ? dayjs(restVacation.start) : undefined,
-      end: restVacation.end ? dayjs(restVacation.end) : undefined,
+      start: dayjs(restVacation.start),
+      end: dayjs(restVacation.end),
     };
   }
 

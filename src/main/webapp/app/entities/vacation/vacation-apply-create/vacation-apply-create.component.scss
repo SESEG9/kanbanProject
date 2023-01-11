@@ -1,0 +1,118 @@
+.vacation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vacation-header > p,
+.vacation-body > p,
+.vacation-footer > p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.vacation-label {
+  font-weight: bolder;
+  font-style: italic;
+}
+
+.add-button {
+  font-weight: bold;
+}
+
+.vacation-lists {
+  display: flex;
+  column-gap: 2rem;
+}
+
+.vacation-list-card {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+
+.expandable {
+  background: #fff;
+  overflow: hidden;
+  color: #000;
+  line-height: 50px;
+
+  transition: all 0.5s ease-in-out;
+  height: 0;
+}
+
+.expandable:target {
+  height: 50px;
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+hr {
+  margin: 0.5em 0;
+}
+
+.vacation-body {
+}
+
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+.custom-day.range,
+.custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
+}
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}
+
+.vacation-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar-box {
+  margin-left: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.applied {
+  background-color: #fdfd96 !important;
+}
+
+.rejected {
+  background-color: #faa0a0 !important;
+}
+
+.approved {
+  background-color: #c1e1c1 !important;
+}
+
+.list-control {
+  display: flex;
+  justify-content: center;
+  column-gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.list-control > input {
+  width: 5rem;
+  text-align: center;
+}

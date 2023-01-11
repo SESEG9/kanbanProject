@@ -2,11 +2,11 @@
   "lionhotelApp": {
     "HumanResourceType": {
       "null": "",
-      "RECEPTION": "RECEPTION",
-      "KITCHEN": "KITCHEN",
-      "SERVICE": "SERVICE",
-      "CLEANING": "CLEANING",
-      "OTHER": "OTHER"
+      "RECEPTION": "Rezeption",
+      "KITCHEN": "Küche",
+      "SERVICE": "Service",
+      "CLEANING": "Reinigung",
+      "OTHER": "Sonstiges"
     }
   }
 }

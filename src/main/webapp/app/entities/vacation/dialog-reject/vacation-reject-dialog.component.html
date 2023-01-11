@@ -1,0 +1,38 @@
+<form *ngIf="vacation" name="deleteForm" (ngSubmit)="confirmDelete(vacation.id!)">
+  <div class="modal-header">
+    <h4 class="modal-title" data-cy="vacationDeleteDialogHeading">Urlaubsantrag ablehnen?</h4>
+
+    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()"></button>
+  </div>
+
+  <div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
+    <div class="vcf-row">
+      <div class="vcf-label">Name:</div>
+      <div class="vcf-name">{{ vacation?.user?.firstName ?? '' }} {{ vacation?.user?.lastName ?? '' }}</div>
+    </div>
+    <div class="vcf-row">
+      <div class="vcf-label">Bereich:</div>
+      <div class="vcf-area">{{ vacation?.user?.type ?? '' }}</div>
+    </div>
+    <div class="vcf-vacation-box">
+      <div class="vcf-label">Urlaubsantrag:</div>
+      <div class="vcf-date">
+        {{ vacation.start.toDate() | date }} - {{ vacation.end.toDate() | date }} ({{
+          vacationDateService.getVacationDays(vacation.start.toDate(), vacation.end.toDate())
+        }}
+        Tage)
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+      <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Abbrechen</span>
+    </button>
+
+    <button id="jhi-confirm-delete-vacation" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+      <fa-icon icon="times"></fa-icon>&nbsp;<span>Antrag Ablehnen</span>
+    </button>
+  </div>
+</form>

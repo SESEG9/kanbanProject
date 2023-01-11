@@ -1,0 +1,146 @@
+<div class="base">
+  <div class="root">
+    <h1>Meine Urlaube</h1>
+    <jhi-alert></jhi-alert>
+    <jhi-alert-error></jhi-alert-error>
+
+    <div class="current-vacation-header box">
+      <div class="vacation-header">
+        <p>
+          <span class="vacation-label">Verfügbarer Urlaub {{ year }}:</span> {{ availableVacation }} Tage
+          <span class="remCard" *ngIf="startYear && showStartModal()">({{ startYear.year }}: {{ startYear.remaining }} Tage)</span>
+          <span class="remCard" *ngIf="endYear && showEndModal()">({{ endYear.year }}: {{ endYear.remaining }} Tage)</span>
+        </p>
+        <button
+          type="button"
+          class="btn btn-secondary add-button"
+          (click)="isCollapsed = !isCollapsed"
+          [attr.aria-expanded]="!isCollapsed"
+          aria-controls="collapseExample"
+        >
+          {{ isCollapsed ? '+' : '-' }}
+        </button>
+      </div>
+      <div class="vacation-apply-form" #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+        <hr />
+        <div class="vacation-body">
+          <p><span class="vacation-label">Neuen Urlaub Beantragen:</span></p>
+          <form class="row row-cols-sm-auto align-items-center calendar-box">
+            <div>von</div>
+            <div class="col-12">
+              <div class="dp-hidden position-absolute">
+                <div class="input-group">
+                  <input
+                    name="datepicker"
+                    class="form-control"
+                    ngbDatepicker
+                    #datepicker="ngbDatepicker"
+                    [autoClose]="'outside'"
+                    (dateSelect)="onDateSelection($event)"
+                    [displayMonths]="2"
+                    [dayTemplate]="t"
+                    outsideDays="hidden"
+                    [startDate]="fromDate!"
+                    tabindex="-1"
+                  />
+                  <ng-template #t let-date let-focused="focused">
+                    <span
+                      class="custom-day"
+                      [class.focused]="focused"
+                      [class.range]="isRange(date)"
+                      [class.faded]="isHovered(date) || isInside(date)"
+                      (mouseenter)="hoveredDate = date"
+                      (mouseleave)="hoveredDate = null"
+                    >
+                      {{ date.day }}
+                    </span>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="input-group">
+                <input
+                  #dpFromDate
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dpFromDate"
+                  [value]="formatter.format(fromDate)"
+                  (input)="fromDate = validateInput(fromDate, dpFromDate.value); updateChosenDays()"
+                />
+                <button class="btn btn-outline-secondary btn-calendar" (click)="datepicker.toggle()" type="button">
+                  <fa-icon [icon]="faCalendarIcon"></fa-icon>
+                </button>
+              </div>
+            </div>
+            <div>bis</div>
+            <div class="col-12">
+              <div class="input-group">
+                <input
+                  #dpToDate
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dpToDate"
+                  [value]="formatter.format(toDate)"
+                  (input)="toDate = validateInput(toDate, dpToDate.value); updateChosenDays()"
+                />
+                <button class="btn btn-outline-secondary btn-calendar" (click)="datepicker.toggle()" type="button">
+                  <fa-icon [icon]="faCalendarIcon"></fa-icon>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="choosenDays && choosenDays > 0">({{ choosenDays }} Tage)</div>
+          </form>
+        </div>
+        <div class="vacation-footer">
+          <p>
+            <span class="vacation-label">Resturlaub {{ year }}:</span> {{ getThisYearRemainingDays() }} Tage
+            <span class="remCard" *ngIf="startYear && showStartModal()"
+              >({{ startYear.year }}: {{ getStartYearRemainingDays() }} Tage)</span
+            >
+            <span class="remCard" *ngIf="endYear && showEndModal()">({{ endYear.year }}: {{ getEndYearRemainingDays() }} Tage)</span>
+          </p>
+          <button class="btn btn-primary" (click)="applyVacation()">Urlaub beantragen</button>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <div class="list-control">
+      <button class="btn btn-secondary" (click)="year = year - 1; loadVacations()">&lt;</button>
+      <input disabled class="form-control" [value]="year" />
+      <button class="btn btn-secondary" (click)="year = year + 1; loadVacations()">&gt;</button>
+    </div>
+
+    <div class="vacation-lists">
+      <div class="vacation-list-card box">
+        <h2>Ausstehende Anträge</h2>
+
+        <div class="applied box" *ngFor="let v of vacations | vacationStatePipe: VacationState.REQUESTED">
+          <h3>
+            <fa-icon [icon]="faQuestionIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.start.toDate(), v.end.toDate()) }} Tage
+          </h3>
+          <div>{{ v.start.toDate() | date }} - {{ v.end.toDate() | date }}</div>
+        </div>
+      </div>
+      <div class="vacation-list-card box">
+        <h2>Angenommene Anträge</h2>
+
+        <div class="approved box" *ngFor="let v of vacations | vacationStatePipe: VacationState.ACCEPTED">
+          <h3>
+            <fa-icon [icon]="faCheckmarkIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.start.toDate(), v.end.toDate()) }} Tage
+          </h3>
+          <div>{{ v.start.toDate() | date }} - {{ v.end.toDate() | date }}</div>
+        </div>
+      </div>
+      <div class="vacation-list-card box">
+        <h2>Abgelehne Anträge</h2>
+
+        <div class="rejected box" *ngFor="let v of vacations | vacationStatePipe: VacationState.DECLINED">
+          <h3>
+            <fa-icon [icon]="faCrossIcon"></fa-icon> - {{ vacationDateService.getVacationDays(v.start.toDate(), v.end.toDate()) }} Tage
+          </h3>
+          <div>{{ v.start.toDate() | date }} - {{ v.end.toDate() | date }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

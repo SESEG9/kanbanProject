@@ -47,7 +47,8 @@
         "logs": "Protokoll",
         "apidocs": "API",
         "database": "Datenbank",
-        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)",
+        "vacationManagement": "Urlaubsverwaltung"
       },
       "language": "Sprache"
     },
