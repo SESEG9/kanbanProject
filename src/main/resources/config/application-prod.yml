@@ -103,7 +103,7 @@ jhipster:
       # security key (this key should be unique for your application, and kept secret)
       key: 5ab27fc89205fdd922eceb1d326495e6b39f625851ffbaea6d3e9c923c6c371703fd4326c1008ad281c8baecabc4e22a6346
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://my-server-url-to-change # Modify according to your server's URL
+    base-url: http://sese-g09.westeurope.azurecontainer.io:8080 # Modify according to your server's URL
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
