@@ -23,22 +23,12 @@
         <dt><span jhiTranslate="userManagement.email">Email</span></dt>
         <dd>{{ user.email }}</dd>
 
-        <dt><span jhiTranslate="userManagement.langKey">Sprache</span></dt>
-        <dd>{{ user.langKey }}</dd>
+        <dt><span jhiTranslate="userManagement.type">Aufgabengebiet</span></dt>
+        <dd>
+          <span jhiTranslate="userManagement.types.{{ user.type }}">{{ user.type }}</span>
+        </dd>
 
-        <dt><span jhiTranslate="userManagement.createdBy">Erstellt von</span></dt>
-        <dd>{{ user.createdBy }}</dd>
-
-        <dt><span jhiTranslate="userManagement.createdDate">Erstellt am</span></dt>
-        <dd>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
-
-        <dt><span jhiTranslate="userManagement.lastModifiedBy">Bearbeitet von</span></dt>
-        <dd>{{ user.lastModifiedBy }}</dd>
-
-        <dt><span jhiTranslate="userManagement.lastModifiedDate">Zuletzt bearbeitet</span></dt>
-        <dd>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
-
-        <dt><span jhiTranslate="userManagement.profiles">Profile</span></dt>
+        <dt><span jhiTranslate="userManagement.profiles">Rechte</span></dt>
         <dd>
           <ul class="list-unstyled">
             <li *ngFor="let authority of user.authorities">
@@ -46,6 +36,41 @@
             </li>
           </ul>
         </dd>
+
+        <dt><span jhiTranslate="userManagement.gender">Geschlecht</span></dt>
+        <dd>
+          <span jhiTranslate="userManagement.genders.{{ user.gender }}">{{ user.gender }}</span>
+        </dd>
+
+        <dt><span jhiTranslate="userManagement.birthday">Geburtstag</span></dt>
+        <dd>{{ user.birthday }}</dd>
+
+        <dt><span jhiTranslate="userManagement.phone">Telefonnummer</span></dt>
+        <dd>{{ user.phone }}</dd>
+
+        <dt><span jhiTranslate="userManagement.ssn">Sozialversicherungsnummer</span></dt>
+        <dd>{{ user.ssn }}</dd>
+
+        <dt><span jhiTranslate="userManagement.banking">Bankdaten (IBAN)</span></dt>
+        <dd>{{ user.banking }}</dd>
+
+        <dt><span jhiTranslate="userManagement.address">Adresse</span></dt>
+        <dd>{{ user.address }}</dd>
+
+        <dt><span jhiTranslate="userManagement.langKey">Sprache</span></dt>
+        <dd>{{ user.langKey }}</dd>
+
+        <dt><span jhiTranslate="userManagement.createdBy">Erstellt von</span></dt>
+        <dd>{{ user.createdBy }}</dd>
+
+        <dt><span jhiTranslate="userManagement.createdDate">Erstellt am</span></dt>
+        <dd>{{ user.createdDate | date: 'yyyy-MM-dd HH:mm' }}</dd>
+
+        <dt><span jhiTranslate="userManagement.lastModifiedBy">Bearbeitet von</span></dt>
+        <dd>{{ user.lastModifiedBy }}</dd>
+
+        <dt><span jhiTranslate="userManagement.lastModifiedDate">Zuletzt bearbeitet</span></dt>
+        <dd>{{ user.lastModifiedDate | date: 'yyyy-MM-dd HH:mm' }}</dd>
       </dl>
 
       <button type="submit" routerLink="../../" class="btn btn-info">
