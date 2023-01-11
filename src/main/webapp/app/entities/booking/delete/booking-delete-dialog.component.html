@@ -1,15 +1,13 @@
 <form *ngIf="booking" name="deleteForm" (ngSubmit)="confirmDelete(booking.id!)">
   <div class="modal-header">
-    <h4 class="modal-title" data-cy="bookingDeleteDialogHeading" jhiTranslate="entity.delete.title">Löschen bestätigen</h4>
+    <h4 class="modal-title" data-cy="bookingDeleteDialogHeading">Stornierung bestätigen</h4>
 
-    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()"></button>
   </div>
 
   <div class="modal-body">
     <jhi-alert-error></jhi-alert-error>
-    <p id="jhi-delete-booking-heading">
-      Soll Booking {{ booking.id }} wirklich storniert werden?
-    </p>
+    <p id="jhi-delete-booking-heading">Soll Booking {{ booking.id }} wirklich storniert werden?</p>
   </div>
 
   <div class="modal-footer">
@@ -18,7 +16,7 @@
     </button>
 
     <button id="jhi-confirm-delete-booking" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
-      <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Löschen</span>
+      <fa-icon icon="times"></fa-icon>&nbsp;<span>Stornieren</span>
     </button>
   </div>
 </form>
