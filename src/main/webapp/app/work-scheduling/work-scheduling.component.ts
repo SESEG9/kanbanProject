@@ -46,7 +46,7 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
     locale: 'de-AT',
     contentHeight: 'auto',
     slotDuration: '02:00:00',
-    datesSet: () => this.updateEvents(),
+    datesSet: () => this.updateEvents([], true),
     eventClick: event => this.eventClick(event),
   };
 
@@ -80,12 +80,25 @@ export class WorkSchedulingComponent implements OnInit, AfterViewInit {
     return workDays;
   }
 
-  updateEvents(userIds: number[] = []): void {
+  updateEvents(userIds: number[] = [], calendarUpdate?: boolean): void {
     if (!this.$accountService.hasAnyAuthority(['ROLE_ADMIN'])) {
       this.loadMySchedule();
     } else if (this.form.controls['type'].valid && this.form.controls['employee'].valid) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (userIds.length > 0 || this.form.controls['type'].value === '') {
+      if (calendarUpdate) {
+        if (this.form.controls['type'].valid && this.form.controls['employee'].valid) {
+          userIds = this.form.controls['employee'].value !== -1 ? [this.form.controls['employee'].value!] : [];
+          if (this.form.controls['employee'].value === -1 || this.form.controls['employee'].value?.toString() === '-1') {
+            userIds.length = 0;
+            this.users.forEach(user => {
+              if (user.type === this.form.controls['type'].value) {
+                userIds.push(user.id);
+              }
+            });
+          }
+        }
+      }
+      if (userIds.length > 0 || this.form.controls['type'].value === '' || calendarUpdate) {
         this.$workSchedulingService.getWorkSchedule(userIds, this.getWorkdays(), []).subscribe(value => {
           this.clearCalendar();
           value.forEach(workitem => {
